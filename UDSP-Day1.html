@@ -1,0 +1,2158 @@
+</script>lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDSP İngilizce Yeterlilik Sınavı — Gün 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
+  /* ── LOGIN ── */
+  .login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg);}
+  .login-card{background:white;border-radius:16px;padding:48px 40px;box-shadow:0 8px 40px rgba(26,39,68,.15);width:100%;max-width:440px;text-align:center;}
+  .login-logo{background:#1a2744;color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:6px;display:inline-block;margin-bottom:20px;}
+  .login-title{font-family:'Merriweather',serif;font-size:20px;font-weight:700;color:#1a2744;margin-bottom:6px;}
+  .login-sub{font-size:13px;color:#6b7a99;margin-bottom:32px;}
+  .login-field{margin-bottom:16px;text-align:left;}
+  .login-field label{display:block;font-size:12px;font-weight:600;color:#1a2744;margin-bottom:6px;}
+  .login-field input,.login-field select{width:100%;padding:12px 16px;border:1.5px solid #dde1ed;border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:#1a2744;background:white;transition:border-color .2s;}
+  .login-field input:focus,.login-field select:focus{outline:none;border-color:#1a2744;}
+  .btn-start{width:100%;padding:14px;background:#1a2744;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;transition:background .2s;}
+  .btn-start:hover{background:#243258;}
+  .login-err{color:#c0392b;font-size:13px;margin-top:10px;display:none;}
+  .saving-msg{margin-top:20px;font-size:13px;color:#6b7a99;padding:12px;background:#f5f6fa;border-radius:8px;}
+  .saving-msg.success{color:#1a7f4b;background:#eafaf1;}
+  .saving-msg.error{color:#c0392b;background:#fdf0ef;}
+
+  :root {
+    --navy: #1a2744;
+    --navy-light: #243258;
+    --red: #c0392b;
+    --red-light: #e74c3c;
+    --gold: #f0a500;
+    --bg: #f5f6fa;
+    --white: #ffffff;
+    --text: #1a2744;
+    --muted: #6b7a99;
+    --border: #dde1ed;
+    --correct: #1a7f4b;
+    --correct-bg: #eafaf1;
+    --wrong: #c0392b;
+    --wrong-bg: #fdf0ef;
+    --option-hover: #eef1fb;
+    --option-selected: #dde4f7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .exam-header {
+    background: var(--navy);
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .header-brand {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .meb-badge {
+    background: var(--red);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .header-title { font-family: 'Merriweather', serif; font-size: 15px; font-weight: 700; }
+  .header-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  .timer-block {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.08);
+    padding: 10px 20px; border-radius: 8px;
+  }
+  .timer-label { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; }
+  .timer-value { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+  .timer-value.warning { color: var(--gold); }
+  .timer-value.danger { color: #ff6b6b; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+
+  .progress-bar-wrap { height: 4px; background: rgba(255,255,255,0.1); }
+  .progress-bar { height: 4px; background: var(--gold); transition: width .3s; }
+
+  .header-stats {
+    display: flex; gap: 24px; padding: 10px 32px;
+    background: rgba(0,0,0,0.15);
+  }
+  .stat { font-size: 12px; color: rgba(255,255,255,0.7); }
+  .stat span { font-weight: 700; color: white; }
+
+  /* MAIN LAYOUT */
+  .exam-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* SECTION HEADER */
+  .section-banner {
+    background: var(--navy);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 36px;
+  }
+  .section-banner:first-of-type { margin-top: 0; }
+  .section-name { font-family: 'Merriweather', serif; font-size: 14px; font-weight: 700; }
+  .section-info { font-size: 12px; color: rgba(255,255,255,0.65); }
+  .section-pill {
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .section-instruction {
+    background: #fffbf0;
+    border-left: 4px solid var(--gold);
+    padding: 12px 20px;
+    font-size: 13px;
+    font-style: italic;
+    color: #5a4a00;
+    border-radius: 0 0 0 0;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-top: 16px;
+    overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px rgba(26,39,68,0.08); }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 22px 14px;
+  }
+  .q-number {
+    min-width: 34px; height: 34px;
+    background: var(--navy);
+    color: white;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .q-text { font-size: 15px; line-height: 1.65; font-weight: 500; padding-top: 4px; }
+
+  /* PASSAGE */
+  .passage-box {
+    background: #f8f9fd;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 0 22px 14px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #2c3a5a;
+  }
+  .passage-box .blank { font-weight: 700; color: var(--red); letter-spacing: 1px; }
+  .underline-word { text-decoration: underline; text-decoration-color: var(--red); font-weight: 600; }
+
+  /* OPTIONS */
+  .options-list {
+    padding: 4px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: all .15s;
+    width: 100%;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--navy);
+    background: var(--option-hover);
+  }
+  .option-btn.selected {
+    border-color: var(--navy);
+    background: var(--option-selected);
+  }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+  .option-btn.revealed-correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .option-letter {
+    min-width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+    flex-shrink: 0;
+  }
+  .option-btn.correct .option-letter { background: var(--correct); color: white; }
+  .option-btn.wrong .option-letter { background: var(--wrong); color: white; }
+  .option-btn.revealed-correct .option-letter { background: var(--correct); color: white; }
+
+  /* EXPLANATION */
+  .explanation-box {
+    display: none;
+    margin: 0 22px 18px;
+    background: #f0f4ff;
+    border-left: 4px solid var(--navy);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .explanation-box.show { display: block; }
+  .expl-title { font-weight: 700; color: var(--navy); margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .expl-answer { margin-bottom: 8px; }
+  .expl-why { color: #3a4a6a; margin-bottom: 8px; }
+  .expl-options { font-size: 12.5px; color: #5a6a8a; }
+  .expl-options div { margin-bottom: 3px; }
+  .expl-options .opt-label { font-weight: 700; color: var(--navy); }
+
+  /* SUBMIT */
+  .submit-zone {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .btn-submit {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-submit:hover { background: var(--red-light); transform: translateY(-1px); }
+  .btn-submit:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
+
+  /* RESULTS */
+  .results-panel {
+    display: none;
+    background: white;
+    border-radius: 16px;
+    padding: 36px;
+    margin-top: 32px;
+    box-shadow: 0 8px 32px rgba(26,39,68,0.12);
+    text-align: center;
+  }
+  .results-panel.show { display: block; }
+  .result-score { font-size: 64px; font-weight: 700; color: var(--navy); font-family: 'Merriweather', serif; }
+  .result-sub { font-size: 18px; color: var(--muted); margin-top: 4px; }
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .result-cell {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .result-cell .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+  .result-cell .value { font-size: 22px; font-weight: 700; }
+  .value.green { color: var(--correct); }
+  .value.red { color: var(--wrong); }
+  .breakdown-table { width: 100%; border-collapse: collapse; margin-top: 24px; text-align: left; }
+  .breakdown-table th { background: var(--navy); color: white; padding: 10px 14px; font-size: 12px; }
+  .breakdown-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .breakdown-table tr:hover td { background: var(--bg); }
+
+  /* UNANSWERED warning */
+  .warn-msg {
+    background: #fff8e1;
+    border: 1px solid var(--gold);
+    color: #7a5900;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 13px;
+    display: none;
+  }
+  .warn-msg.show { display: block; }
+
+  /* SCROLLTOP */
+  .scroll-top {
+    position: fixed; bottom: 28px; right: 28px;
+    width: 44px; height: 44px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .scroll-top.visible { opacity: 1; }
+
+  @media(max-width:600px){
+    .header-top { padding: 12px 16px; flex-wrap: wrap; gap: 12px; }
+    .exam-body { padding: 20px 12px 60px; }
+    .q-text { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">MEB · UDSP 2026</div>
+    <div class="login-title">Yabancı Dil Yeterlilik Sınavı</div>
+    <div class="login-sub">İngilizce — Gün 1 &nbsp;|&nbsp; 50 Soru &nbsp;|&nbsp; 110 Dakika</div>
+    <div id="examClosedMsg" style="display:none;background:#fdf0ef;border:1px solid #c0392b;color:#c0392b;padding:16px;border-radius:8px;margin-bottom:16px;font-size:14px;text-align:center;">
+      ⏰ Bu sınavın süresi dolmuştur.<br><small>Sınav: 17 Haziran 2026, saat 09:00'da kapanmıştır.</small>
+    </div>
+    <div id="loginForm">
+      <div class="login-field">
+        <label>Sınıfınızı Seçin</label>
+        <select id="classSelect" onchange="onClassChange()">
+          <option value="">— Sınıf Seçin —</option>
+          <option>HZ A</option>
+          <option>HZ B</option>
+          <option>HZ C</option>
+          <option>HZ D</option>
+          <option>HZ E</option>
+          <option>HZ F</option>
+        </select>
+      </div>
+      <div class="login-field">
+        <label>Adınız ve Soyadınız</label>
+        <input type="text" id="studentName" placeholder="Önce sınıfınızı seçin..." autocomplete="off" list="studentList"/>
+        <datalist id="studentList"></datalist>
+      </div>
+      <div class="login-field">
+        <label>Öğretmeniniz</label>
+        <input type="text" id="teacherDisplay" readonly style="background:#f5f6fa;color:#6b7a99;cursor:not-allowed;" placeholder="Sınıf seçilince otomatik gelir"/>
+      </div>
+      <button class="btn-start" onclick="startExam()">Sınava Başla →</button>
+      <div class="login-err" id="loginErr" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<header class="exam-header" id="examHeaderEl" style="display:none;">
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="meb-badge">MEB</div>
+      <div>
+        <div class="header-title">UDSP Yabancı Dil Yeterlilik Sınavı</div>
+        <div class="header-sub">İngilizce — Gün 1 / Practice Test</div>
+      </div>
+    </div>
+    <div class="timer-block">
+      <div>
+        <div class="timer-label">Süre</div>
+        <div class="timer-value" id="timer">1:50:00</div>
+      </div>
+    </div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="header-stats">
+    <div class="stat">Toplam: <span>50</span></div>
+    <div class="stat">Cevaplanan: <span id="answeredCount">0</span></div>
+    <div class="stat">Kalan: <span id="remainingCount">50</span></div>
+  </div>
+</header>
+
+<div class="exam-body" id="examBody" style="display:none;">
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: VOCABULARY (Kelime Bilgisi) — 7 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 1 — Kelime Bilgisi</div>
+    <div class="section-info">Vocabulary Knowledge</div>
+  </div>
+  <div class="section-pill">7 Soru</div>
+</div>
+<div class="section-instruction">For questions 1–7, choose the option that best completes the sentence.</div>
+
+<!-- Q1 -->
+<div class="question-card" id="qcard-1">
+  <div class="q-header">
+    <div class="q-number">1</div>
+    <div class="q-text">Scientists are working hard to find a <span style="font-weight:700">- - - -</span> for the disease that has been spreading rapidly across the continent.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(1,'A')" id="q1-A"><span class="option-letter">A</span> shelter</button>
+    <button class="option-btn" onclick="selectAnswer(1,'B')" id="q1-B"><span class="option-letter">B</span> margin</button>
+    <button class="option-btn" onclick="selectAnswer(1,'C')" id="q1-C"><span class="option-letter">C</span> burden</button>
+    <button class="option-btn" onclick="selectAnswer(1,'D')" id="q1-D"><span class="option-letter">D</span> venture</button>
+    <button class="option-btn" onclick="selectAnswer(1,'E')" id="q1-E"><span class="option-letter">E</span> remedy</button>
+  </div>
+  <div class="explanation-box" id="expl-1">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: E) remedy</strong></div>
+    <div class="expl-why">"Remedy" means a cure or treatment for a disease or problem. The sentence talks about scientists finding a solution for a spreading disease — "remedy" (çare/ilaç) fits perfectly. The other options have unrelated meanings in this context.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) shelter</span> — barınak, sığınak (protection from danger/weather)</div>
+      <div><span class="opt-label">E) remedy ✓</span> — çare, tedavi, ilaç (cure/solution)</div>
+      <div><span class="opt-label">C) burden</span> — yük, ağırlık (heavy load or responsibility)</div>
+      <div><span class="opt-label">D) venture</span> — girişim, macera (risky business/adventure)</div>
+      <div><span class="opt-label">E) margin</span> — kenar, marj (edge or small amount)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card" id="qcard-2">
+  <div class="q-header">
+    <div class="q-number">2</div>
+    <div class="q-text">The professor's lecture was so <span style="font-weight:700">- - - -</span> that most students fell asleep within the first twenty minutes.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(2,'A')" id="q2-A"><span class="option-letter">A</span> stimulating</button>
+    <button class="option-btn" onclick="selectAnswer(2,'B')" id="q2-B"><span class="option-letter">B</span> monotonous</button>
+    <button class="option-btn" onclick="selectAnswer(2,'C')" id="q2-C"><span class="option-letter">C</span> remarkable</button>
+    <button class="option-btn" onclick="selectAnswer(2,'D')" id="q2-D"><span class="option-letter">D</span> generous</button>
+    <button class="option-btn" onclick="selectAnswer(2,'E')" id="q2-E"><span class="option-letter">E</span> fragile</button>
+  </div>
+  <div class="explanation-box" id="expl-2">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B) monotonous</strong></div>
+    <div class="expl-why">"Monotonous" means dull, repetitive, and boring — exactly what would cause students to fall asleep. The clause "students fell asleep" signals a negative/boring quality in the lecture.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) stimulating</span> — uyarıcı, heyecan verici (exciting/interesting — opposite meaning)</div>
+      <div><span class="opt-label">C) remarkable</span> — dikkat çekici, olağanüstü (extraordinary — also opposite)</div>
+      <div><span class="opt-label">B) monotonous ✓</span> — tekdüze, sıkıcı (dull, boring, repetitive)</div>
+      <div><span class="opt-label">D) generous</span> — cömert (giving freely — irrelevant to lectures)</div>
+      <div><span class="opt-label">E) fragile</span> — kırılgan, narin (easily broken — irrelevant)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="question-card" id="qcard-3">
+  <div class="q-header">
+    <div class="q-number">3</div>
+    <div class="q-text">After hours of negotiation, the two companies finally reached an <span style="font-weight:700">- - - -</span> on the terms of the merger.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(3,'A')" id="q3-A"><span class="option-letter">A</span> obstacle</button>
+    <button class="option-btn" onclick="selectAnswer(3,'B')" id="q3-B"><span class="option-letter">B</span> argument</button>
+    <button class="option-btn" onclick="selectAnswer(3,'C')" id="q3-C"><span class="option-letter">C</span> experiment</button>
+    <button class="option-btn" onclick="selectAnswer(3,'D')" id="q3-D"><span class="option-letter">D</span> agreement</button>
+    <button class="option-btn" onclick="selectAnswer(3,'E')" id="q3-E"><span class="option-letter">E</span> opposition</button>
+  </div>
+  <div class="explanation-box" id="expl-3">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: D) agreement</strong></div>
+    <div class="expl-why">"Reach an agreement" is a fixed collocation in English meaning both parties accepted the same terms. The context of negotiation and merger confirms this. Note also that "an" before the blank hints the word starts with a vowel.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) obstacle</span> — engel, mani (something that blocks progress)</div>
+      <div><span class="opt-label">B) argument</span> — tartışma, anlaşmazlık (a disagreement — opposite meaning)</div>
+      <div><span class="opt-label">D) agreement ✓</span> — anlaşma, mutabakat (mutual understanding/deal)</div>
+      <div><span class="opt-label">D) experiment</span> — deney (a scientific test — irrelevant)</div>
+      <div><span class="opt-label">E) opposition</span> — muhalefet, karşı çıkma (resistance — opposite meaning)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="question-card" id="qcard-4">
+  <div class="q-header">
+    <div class="q-number">4</div>
+    <div class="q-text">The documentary <span style="font-weight:700">- - - -</span> the serious consequences of deforestation on wildlife habitats around the world.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(4,'A')" id="q4-A"><span class="option-letter">A</span> neglects</button>
+    <button class="option-btn" onclick="selectAnswer(4,'B')" id="q4-B"><span class="option-letter">B</span> divides</button>
+    <button class="option-btn" onclick="selectAnswer(4,'C')" id="q4-C"><span class="option-letter">C</span> conceals</button>
+    <button class="option-btn" onclick="selectAnswer(4,'D')" id="q4-D"><span class="option-letter">D</span> interrupts</button>
+    <button class="option-btn" onclick="selectAnswer(4,'E')" id="q4-E"><span class="option-letter">E</span> highlights</button>
+  </div>
+  <div class="explanation-box" id="expl-4">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: E) highlights</strong></div>
+    <div class="expl-why">"Highlight" means to draw attention to something important. A documentary about deforestation would naturally "highlight" (vurgulamak/öne çıkarmak) the serious consequences. All other options contradict the logical purpose of a documentary.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) neglects</span> — ihmal etmek, önemsememek (to ignore)</div>
+      <div><span class="opt-label">E) highlights ✓</span> — vurgulamak, öne çıkarmak (to emphasize)</div>
+      <div><span class="opt-label">C) conceals</span> — gizlemek, saklamak (to hide)</div>
+      <div><span class="opt-label">D) interrupts</span> — kesmek, yarıda bırakmak (to stop or disturb)</div>
+      <div><span class="opt-label">E) divides</span> — bölmek, ayırmak (to split)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="question-card" id="qcard-5">
+  <div class="q-header">
+    <div class="q-number">5</div>
+    <div class="q-text">The new manager introduced several <span style="font-weight:700">- - - -</span> policies to make the workplace more efficient and comfortable for employees.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(5,'A')" id="q5-A"><span class="option-letter">A</span> rigid</button>
+    <button class="option-btn" onclick="selectAnswer(5,'B')" id="q5-B"><span class="option-letter">B</span> flexible</button>
+    <button class="option-btn" onclick="selectAnswer(5,'C')" id="q5-C"><span class="option-letter">C</span> obsolete</button>
+    <button class="option-btn" onclick="selectAnswer(5,'D')" id="q5-D"><span class="option-letter">D</span> hostile</button>
+    <button class="option-btn" onclick="selectAnswer(5,'E')" id="q5-E"><span class="option-letter">E</span> scarce</button>
+  </div>
+  <div class="explanation-box" id="expl-5">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B) flexible</strong></div>
+    <div class="expl-why">"Flexible" policies are adaptable and open — perfectly matching the goal of making the workplace "more efficient and comfortable." The key clue is the positive outcome described in the sentence.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) rigid</span> — katı, esnemez (strict and inflexible — would not make things comfortable)</div>
+      <div><span class="opt-label">C) obsolete</span> — modası geçmiş, eskimiş (outdated — illogical for a new manager)</div>
+      <div><span class="opt-label">B) flexible ✓</span> — esnek, uyarlanabilir (adaptable)</div>
+      <div><span class="opt-label">D) hostile</span> — düşmanca, saldırgan (unfriendly — opposite of comfortable)</div>
+      <div><span class="opt-label">E) scarce</span> — kıt, az bulunan (rare/insufficient — irrelevant)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card" id="qcard-6">
+  <div class="q-header">
+    <div class="q-number">6</div>
+    <div class="q-text">The athlete's <span style="font-weight:700">- - - -</span> in training finally paid off when she won the gold medal at the championships.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(6,'A')" id="q6-A"><span class="option-letter">A</span> hesitation</button>
+    <button class="option-btn" onclick="selectAnswer(6,'B')" id="q6-B"><span class="option-letter">B</span> carelessness</button>
+    <button class="option-btn" onclick="selectAnswer(6,'C')" id="q6-C"><span class="option-letter">C</span> confusion</button>
+    <button class="option-btn" onclick="selectAnswer(6,'D')" id="q6-D"><span class="option-letter">D</span> dedication</button>
+    <button class="option-btn" onclick="selectAnswer(6,'E')" id="q6-E"><span class="option-letter">E</span> withdrawal</button>
+  </div>
+  <div class="explanation-box" id="expl-6">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: D) dedication</strong></div>
+    <div class="expl-why">"Dedication" means commitment and hard work — the only quality that would logically result in winning a gold medal. The phrase "paid off" means something difficult brought good results, which requires a positive quality as the subject.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) hesitation</span> — tereddüt, duraksama (uncertainty — would not lead to winning)</div>
+      <div><span class="opt-label">B) carelessness</span> — dikkatsizlik, özensizlik (lack of care — negative quality)</div>
+      <div><span class="opt-label">D) dedication ✓</span> — adanmışlık, kararlılık, özveri (strong commitment)</div>
+      <div><span class="opt-label">D) confusion</span> — karışıklık, kafa karışıklığı (lack of clarity — negative)</div>
+      <div><span class="opt-label">E) withdrawal</span> — çekilme, geri çekme (retreating — opposite of winning)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card" id="qcard-7">
+  <div class="q-header">
+    <div class="q-number">7</div>
+    <div class="q-text">The government decided to <span style="font-weight:700">- - - -</span> the old bridge because it was no longer safe for vehicles to cross.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(7,'A')" id="q7-A"><span class="option-letter">A</span> restore</button>
+    <button class="option-btn" onclick="selectAnswer(7,'B')" id="q7-B"><span class="option-letter">B</span> demolish</button>
+    <button class="option-btn" onclick="selectAnswer(7,'C')" id="q7-C"><span class="option-letter">C</span> construct</button>
+    <button class="option-btn" onclick="selectAnswer(7,'D')" id="q7-D"><span class="option-letter">D</span> preserve</button>
+    <button class="option-btn" onclick="selectAnswer(7,'E')" id="q7-E"><span class="option-letter">E</span> illuminate</button>
+  </div>
+  <div class="explanation-box" id="expl-7">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B) demolish</strong></div>
+    <div class="expl-why">"Demolish" means to knock down or destroy a structure. Since the bridge is "no longer safe," the logical decision is to tear it down. The reason "because it was unsafe" supports destruction, not restoration or preservation.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) restore</span> — restore etmek, onarmak (to repair — wouldn't match "no longer safe" as a permanent decision)</div>
+      <div><span class="opt-label">C) construct</span> — inşa etmek (to build — opposite of destroying)</div>
+      <div><span class="opt-label">B) demolish ✓</span> — yıkmak, yok etmek (to tear down a structure)</div>
+      <div><span class="opt-label">D) preserve</span> — korumak, muhafaza etmek (to keep safe — contradicts the unsafe reason)</div>
+      <div><span class="opt-label">E) illuminate</span> — aydınlatmak (to light up — completely irrelevant)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: GRAMMAR (Dil Bilgisi) — 7 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 2 — Dil Bilgisi</div>
+    <div class="section-info">Grammar Knowledge</div>
+  </div>
+  <div class="section-pill">7 Soru</div>
+</div>
+<div class="section-instruction">For questions 8–14, choose the option that correctly completes the sentence grammatically.</div>
+
+<!-- Q8 -->
+<div class="question-card" id="qcard-8">
+  <div class="q-header">
+    <div class="q-number">8</div>
+    <div class="q-text">By the time the rescue team arrived, the stranded hikers <span style="font-weight:700">- - - -</span> in the mountains for over thirty hours.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(8,'A')" id="q8-A"><span class="option-letter">A</span> are waiting</button>
+    <button class="option-btn" onclick="selectAnswer(8,'B')" id="q8-B"><span class="option-letter">B</span> were waiting</button>
+    <button class="option-btn" onclick="selectAnswer(8,'C')" id="q8-C"><span class="option-letter">C</span> have waited</button>
+    <button class="option-btn" onclick="selectAnswer(8,'D')" id="q8-D"><span class="option-letter">D</span> had been waiting</button>
+    <button class="option-btn" onclick="selectAnswer(8,'E')" id="q8-E"><span class="option-letter">E</span> will have waited</button>
+  </div>
+  <div class="explanation-box" id="expl-8">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: D) had been waiting</strong></div>
+    <div class="expl-why">"By the time + past simple" triggers the Past Perfect Continuous tense for the action that had been ongoing before a past point. The hikers' waiting started before the team arrived and was still ongoing — requiring "had been waiting" (Past Perfect Continuous).</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) are waiting</span> — şu an bekliyorlar (Present Continuous — wrong tense for a past context)</div>
+      <div><span class="opt-label">D) had been waiting ✓</span> — bekliyorlardı (bitmemiş, geçmiş öncesi süreç) (Past Perfect Continuous)</div>
+      <div><span class="opt-label">C) have waited</span> — beklemiş oldular (Present Perfect — cannot be used with past reference "arrived")</div>
+      <div><span class="opt-label">B) were waiting</span> — bekliyorlardı (Past Continuous — no sense of duration before a past point)</div>
+      <div><span class="opt-label">E) will have waited</span> — beklemiş olacaklar (Future Perfect — wrong tense entirely)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card" id="qcard-9">
+  <div class="q-header">
+    <div class="q-number">9</div>
+    <div class="q-text">If the students <span style="font-weight:700">- - - -</span> more carefully, they would not have made so many mistakes in the exam.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(9,'A')" id="q9-A"><span class="option-letter">A</span> read</button>
+    <button class="option-btn" onclick="selectAnswer(9,'B')" id="q9-B"><span class="option-letter">B</span> had read</button>
+    <button class="option-btn" onclick="selectAnswer(9,'C')" id="q9-C"><span class="option-letter">C</span> would read</button>
+    <button class="option-btn" onclick="selectAnswer(9,'D')" id="q9-D"><span class="option-letter">D</span> have read</button>
+    <button class="option-btn" onclick="selectAnswer(9,'E')" id="q9-E"><span class="option-letter">E</span> were reading</button>
+  </div>
+  <div class="explanation-box" id="expl-9">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B) had read</strong></div>
+    <div class="expl-why">The result clause contains "would not have made" — this is the Third Conditional (unreal past). The if-clause of Type 3 requires Past Perfect: "If + had + V3". This refers to a past situation that did not happen.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) read</span> — okumuş olsaydılar (simple past — Type 2 conditional, not matching result clause)</div>
+      <div><span class="opt-label">B) had read ✓</span> — okumuş olsaydılar (Past Perfect — correct for Type 3)</div>
+      <div><span class="opt-label">C) would read</span> — okurlar (modal — cannot go in the if-clause)</div>
+      <div><span class="opt-label">D) have read</span> — okumuşlardır (Present Perfect — wrong tense)</div>
+      <div><span class="opt-label">E) were reading</span> — okuyorlardı (Past Continuous — Type 2, not Type 3)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card" id="qcard-10">
+  <div class="q-header">
+    <div class="q-number">10</div>
+    <div class="q-text">The children enjoyed <span style="font-weight:700">- - - -</span> stories by their grandmother every evening before bed.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(10,'A')" id="q10-A"><span class="option-letter">A</span> to hear</button>
+    <button class="option-btn" onclick="selectAnswer(10,'B')" id="q10-B"><span class="option-letter">B</span> hear</button>
+    <button class="option-btn" onclick="selectAnswer(10,'C')" id="q10-C"><span class="option-letter">C</span> heard</button>
+    <button class="option-btn" onclick="selectAnswer(10,'D')" id="q10-D"><span class="option-letter">D</span> to have heard</button>
+    <button class="option-btn" onclick="selectAnswer(10,'E')" id="q10-E"><span class="option-letter">E</span> hearing</button>
+  </div>
+  <div class="explanation-box" id="expl-10">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: E) hearing</strong></div>
+    <div class="expl-why">"Enjoy" is a verb that must be followed by a gerund (-ing form), not an infinitive. Key verbs followed by gerunds: enjoy, avoid, consider, suggest, finish, deny, practise, miss, keep, mind.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) to hear</span> — duymak için (infinitive — enjoy does NOT take to-infinitive)</div>
+      <div><span class="opt-label">B) hear</span> — duymak (bare infinitive — incorrect after enjoy)</div>
+      <div><span class="opt-label">C) heard</span> — duydu/duyulmuş (past/past participle — grammatically impossible here)</div>
+      <div><span class="opt-label">E) hearing ✓</span> — duymak, dinlemek (-ing/gerund — required after "enjoy")</div>
+      <div><span class="opt-label">D) to have heard</span> — duymuş olmak (perfect infinitive — incorrect after enjoy)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card" id="qcard-11">
+  <div class="q-header">
+    <div class="q-number">11</div>
+    <div class="q-text">This is the most fascinating novel <span style="font-weight:700">- - - -</span> I have ever read in my entire life.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(11,'A')" id="q11-A"><span class="option-letter">A</span> who</button>
+    <button class="option-btn" onclick="selectAnswer(11,'B')" id="q11-B"><span class="option-letter">B</span> which / that</button>
+    <button class="option-btn" onclick="selectAnswer(11,'C')" id="q11-C"><span class="option-letter">C</span> whom</button>
+    <button class="option-btn" onclick="selectAnswer(11,'D')" id="q11-D"><span class="option-letter">D</span> whose</button>
+    <button class="option-btn" onclick="selectAnswer(11,'E')" id="q11-E"><span class="option-letter">E</span> where</button>
+  </div>
+  <div class="explanation-box" id="expl-11">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B) which / that</strong></div>
+    <div class="expl-why">The antecedent is "novel" — a thing, not a person. Use "which" or "that" for things/objects. Also note: after superlatives ("most fascinating"), "that" is preferred in relative clauses. "Who/whom" are for people; "whose" is for possession; "where" is for places.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) who</span> — kişiler için kullanılır (for people — novel is a thing)</div>
+      <div><span class="opt-label">C) whom</span> — kişiler için nesne hali (object for people — wrong)</div>
+      <div><span class="opt-label">B) which / that ✓</span> — nesneler ve varlıklar için (for things — correct)</div>
+      <div><span class="opt-label">D) whose</span> — kimin, neyin (possessive relative — no possession here)</div>
+      <div><span class="opt-label">E) where</span> — yer zarfı (for places — novel is not a place)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card" id="qcard-12">
+  <div class="q-header">
+    <div class="q-number">12</div>
+    <div class="q-text">You <span style="font-weight:700">- - - -</span> wear a helmet when riding a bicycle; it is the law and can save your life.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(12,'A')" id="q12-A"><span class="option-letter">A</span> might</button>
+    <button class="option-btn" onclick="selectAnswer(12,'B')" id="q12-B"><span class="option-letter">B</span> could</button>
+    <button class="option-btn" onclick="selectAnswer(12,'C')" id="q12-C"><span class="option-letter">C</span> must</button>
+    <button class="option-btn" onclick="selectAnswer(12,'D')" id="q12-D"><span class="option-letter">D</span> would</button>
+    <button class="option-btn" onclick="selectAnswer(12,'E')" id="q12-E"><span class="option-letter">E</span> should have</button>
+  </div>
+  <div class="explanation-box" id="expl-12">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C) must</strong></div>
+    <div class="expl-why">"Must" expresses strong obligation or necessity, especially legal requirements. The clue "it is the law" confirms this is not optional — it's compulsory. "Must" (zorunluluk) is the only modal that conveys legal obligation in the present.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) might</span> — belki, ihtimal (possibility — far too weak for a law)</div>
+      <div><span class="opt-label">B) could</span> — yapabilirsin (ability/possibility — not obligation)</div>
+      <div><span class="opt-label">C) must ✓</span> — zorunlu, mecburi (strong necessity/legal obligation)</div>
+      <div><span class="opt-label">D) would</span> — conditional/istek (habitual past or willingness — not obligation)</div>
+      <div><span class="opt-label">E) should have</span> — yapmalıydın (past regret — wrong tense, implies it wasn't done)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="question-card" id="qcard-13">
+  <div class="q-header">
+    <div class="q-number">13</div>
+    <div class="q-text">The new hospital <span style="font-weight:700">- - - -</span> in the city centre last year, and it has already treated thousands of patients.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(13,'A')" id="q13-A"><span class="option-letter">A</span> was built</button>
+    <button class="option-btn" onclick="selectAnswer(13,'B')" id="q13-B"><span class="option-letter">B</span> builds</button>
+    <button class="option-btn" onclick="selectAnswer(13,'C')" id="q13-C"><span class="option-letter">C</span> is built</button>
+    <button class="option-btn" onclick="selectAnswer(13,'D')" id="q13-D"><span class="option-letter">D</span> had built</button>
+    <button class="option-btn" onclick="selectAnswer(13,'E')" id="q13-E"><span class="option-letter">E</span> has been built</button>
+  </div>
+  <div class="explanation-box" id="expl-13">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A) was built</strong></div>
+    <div class="expl-why">The time marker "last year" signals Simple Past tense. The hospital is the object of building (it doesn't build itself), so we need passive voice: "was built." Passive Simple Past = was/were + past participle.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">C) is built</span> — inşa edilmektedir (Present Simple Passive — "last year" requires past)</div>
+      <div><span class="opt-label">B) builds</span> — inşa ediyor (active, present — hospital cannot build)</div>
+      <div><span class="opt-label">A) was built ✓</span> — inşa edildi (Past Simple Passive — correct)</div>
+      <div><span class="opt-label">D) had built</span> — inşa etmişti (Past Perfect Active — wrong voice &amp; tense)</div>
+      <div><span class="opt-label">E) has been built</span> — inşa edilmiştir (Present Perfect Passive — clashes with "last year")</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="question-card" id="qcard-14">
+  <div class="q-header">
+    <div class="q-number">14</div>
+    <div class="q-text">Neither the manager <span style="font-weight:700">- - - -</span> the employees were informed about the sudden change in company policy.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(14,'A')" id="q14-A"><span class="option-letter">A</span> or</button>
+    <button class="option-btn" onclick="selectAnswer(14,'B')" id="q14-B"><span class="option-letter">B</span> and</button>
+    <button class="option-btn" onclick="selectAnswer(14,'C')" id="q14-C"><span class="option-letter">C</span> but</button>
+    <button class="option-btn" onclick="selectAnswer(14,'D')" id="q14-D"><span class="option-letter">D</span> nor</button>
+    <button class="option-btn" onclick="selectAnswer(14,'E')" id="q14-E"><span class="option-letter">E</span> yet</button>
+  </div>
+  <div class="explanation-box" id="expl-14">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: D) nor</strong></div>
+    <div class="expl-why">"Neither...nor" is the correct correlative conjunction pair. It is used to negate two subjects or ideas together. "Neither A nor B" means "not A and not B." The pair "neither...or" is incorrect in standard English.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) or</span> — veya (used with "either", not "neither")</div>
+      <div><span class="opt-label">B) and</span> — ve (additive, positive conjunction — wrong with "neither")</div>
+      <div><span class="opt-label">D) nor ✓</span> — ne de (correct pair: neither...nor)</div>
+      <div><span class="opt-label">D) but</span> — ama, ancak (contrast conjunction — wrong pair)</div>
+      <div><span class="opt-label">E) yet</span> — henüz / ama (time or contrast — wrong pair)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: CLOZE TEST (Boşluk Doldurma) — 10 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 3 — Boşluk Doldurma</div>
+    <div class="section-info">Cloze Text</div>
+  </div>
+  <div class="section-pill">10 Soru</div>
+</div>
+<div class="section-instruction">For questions 15–24, choose the options that correctly fill in the blanks in the text.</div>
+
+<div class="passage-box">
+  Urban farming is becoming increasingly popular in cities around the world. As populations grow and green spaces (15) <span class="blank">- - - -</span>, city residents are finding creative ways to grow their own food. Rooftop gardens, vertical farms, and community plots are (16) <span class="blank">- - - -</span> examples of this growing movement. These initiatives not (17) <span class="blank">- - - -</span> provide fresh produce for local communities, but they also help reduce carbon emissions (18) <span class="blank">- - - -</span> with transporting food over long distances. (19) <span class="blank">- - - -</span>, urban farms can improve air quality and create green spaces that benefit mental health. However, urban farming is not without its challenges. Limited space, high costs, and a lack of agricultural knowledge (20) <span class="blank">- - - -</span> obstacles that many city farmers face. Despite these difficulties, the number of urban farms (21) <span class="blank">- - - -</span> significantly over the past decade. Many local governments (22) <span class="blank">- - - -</span> grants and subsidies to encourage residents to start their own gardens. Experts believe that if cities continue to invest (23) <span class="blank">- - - -</span> urban agriculture, food security could improve dramatically. Urban farming may never fully replace (24) <span class="blank">- - - -</span> agriculture, but it can certainly play a meaningful role in building more sustainable cities.
+</div>
+
+<!-- Q15 -->
+<div class="question-card" id="qcard-15">
+  <div class="q-header"><div class="q-number">15</div><div class="q-text">Choose the correct option for blank (15).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(15,'A')" id="q15-A"><span class="option-letter">A</span> shrink</button>
+    <button class="option-btn" onclick="selectAnswer(15,'B')" id="q15-B"><span class="option-letter">B</span> expand</button>
+    <button class="option-btn" onclick="selectAnswer(15,'C')" id="q15-C"><span class="option-letter">C</span> flourish</button>
+    <button class="option-btn" onclick="selectAnswer(15,'D')" id="q15-D"><span class="option-letter">D</span> multiply</button>
+    <button class="option-btn" onclick="selectAnswer(15,'E')" id="q15-E"><span class="option-letter">E</span> emerge</button>
+  </div>
+  <div class="explanation-box" id="expl-15">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A) shrink</strong></div>
+    <div class="expl-why">The text says as populations grow, residents find creative ways to grow food. The logical opposite is that green spaces are decreasing ("shrinking"). If green spaces were expanding, there would be no problem to solve.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">B) expand</span> — genişlemek, büyümek (to get bigger — contradicts the problem)</div>
+      <div><span class="opt-label">A) shrink ✓</span> — küçülmek, azalmak (to get smaller — logical)</div>
+      <div><span class="opt-label">C) flourish</span> — gelişmek, çiçek açmak (to thrive — opposite of the problem)</div>
+      <div><span class="opt-label">D) multiply</span> — çoğalmak, artmak (to increase — opposite)</div>
+      <div><span class="opt-label">E) emerge</span> — ortaya çıkmak (to appear — not logical here)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q16 -->
+<div class="question-card" id="qcard-16">
+  <div class="q-header"><div class="q-number">16</div><div class="q-text">Choose the correct option for blank (16).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(16,'A')" id="q16-A"><span class="option-letter">A</span> rare</button>
+    <button class="option-btn" onclick="selectAnswer(16,'B')" id="q16-B"><span class="option-letter">B</span> controversial</button>
+    <button class="option-btn" onclick="selectAnswer(16,'C')" id="q16-C"><span class="option-letter">C</span> irrelevant</button>
+    <button class="option-btn" onclick="selectAnswer(16,'D')" id="q16-D"><span class="option-letter">D</span> endangered</button>
+    <button class="option-btn" onclick="selectAnswer(16,'E')" id="q16-E"><span class="option-letter">E</span> prominent</button>
+  </div>
+  <div class="explanation-box" id="expl-16">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: E) prominent</strong></div>
+    <div class="expl-why">"Prominent examples" means well-known, notable examples. The text presents rooftop gardens, vertical farms, and community plots as recognisable illustrations of urban farming. "Rare" and "controversial" would imply these are unusual or disputed.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) rare</span> — nadir, seyrek (uncommon — but text says the movement is growing)</div>
+      <div><span class="opt-label">B) controversial</span> — tartışmalı (disputed — the text is positive about these examples)</div>
+      <div><span class="opt-label">E) prominent ✓</span> — belirgin, öne çıkan, tanınmış (notable/well-known)</div>
+      <div><span class="opt-label">D) endangered</span> — tehlike altında, nesli tükenmekte olan (at risk — irrelevant to examples)</div>
+      <div><span class="opt-label">C) irrelevant</span> — alakasız, ilgisiz (unrelated — opposite of what is meant)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q17 -->
+<div class="question-card" id="qcard-17">
+  <div class="q-header"><div class="q-number">17</div><div class="q-text">Choose the correct option for blank (17).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(17,'A')" id="q17-A"><span class="option-letter">A</span> still</button>
+    <button class="option-btn" onclick="selectAnswer(17,'B')" id="q17-B"><span class="option-letter">B</span> just</button>
+    <button class="option-btn" onclick="selectAnswer(17,'C')" id="q17-C"><span class="option-letter">C</span> even</button>
+    <button class="option-btn" onclick="selectAnswer(17,'D')" id="q17-D"><span class="option-letter">D</span> more</button>
+    <button class="option-btn" onclick="selectAnswer(17,'E')" id="q17-E"><span class="option-letter">E</span> only</button>
+  </div>
+  <div class="explanation-box" id="expl-17">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: E) only</strong></div>
+    <div class="expl-why">The fixed structure here is "not only... but also..." which is a standard correlative conjunction pair used to introduce two related benefits. "not only [blank]" + "but also" = the classic "not only...but also" pattern.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">E) only ✓</span> — sadece (part of "not only...but also" structure)</div>
+      <div><span class="opt-label">B) just</span> — sadece (informal, but doesn't collocate with "not...but also")</div>
+      <div><span class="opt-label">C) even</span> — bile, hatta (emphasis — doesn't fit the structure)</div>
+      <div><span class="opt-label">D) more</span> — daha fazla (comparative — doesn't fit)</div>
+      <div><span class="opt-label">A) still</span> — hâlâ, yine de (continuity — doesn't fit the pair)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q18 -->
+<div class="question-card" id="qcard-18">
+  <div class="q-header"><div class="q-number">18</div><div class="q-text">Choose the correct option for blank (18).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(18,'A')" id="q18-A"><span class="option-letter">A</span> associated</button>
+    <button class="option-btn" onclick="selectAnswer(18,'B')" id="q18-B"><span class="option-letter">B</span> compared</button>
+    <button class="option-btn" onclick="selectAnswer(18,'C')" id="q18-C"><span class="option-letter">C</span> resulted</button>
+    <button class="option-btn" onclick="selectAnswer(18,'D')" id="q18-D"><span class="option-letter">D</span> combined</button>
+    <button class="option-btn" onclick="selectAnswer(18,'E')" id="q18-E"><span class="option-letter">E</span> replaced</button>
+  </div>
+  <div class="explanation-box" id="expl-18">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A) associated</strong></div>
+    <div class="expl-why">"Associated with" is a fixed collocation meaning "connected to" or "related to." Carbon emissions are "associated with" (linked to) transporting food. No other option forms a natural collocation with "with" in this context.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) associated ✓</span> — ilişkili, bağlantılı (associated with = ...ile bağlantılı)</div>
+      <div><span class="opt-label">B) compared</span> — karşılaştırılmış (compared with — different meaning)</div>
+      <div><span class="opt-label">C) resulted</span> — sonuçlanmış (resulted in — wrong preposition needed)</div>
+      <div><span class="opt-label">D) combined</span> — birleştirilmiş (combined with — wrong meaning here)</div>
+      <div><span class="opt-label">E) replaced</span> — yerini almış (replaced by — different meaning)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q19 -->
+<div class="question-card" id="qcard-19">
+  <div class="q-header"><div class="q-number">19</div><div class="q-text">Choose the correct option for blank (19).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(19,'A')" id="q19-A"><span class="option-letter">A</span> Nevertheless</button>
+    <button class="option-btn" onclick="selectAnswer(19,'B')" id="q19-B"><span class="option-letter">B</span> In contrast</button>
+    <button class="option-btn" onclick="selectAnswer(19,'C')" id="q19-C"><span class="option-letter">C</span> In addition</button>
+    <button class="option-btn" onclick="selectAnswer(19,'D')" id="q19-D"><span class="option-letter">D</span> As a result</button>
+    <button class="option-btn" onclick="selectAnswer(19,'E')" id="q19-E"><span class="option-letter">E</span> On the contrary</button>
+  </div>
+  <div class="explanation-box" id="expl-19">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C) In addition</strong></div>
+    <div class="expl-why">The sentence before talks about reducing carbon emissions. The blank introduces another benefit (improving air quality). This is an additive relationship — "In addition" (ayrıca/bunun yanı sıra) is the correct connector.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) Nevertheless</span> — buna rağmen, yine de (concession/contrast — not adding a benefit)</div>
+      <div><span class="opt-label">B) In contrast</span> — aksine, buna karşılık (shows opposite — wrong here)</div>
+      <div><span class="opt-label">C) In addition ✓</span> — ayrıca, bunun yanı sıra (adds another point — correct)</div>
+      <div><span class="opt-label">D) As a result</span> — sonuç olarak (shows consequence — not just adding)</div>
+      <div><span class="opt-label">E) On the contrary</span> — tam tersine (shows contradiction — wrong)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q20 -->
+<div class="question-card" id="qcard-20">
+  <div class="q-header"><div class="q-number">20</div><div class="q-text">Choose the correct option for blank (20).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(20,'A')" id="q20-A"><span class="option-letter">A</span> was</button>
+    <button class="option-btn" onclick="selectAnswer(20,'B')" id="q20-B"><span class="option-letter">B</span> is</button>
+    <button class="option-btn" onclick="selectAnswer(20,'C')" id="q20-C"><span class="option-letter">C</span> are</button>
+    <button class="option-btn" onclick="selectAnswer(20,'D')" id="q20-D"><span class="option-letter">D</span> has been</button>
+    <button class="option-btn" onclick="selectAnswer(20,'E')" id="q20-E"><span class="option-letter">E</span> were</button>
+  </div>
+  <div class="explanation-box" id="expl-20">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C) are</strong></div>
+    <div class="expl-why">The subject is a list of three items: "Limited space, high costs, and a lack of agricultural knowledge" — this is a plural subject requiring a plural verb "are." The text is discussing present-day challenges.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">C) are ✓</span> — (çoğul geniş zaman — plural present)</div>
+      <div><span class="opt-label">B) is</span> — (tekil — singular, but subject is plural)</div>
+      <div><span class="opt-label">C) was</span> — (tekil geçmiş — singular past — wrong tense)</div>
+      <div><span class="opt-label">D) has been</span> — (tekil perfect — singular + wrong aspect)</div>
+      <div><span class="opt-label">E) were</span> — (çoğul geçmiş — past tense — no past time signal)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q21 -->
+<div class="question-card" id="qcard-21">
+  <div class="q-header"><div class="q-number">21</div><div class="q-text">Choose the correct option for blank (21).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(21,'A')" id="q21-A"><span class="option-letter">A</span> has grown</button>
+    <button class="option-btn" onclick="selectAnswer(21,'B')" id="q21-B"><span class="option-letter">B</span> grows</button>
+    <button class="option-btn" onclick="selectAnswer(21,'C')" id="q21-C"><span class="option-letter">C</span> grew</button>
+    <button class="option-btn" onclick="selectAnswer(21,'D')" id="q21-D"><span class="option-letter">D</span> was growing</button>
+    <button class="option-btn" onclick="selectAnswer(21,'E')" id="q21-E"><span class="option-letter">E</span> had grown</button>
+  </div>
+  <div class="explanation-box" id="expl-21">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A) has grown</strong></div>
+    <div class="expl-why">"Over the past decade" is a time expression that refers to a period starting in the past and continuing to the present — this triggers Present Perfect tense. "Has grown significantly over the past decade" is the correct structure.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">B) grows</span> — büyüyor (Present Simple — no reference to past period)</div>
+      <div><span class="opt-label">A) has grown ✓</span> — büyümüştür (Present Perfect — correct with "over the past decade")</div>
+      <div><span class="opt-label">C) grew</span> — büyüdü (Past Simple — needs a specific finished time, not "past decade")</div>
+      <div><span class="opt-label">D) was growing</span> — büyüyordu (Past Continuous — no finished result implied)</div>
+      <div><span class="opt-label">E) had grown</span> — büyümüştü (Past Perfect — needs another past event as reference)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q22 -->
+<div class="question-card" id="qcard-22">
+  <div class="q-header"><div class="q-number">22</div><div class="q-text">Choose the correct option for blank (22).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(22,'A')" id="q22-A"><span class="option-letter">A</span> offer</button>
+    <button class="option-btn" onclick="selectAnswer(22,'B')" id="q22-B"><span class="option-letter">B</span> demand</button>
+    <button class="option-btn" onclick="selectAnswer(22,'C')" id="q22-C"><span class="option-letter">C</span> refuse</button>
+    <button class="option-btn" onclick="selectAnswer(22,'D')" id="q22-D"><span class="option-letter">D</span> prevent</button>
+    <button class="option-btn" onclick="selectAnswer(22,'E')" id="q22-E"><span class="option-letter">E</span> withdraw</button>
+  </div>
+  <div class="explanation-box" id="expl-22">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A) offer</strong></div>
+    <div class="expl-why">Governments "offer grants and subsidies" — this is the standard phrase. The context is supportive: governments are trying to encourage residents. "Offer" (sunmak/sağlamak) fits a positive, supportive government action.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">C) refuse</span> — reddetmek (to reject — opposite of encouraging)</div>
+      <div><span class="opt-label">B) demand</span> — talep etmek (to require — governments don't demand grants from residents)</div>
+      <div><span class="opt-label">A) offer ✓</span> — sunmak, teklif etmek (to provide/give — correct)</div>
+      <div><span class="opt-label">D) prevent</span> — engellemek (to stop — contradicts "encourage")</div>
+      <div><span class="opt-label">E) withdraw</span> — geri çekmek (to take back — opposite of providing)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q23 -->
+<div class="question-card" id="qcard-23">
+  <div class="q-header"><div class="q-number">23</div><div class="q-text">Choose the correct option for blank (23).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(23,'A')" id="q23-A"><span class="option-letter">A</span> at</button>
+    <button class="option-btn" onclick="selectAnswer(23,'B')" id="q23-B"><span class="option-letter">B</span> on</button>
+    <button class="option-btn" onclick="selectAnswer(23,'C')" id="q23-C"><span class="option-letter">C</span> in</button>
+    <button class="option-btn" onclick="selectAnswer(23,'D')" id="q23-D"><span class="option-letter">D</span> for</button>
+    <button class="option-btn" onclick="selectAnswer(23,'E')" id="q23-E"><span class="option-letter">E</span> with</button>
+  </div>
+  <div class="explanation-box" id="expl-23">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C) in</strong></div>
+    <div class="expl-why">"Invest in" is a fixed collocation. You always "invest in" something (a project, a field, an area). "Invest in urban agriculture" means to put resources/money into it. This is a standard prepositional collocation.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) at</span> — ... da/de (location — "invest at" is not standard)</div>
+      <div><span class="opt-label">B) on</span> — üzerinde (invest on — incorrect collocation)</div>
+      <div><span class="opt-label">D) for</span> — için (invest for — incorrect collocation)</div>
+      <div><span class="opt-label">C) in ✓</span> — içine, içinde (invest IN — correct fixed preposition)</div>
+      <div><span class="opt-label">E) with</span> — ile (invest with — incorrect in this sense)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q24 -->
+<div class="question-card" id="qcard-24">
+  <div class="q-header"><div class="q-number">24</div><div class="q-text">Choose the correct option for blank (24).</div></div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(24,'A')" id="q24-A"><span class="option-letter">A</span> urban</button>
+    <button class="option-btn" onclick="selectAnswer(24,'B')" id="q24-B"><span class="option-letter">B</span> modern</button>
+    <button class="option-btn" onclick="selectAnswer(24,'C')" id="q24-C"><span class="option-letter">C</span> indoor</button>
+    <button class="option-btn" onclick="selectAnswer(24,'D')" id="q24-D"><span class="option-letter">D</span> traditional</button>
+    <button class="option-btn" onclick="selectAnswer(24,'E')" id="q24-E"><span class="option-letter">E</span> sustainable</button>
+  </div>
+  <div class="explanation-box" id="expl-24">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: D) traditional</strong></div>
+    <div class="expl-why">The sentence compares urban farming to large-scale farming. The logical opposite of urban farming is "traditional" (rural/conventional) agriculture. The word "replace" implies a contrast between the old system and the new one.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A) urban</span> — kentsel (urban farming cannot replace itself)</div>
+      <div><span class="opt-label">B) modern</span> — modern (urban farming IS modern — illogical contrast)</div>
+      <div><span class="opt-label">D) traditional ✓</span> — geleneksel (conventional/rural farming — logical opposite)</div>
+      <div><span class="opt-label">D) indoor</span> — kapalı alan (indoor vs urban — not the main contrast)</div>
+      <div><span class="opt-label">E) sustainable</span> — sürdürülebilir (the text calls urban farming sustainable itself)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: TRANSLATION Eng→Tur — 2 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 4 — İngilizceden Türkçeye Çeviri</div>
+    <div class="section-info">English → Turkish Translation</div>
+  </div>
+  <div class="section-pill">2 Soru</div>
+</div>
+<div class="section-instruction">For questions 25–26, choose the correct Turkish translation of the English sentence.</div>
+
+<!-- Q25 -->
+<div class="question-card" id="qcard-25">
+  <div class="q-header">
+    <div class="q-number">25</div>
+    <div class="q-text">Although technology has made communication faster, many people feel more isolated than ever before.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(25,'A')" id="q25-A"><span class="option-letter">A</span> Teknoloji iletişimi hızlandırmış olsa da pek çok insan her zamankinden daha fazla yalnız hissetmektedir.</button>
+    <button class="option-btn" onclick="selectAnswer(25,'B')" id="q25-B"><span class="option-letter">B</span> Teknoloji insanları birbirinden uzaklaştırdığı için iletişim giderek yavaşlamaktadır.</button>
+    <button class="option-btn" onclick="selectAnswer(25,'C')" id="q25-C"><span class="option-letter">C</span> Teknoloji sayesinde insanlar artık daha az yalnız hissetmekte ve iletişim kolaylaşmaktadır.</button>
+    <button class="option-btn" onclick="selectAnswer(25,'D')" id="q25-D"><span class="option-letter">D</span> Pek çok kişi yalnız hissetse de teknolojinin iletişime katkısı tartışılmaz bir gerçektir.</button>
+    <button class="option-btn" onclick="selectAnswer(25,'E')" id="q25-E"><span class="option-letter">E</span> Teknolojinin iletişimi hızlandırması, insanların daha az yalnızlaşmasını sağlamıştır.</button>
+  </div>
+  <div class="explanation-box" id="expl-25">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">The original has two key ideas: (1) technology HAS made communication faster [concession], (2) people feel MORE isolated [result/contrast]. "Although" signals a concession. Only option A preserves both ideas correctly with "iletişimi hızlandırmış olsa da" (although it has made faster) + "daha fazla yalnız hissetmektedir" (feel more isolated).</div>
+    <div class="expl-options">
+      <div><span class="opt-label">B</span> — reverses the logic: technology is making communication slower (yanlış)</div>
+      <div><span class="opt-label">C</span> — opposite meaning: says people feel LESS lonely (anlam tersi)</div>
+      <div><span class="opt-label">D</span> — changes meaning; doesn't convey the contrast in the original</div>
+      <div><span class="opt-label">E</span> — again says technology reduces loneliness (opposite meaning)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q26 -->
+<div class="question-card" id="qcard-26">
+  <div class="q-header">
+    <div class="q-number">26</div>
+    <div class="q-text">The report suggests that rising sea levels could threaten coastal cities within the next fifty years.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(26,'A')" id="q26-A"><span class="option-letter">A</span> Rapor, yükselen deniz seviyelerinin önümüzdeki elli yıl içinde kıyı kentlerini tehdit edebileceğini öne sürmektedir.</button>
+    <button class="option-btn" onclick="selectAnswer(26,'B')" id="q26-B"><span class="option-letter">B</span> Rapora göre kıyı şehirleri, elli yıldan fazla bir süre içinde yükselen deniz seviyeleri nedeniyle tehlike altına girmiştir.</button>
+    <button class="option-btn" onclick="selectAnswer(26,'C')" id="q26-C"><span class="option-letter">C</span> Rapor, deniz seviyelerinin yükselmesinin kıyı kentleri için bir tehdit oluşturmadığını belirtmektedir.</button>
+    <button class="option-btn" onclick="selectAnswer(26,'D')" id="q26-D"><span class="option-letter">D</span> Kıyı kentleri, son elli yılda yükselen deniz seviyeleri nedeniyle büyük zarar görmüştür.</button>
+    <button class="option-btn" onclick="selectAnswer(26,'E')" id="q26-E"><span class="option-letter">E</span> Rapor, deniz seviyelerinin yükselmesinin kıyı kentlerini yalnızca uzun vadede etkileyeceğini ileri sürmektedir.</button>
+  </div>
+  <div class="explanation-box" id="expl-26">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">Key elements: "suggests" (öne sürmektedir), "could threaten" (tehdit edebileceğini — possibility modal), "within the next fifty years" (önümüzdeki elli yıl içinde). Option A captures all three precisely. Note "could" = possibility, not certainty — "tehdit edebileceğini" is correct.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">B</span> — "elli yıldan fazla" (more than fifty) ≠ "within fifty" + past tense (already happened) is wrong</div>
+      <div><span class="opt-label">C</span> — says sea levels are NOT a threat (opposite meaning)</div>
+      <div><span class="opt-label">D</span> — "last fifty years" (geçmiş) vs original's "next fifty years" (gelecek)</div>
+      <div><span class="opt-label">E</span> — "only in the long term" adds information not in the original</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: TRANSLATION Tur→Eng — 2 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 5 — Türkçeden İngilizceye Çeviri</div>
+    <div class="section-info">Turkish → English Translation</div>
+  </div>
+  <div class="section-pill">2 Soru</div>
+</div>
+<div class="section-instruction">For questions 27–28, choose the correct English translation of the Turkish sentence.</div>
+
+<!-- Q27 -->
+<div class="question-card" id="qcard-27">
+  <div class="q-header">
+    <div class="q-number">27</div>
+    <div class="q-text">Araştırmacılar, düzenli egzersiz yapmanın yalnızca fiziksel değil, zihinsel sağlığı da olumlu etkilediğini kanıtlamıştır.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(27,'A')" id="q27-A"><span class="option-letter">A</span> Researchers have proven that regular exercise positively affects not only physical but also mental health.</button>
+    <button class="option-btn" onclick="selectAnswer(27,'B')" id="q27-B"><span class="option-letter">B</span> Researchers suggest that physical exercise may have a positive effect on mental health in some cases.</button>
+    <button class="option-btn" onclick="selectAnswer(27,'C')" id="q27-C"><span class="option-letter">C</span> It has been researched whether regular physical activity has any effect on mental well-being.</button>
+    <button class="option-btn" onclick="selectAnswer(27,'D')" id="q27-D"><span class="option-letter">D</span> Researchers have found that mental health is more important than physical health for those who exercise.</button>
+    <button class="option-btn" onclick="selectAnswer(27,'E')" id="q27-E"><span class="option-letter">E</span> Some researchers believe that exercise affects only mental health, not physical well-being.</button>
+  </div>
+  <div class="explanation-box" id="expl-27">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">Key Turkish elements: "kanıtlamıştır" = have proven (not just "suggest"); "yalnızca fiziksel değil, zihinsel sağlığı da" = not only physical but also mental health. Option A captures both the certainty (proven) and the "not only...but also" structure perfectly.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">B</span> — "suggest...may have" is uncertain; original says "proven"</div>
+      <div><span class="opt-label">C</span> — changes meaning to "researching whether" (still a question, not a proven fact)</div>
+      <div><span class="opt-label">D</span> — adds a comparison (mental MORE important than physical) not in the original</div>
+      <div><span class="opt-label">E</span> — reverses the original: says ONLY mental, NOT physical (opposite)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q28 -->
+<div class="question-card" id="qcard-28">
+  <div class="q-header">
+    <div class="q-number">28</div>
+    <div class="q-text">Hükümet, ekonomik büyümeyi desteklemek amacıyla küçük işletmelere vergi indirimi uygulamaya karar vermiştir.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(28,'A')" id="q28-A"><span class="option-letter">A</span> The government has decided to apply tax reductions to small businesses in order to support economic growth.</button>
+    <button class="option-btn" onclick="selectAnswer(28,'B')" id="q28-B"><span class="option-letter">B</span> Small businesses were forced to pay higher taxes by the government to boost the economy.</button>
+    <button class="option-btn" onclick="selectAnswer(28,'C')" id="q28-C"><span class="option-letter">C</span> The government is planning to increase taxes on large businesses to improve economic conditions.</button>
+    <button class="option-btn" onclick="selectAnswer(28,'D')" id="q28-D"><span class="option-letter">D</span> Economic growth led the government to reconsider its tax policies for small businesses last year.</button>
+    <button class="option-btn" onclick="selectAnswer(28,'E')" id="q28-E"><span class="option-letter">E</span> The government announced that it would remove all taxes from small businesses permanently.</button>
+  </div>
+  <div class="explanation-box" id="expl-28">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"karar vermiştir" = has decided; "vergi indirimi" = tax reduction; "küçük işletmelere" = to small businesses; "desteklemek amacıyla" = in order to support. Option A translates all elements faithfully.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">B</span> — "higher taxes" and "forced" = opposite of tax reduction</div>
+      <div><span class="opt-label">C</span> — "increase taxes on large businesses" ≠ reduce taxes on small businesses</div>
+      <div><span class="opt-label">D</span> — "led the government to reconsider" ≠ "decided to apply" (different meaning)</div>
+      <div><span class="opt-label">E</span> — "remove ALL taxes permanently" exaggerates; original says "tax reduction"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6: REPHRASING (Yakın Anlamlı) — 5 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 6 — Yakın Anlamlı Cümleyi Belirleme</div>
+    <div class="section-info">Rephrasing / Paraphrase</div>
+  </div>
+  <div class="section-pill">5 Soru</div>
+</div>
+<div class="section-instruction">For questions 29–33, choose the accurate rephrased form of the given sentence.</div>
+
+<!-- Q29 -->
+<div class="question-card" id="qcard-29">
+  <div class="q-header">
+    <div class="q-number">29</div>
+    <div class="q-text">It is impossible for humans to survive without clean drinking water for more than three days.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(29,'A')" id="q29-A"><span class="option-letter">A</span> Humans can easily go without clean water for up to a week under normal conditions.</button>
+    <button class="option-btn" onclick="selectAnswer(29,'B')" id="q29-B"><span class="option-letter">B</span> Clean drinking water is essential for human survival, and people cannot live longer than three days without it.</button>
+    <button class="option-btn" onclick="selectAnswer(29,'C')" id="q29-C"><span class="option-letter">C</span> Three days is sufficient time for humans to adapt to living without drinking water.</button>
+    <button class="option-btn" onclick="selectAnswer(29,'D')" id="q29-D"><span class="option-letter">D</span> Only some humans need clean water to survive, while others can manage without it.</button>
+    <button class="option-btn" onclick="selectAnswer(29,'E')" id="q29-E"><span class="option-letter">E</span> Access to clean water is a global issue, but it does not always affect human survival directly.</button>
+  </div>
+  <div class="explanation-box" id="expl-29">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">The original states: (1) clean water is necessary for survival, (2) the limit is three days. Option B rephrases both: "essential for human survival" = "impossible to survive without" and "cannot live longer than three days" = "more than three days = impossible."</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — contradicts: says humans CAN go a week without water</div>
+      <div><span class="opt-label">C</span> — contradicts: says humans can adapt to survive without water</div>
+      <div><span class="opt-label">D</span> — contradicts: original says ALL humans, not "only some"</div>
+      <div><span class="opt-label">E</span> — weakens the claim; original is absolute (impossible)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q30 -->
+<div class="question-card" id="qcard-30">
+  <div class="q-header">
+    <div class="q-number">30</div>
+    <div class="q-text">Sarah finished her assignment only after she had consulted her teacher several times.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(30,'A')" id="q30-A"><span class="option-letter">A</span> Sarah completed her assignment without any help from her teacher.</button>
+    <button class="option-btn" onclick="selectAnswer(30,'B')" id="q30-B"><span class="option-letter">B</span> Sarah needed to talk to her teacher more than once before she could complete her assignment.</button>
+    <button class="option-btn" onclick="selectAnswer(30,'C')" id="q30-C"><span class="option-letter">C</span> Sarah's teacher finished the assignment on her behalf after several consultations.</button>
+    <button class="option-btn" onclick="selectAnswer(30,'D')" id="q30-D"><span class="option-letter">D</span> Sarah consulted her teacher once and immediately completed her assignment.</button>
+    <button class="option-btn" onclick="selectAnswer(30,'E')" id="q30-E"><span class="option-letter">E</span> Sarah finished her assignment before meeting her teacher for the first time.</button>
+  </div>
+  <div class="explanation-box" id="expl-30">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">Original: Sarah finished AFTER consulting her teacher SEVERAL TIMES. B rephrases: "needed to talk more than once" = several times, "before she could complete" = after consulting. The sequence and frequency are both preserved.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — "without any help" contradicts "consulted several times"</div>
+      <div><span class="opt-label">C</span> — teacher finished it, not Sarah (wrong subject)</div>
+      <div><span class="opt-label">D</span> — "once" ≠ "several times"</div>
+      <div><span class="opt-label">E</span> — reverses the order: original says she finished AFTER consulting</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q31 -->
+<div class="question-card" id="qcard-31">
+  <div class="q-header">
+    <div class="q-number">31</div>
+    <div class="q-text">The museum is open to visitors every day except Mondays, when it is closed for maintenance.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(31,'A')" id="q31-A"><span class="option-letter">A</span> Visitors can access the museum on all days of the week, including Mondays.</button>
+    <button class="option-btn" onclick="selectAnswer(31,'B')" id="q31-B"><span class="option-letter">B</span> The museum closes on Mondays for maintenance purposes, but remains open on the other days.</button>
+    <button class="option-btn" onclick="selectAnswer(31,'C')" id="q31-C"><span class="option-letter">C</span> The museum is only open on Mondays for special maintenance events.</button>
+    <button class="option-btn" onclick="selectAnswer(31,'D')" id="q31-D"><span class="option-letter">D</span> Maintenance work at the museum is carried out every day except Monday.</button>
+    <button class="option-btn" onclick="selectAnswer(31,'E')" id="q31-E"><span class="option-letter">E</span> The museum does not allow visitors during maintenance, which takes place throughout the week.</button>
+  </div>
+  <div class="explanation-box" id="expl-31">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">Original: open every day EXCEPT Monday (closed for maintenance). B preserves both facts: "closes on Mondays for maintenance" + "remains open on the other days." This is a direct and accurate paraphrase.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — "including Mondays" contradicts the original (closed on Mondays)</div>
+      <div><span class="opt-label">C</span> — "only open on Mondays" = opposite of the original</div>
+      <div><span class="opt-label">D</span> — says maintenance is every day EXCEPT Monday (wrong)</div>
+      <div><span class="opt-label">E</span> — implies maintenance is throughout the week (wrong)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q32 -->
+<div class="question-card" id="qcard-32">
+  <div class="q-header">
+    <div class="q-number">32</div>
+    <div class="q-text">Despite training intensively for months, the team lost the championship in the final match.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(32,'A')" id="q32-A"><span class="option-letter">A</span> The team won the championship as a result of their months of hard training.</button>
+    <button class="option-btn" onclick="selectAnswer(32,'B')" id="q32-B"><span class="option-letter">B</span> The team's lack of training caused them to lose the championship final.</button>
+    <button class="option-btn" onclick="selectAnswer(32,'C')" id="q32-C"><span class="option-letter">C</span> Even though the team had prepared hard for months, they were unable to win the championship.</button>
+    <button class="option-btn" onclick="selectAnswer(32,'D')" id="q32-D"><span class="option-letter">D</span> The team decided not to train before the final match and consequently lost the championship.</button>
+    <button class="option-btn" onclick="selectAnswer(32,'E')" id="q32-E"><span class="option-letter">E</span> After winning the championship, the team continued their intensive training programme.</button>
+  </div>
+  <div class="explanation-box" id="expl-32">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C</strong></div>
+    <div class="expl-why">"Despite" = "Even though." The original has a contrast: intensive training (positive effort) → losing (negative result). Option C uses "Even though...had prepared hard" and "unable to win" — preserving both the concession and the negative outcome.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — says they WON (opposite outcome)</div>
+      <div><span class="opt-label">B</span> — says LACK of training caused the loss (opposite: original says they DID train)</div>
+      <div><span class="opt-label">D</span> — says they decided NOT to train (opposite of "training intensively")</div>
+      <div><span class="opt-label">E</span> — says they WON first, then continued training (opposite)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q33 -->
+<div class="question-card" id="qcard-33">
+  <div class="q-header">
+    <div class="q-number">33</div>
+    <div class="q-text">You had better see a doctor immediately, as your symptoms could indicate something serious.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(33,'A')" id="q33-A"><span class="option-letter">A</span> It is strongly advised that you see a doctor soon, because your symptoms might be a sign of a serious condition.</button>
+    <button class="option-btn" onclick="selectAnswer(33,'B')" id="q33-B"><span class="option-letter">B</span> You don't need to see a doctor unless your symptoms become much worse over time.</button>
+    <button class="option-btn" onclick="selectAnswer(33,'C')" id="q33-C"><span class="option-letter">C</span> Your symptoms are definitely serious, so you must go to the hospital right now.</button>
+    <button class="option-btn" onclick="selectAnswer(33,'D')" id="q33-D"><span class="option-letter">D</span> Seeing a doctor is optional, but it may help if you feel your symptoms are unusual.</button>
+    <button class="option-btn" onclick="selectAnswer(33,'E')" id="q33-E"><span class="option-letter">E</span> Since your symptoms are not serious, you might want to rest instead of visiting a doctor.</button>
+  </div>
+  <div class="explanation-box" id="expl-33">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"Had better" = strong advice/recommendation (not obligation, but urgency). "Could indicate" = possibility (might be serious, not certainly serious). A correctly uses "strongly advised" (= had better) and "might be a sign" (= could indicate). C is wrong because it says "definitely serious" when original says "could" (possibility).</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — "strongly advised" + "might be" = correct paraphrase</div>
+      <div><span class="opt-label">B</span> — "don't need to see a doctor" contradicts urgent advice</div>
+      <div><span class="opt-label">C</span> — "definitely serious" overstates "could indicate"</div>
+      <div><span class="opt-label">D</span> — "optional" contradicts "had better" (urgent advice)</div>
+      <div><span class="opt-label">E</span> — says symptoms are NOT serious (opposite meaning)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7: SENTENCE COMPLETION — 5 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 7 — Cümle Tamamlama</div>
+    <div class="section-info">Sentence Completion</div>
+  </div>
+  <div class="section-pill">5 Soru</div>
+</div>
+<div class="section-instruction">For questions 34–38, choose the correct option to complete the given sentence.</div>
+
+<!-- Q34 -->
+<div class="question-card" id="qcard-34">
+  <div class="q-header">
+    <div class="q-number">34</div>
+    <div class="q-text">Unless the company reduces its operating costs, <span style="font-weight:700">- - - -</span>.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(34,'A')" id="q34-A"><span class="option-letter">A</span> it will struggle to remain profitable in the long run</button>
+    <button class="option-btn" onclick="selectAnswer(34,'B')" id="q34-B"><span class="option-letter">B</span> it had already made a significant profit last quarter</button>
+    <button class="option-btn" onclick="selectAnswer(34,'C')" id="q34-C"><span class="option-letter">C</span> the employees were given generous bonuses every year</button>
+    <button class="option-btn" onclick="selectAnswer(34,'D')" id="q34-D"><span class="option-letter">D</span> new branches are being opened in several cities</button>
+    <button class="option-btn" onclick="selectAnswer(34,'E')" id="q34-E"><span class="option-letter">E</span> it would have succeeded in expanding to new markets</button>
+  </div>
+  <div class="explanation-box" id="expl-34">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"Unless" = "if not" — it introduces a negative condition. The result must be negative too: if costs are NOT reduced, the company WILL struggle. This requires future tense + negative consequence. A provides a logical and grammatically correct completion.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — future tense + negative result (logical with "unless")</div>
+      <div><span class="opt-label">B</span> — past tense, positive result (contradicts the negative condition)</div>
+      <div><span class="opt-label">C</span> — past tense, irrelevant subject (employees, not the company's finances)</div>
+      <div><span class="opt-label">D</span> — positive action (expanding) contradicts the negative condition</div>
+      <div><span class="opt-label">E</span> — "would have" = Type 3 conditional (requires past perfect in unless-clause)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q35 -->
+<div class="question-card" id="qcard-35">
+  <div class="q-header">
+    <div class="q-number">35</div>
+    <div class="q-text"><span style="font-weight:700">- - - -</span>, the teacher asked the students to work in pairs.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(35,'A')" id="q35-A"><span class="option-letter">A</span> Since the activity required collaboration</button>
+    <button class="option-btn" onclick="selectAnswer(35,'B')" id="q35-B"><span class="option-letter">B</span> Although the library was fully booked</button>
+    <button class="option-btn" onclick="selectAnswer(35,'C')" id="q35-C"><span class="option-letter">C</span> Unless every student brought their own device</button>
+    <button class="option-btn" onclick="selectAnswer(35,'D')" id="q35-D"><span class="option-letter">D</span> Whenever the exam results are announced</button>
+    <button class="option-btn" onclick="selectAnswer(35,'E')" id="q35-E"><span class="option-letter">E</span> As soon as the school holiday had begun</button>
+  </div>
+  <div class="explanation-box" id="expl-35">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"Since the activity required collaboration, the teacher asked students to work in pairs" — logical cause-effect relationship. Working in pairs IS collaboration. All other options create illogical or incomplete relationships with the main clause.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — "since" = because; collaboration → pairs (logical cause-effect)</div>
+      <div><span class="opt-label">B</span> — library being booked has no connection to working in pairs in class</div>
+      <div><span class="opt-label">C</span> — "unless every student brought a device" — irrelevant to pair work</div>
+      <div><span class="opt-label">D</span> — exam results have no connection to the classroom activity</div>
+      <div><span class="opt-label">E</span> — holiday had begun → teacher asked students to work (contradictory — school is over)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q36 -->
+<div class="question-card" id="qcard-36">
+  <div class="q-header">
+    <div class="q-number">36</div>
+    <div class="q-text">The concert was cancelled <span style="font-weight:700">- - - -</span>.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(36,'A')" id="q36-A"><span class="option-letter">A</span> due to the unexpected storm that hit the city that evening</button>
+    <button class="option-btn" onclick="selectAnswer(36,'B')" id="q36-B"><span class="option-letter">B</span> because it attracted thousands of enthusiastic fans from across the region</button>
+    <button class="option-btn" onclick="selectAnswer(36,'C')" id="q36-C"><span class="option-letter">C</span> so the audience enjoyed every performance on the stage</button>
+    <button class="option-btn" onclick="selectAnswer(36,'D')" id="q36-D"><span class="option-letter">D</span> and the performers gave their best show of the entire tour</button>
+    <button class="option-btn" onclick="selectAnswer(36,'E')" id="q36-E"><span class="option-letter">E</span> whenever the organisers had enough funding to continue</button>
+  </div>
+  <div class="explanation-box" id="expl-36">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"The concert was cancelled" needs a reason or cause. "Due to" introduces a cause. An unexpected storm is a logical and common reason for event cancellation. All other options provide positive or illogical continuations after "was cancelled."</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — "due to the storm" = valid reason for cancellation</div>
+      <div><span class="opt-label">B</span> — "because it attracted thousands of fans" → you don't cancel a successful concert</div>
+      <div><span class="opt-label">C</span> — "so the audience enjoyed" → if cancelled, there's no audience</div>
+      <div><span class="opt-label">D</span> — "performers gave their best show" → contradicts cancellation</div>
+      <div><span class="opt-label">E</span> — "whenever organisers had funding" → illogical with "was cancelled"</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q37 -->
+<div class="question-card" id="qcard-37">
+  <div class="q-header">
+    <div class="q-number">37</div>
+    <div class="q-text">As one of the most influential scientists of the twentieth century, <span style="font-weight:700">- - - -</span>.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(37,'A')" id="q37-A"><span class="option-letter">A</span> many laboratories around the world adopted new research methods</button>
+    <button class="option-btn" onclick="selectAnswer(37,'B')" id="q37-B"><span class="option-letter">B</span> his theories on genetics transformed the field of modern biology</button>
+    <button class="option-btn" onclick="selectAnswer(37,'C')" id="q37-C"><span class="option-letter">C</span> several universities were founded in his honour by the government</button>
+    <button class="option-btn" onclick="selectAnswer(37,'D')" id="q37-D"><span class="option-letter">D</span> funding for scientific research was dramatically increased</button>
+    <button class="option-btn" onclick="selectAnswer(37,'E')" id="q37-E"><span class="option-letter">E</span> the Nobel Prize committee reviewed its selection criteria</button>
+  </div>
+  <div class="explanation-box" id="expl-37">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">"As one of the most influential scientists" → the subject in the main clause must refer back to HIM (the scientist). Only option B uses "his theories" — correctly referring to the scientist described. All other options use different or irrelevant subjects.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — subject is "laboratories" (not the scientist)</div>
+      <div><span class="opt-label">B ✓</span> — "his theories" correctly refers to the influential scientist</div>
+      <div><span class="opt-label">C</span> — subject is "universities" and the agent is "government" (not the scientist)</div>
+      <div><span class="opt-label">D</span> — subject is "funding" (not the scientist)</div>
+      <div><span class="opt-label">E</span> — subject is "Nobel Prize committee" (not the scientist)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q38 -->
+<div class="question-card" id="qcard-38">
+  <div class="q-header">
+    <div class="q-number">38</div>
+    <div class="q-text">The more you practise speaking English, <span style="font-weight:700">- - - -</span>.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(38,'A')" id="q38-A"><span class="option-letter">A</span> the more confident and fluent you will become</button>
+    <button class="option-btn" onclick="selectAnswer(38,'B')" id="q38-B"><span class="option-letter">B</span> the less interested you seem to be in learning</button>
+    <button class="option-btn" onclick="selectAnswer(38,'C')" id="q38-C"><span class="option-letter">C</span> grammar rules will become harder to remember</button>
+    <button class="option-btn" onclick="selectAnswer(38,'D')" id="q38-D"><span class="option-letter">D</span> you should avoid making mistakes in public</button>
+    <button class="option-btn" onclick="selectAnswer(38,'E')" id="q38-E"><span class="option-letter">E</span> it was necessary to join a language course immediately</button>
+  </div>
+  <div class="explanation-box" id="expl-38">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"The more...the more..." is a fixed comparative structure in English. "The more you practise" must be followed by "the more + result." Option A correctly completes the double comparative: "the more confident and fluent you will become."</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — "the more confident" = correct double comparative structure</div>
+      <div><span class="opt-label">B</span> — "the less interested" = illogical (practising makes you MORE interested)</div>
+      <div><span class="opt-label">C</span> — no "the more/less" structure; also illogical (practising helps grammar)</div>
+      <div><span class="opt-label">D</span> — not a comparative structure; illogical conclusion</div>
+      <div><span class="opt-label">E</span> — past tense + illogical (if you're already practising, you don't need to "join" yet)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 8: READING COMPREHENSION — 6 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 8 — Okuduğunu Anlama</div>
+    <div class="section-info">Reading Comprehension</div>
+  </div>
+  <div class="section-pill">6 Soru</div>
+</div>
+<div class="section-instruction">Answer questions 39–44 according to the passage below.</div>
+
+<div class="passage-box">
+  <strong>The Psychology of Colour</strong><br><br>
+  Colour is far more than a visual experience — it plays a significant role in shaping human emotions and behaviour. Psychologists and designers have long studied how different colours affect our mood, decision-making, and even our physical responses. For instance, the colour red has been shown to increase heart rate and create a sense of urgency, which is why it is commonly used in warning signs and sale advertisements. Blue, on the other hand, is associated with calmness and trust, making it a favourite choice for banks and healthcare institutions.<br><br>
+  Research has also found that colour can influence performance. A study conducted at several universities revealed that students who took tests in rooms painted red scored significantly lower than those in rooms with neutral colours. Scientists believe this is because red triggers a stress response in the brain, which interferes with concentration. Meanwhile, green, which is often linked to nature and balance, has been shown to enhance creativity and reduce fatigue.<br><br>
+  However, it is important to note that colour perception is not entirely universal. Cultural background plays a major role in how people interpret colours. White, for example, symbolises purity and peace in many Western cultures, whereas in several East Asian cultures it is associated with mourning and death. Similarly, while purple represents royalty in Europe, it carries different connotations in other parts of the world.<br><br>
+  Despite these cultural differences, some emotional responses to colour appear to be consistent across cultures. Most people, regardless of their background, respond positively to bright, warm colours in social environments and prefer cooler tones in spaces designed for focus or relaxation. Understanding colour psychology can therefore be a powerful tool for architects, marketers, and educators who wish to design environments that optimise human well-being and performance.
+</div>
+
+<!-- Q39 -->
+<div class="question-card" id="qcard-39">
+  <div class="q-header">
+    <div class="q-number">39</div>
+    <div class="q-text">What is the main purpose of this text?</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(39,'A')" id="q39-A"><span class="option-letter">A</span> To argue that all people respond to colours in exactly the same way</button>
+    <button class="option-btn" onclick="selectAnswer(39,'B')" id="q39-B"><span class="option-letter">B</span> To explain how colour affects human emotions, behaviour, and performance</button>
+    <button class="option-btn" onclick="selectAnswer(39,'C')" id="q39-C"><span class="option-letter">C</span> To compare colour preferences between Western and Eastern cultures</button>
+    <button class="option-btn" onclick="selectAnswer(39,'D')" id="q39-D"><span class="option-letter">D</span> To describe why designers prefer red and blue over other colours</button>
+    <button class="option-btn" onclick="selectAnswer(39,'E')" id="q39-E"><span class="option-letter">E</span> To criticise the use of colour in educational environments</button>
+  </div>
+  <div class="explanation-box" id="expl-39">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">The text covers: (1) how colour affects emotions and behaviour (para 1), (2) how it affects performance (para 2), (3) cultural differences (para 3), (4) universal responses (para 4). B is the only option that captures the comprehensive scope of the passage. The text does NOT argue all people respond identically (A is wrong), and it doesn't criticise anything (E is wrong).</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — text actually says responses are NOT entirely universal (para 3)</div>
+      <div><span class="opt-label">B ✓</span> — correct: emotions, behaviour, and performance are all discussed</div>
+      <div><span class="opt-label">C</span> — cultural comparison is only one paragraph, not the main purpose</div>
+      <div><span class="opt-label">D</span> — red and blue are examples, not the focus</div>
+      <div><span class="opt-label">E</span> — no criticism is made; the tone is informative</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q40 -->
+<div class="question-card" id="qcard-40">
+  <div class="q-header">
+    <div class="q-number">40</div>
+    <div class="q-text">According to the text, why did students in red rooms score lower on tests?</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(40,'A')" id="q40-A"><span class="option-letter">A</span> Red rooms were too hot, making it difficult to concentrate.</button>
+    <button class="option-btn" onclick="selectAnswer(40,'B')" id="q40-B"><span class="option-letter">B</span> The students in those rooms had not studied enough before the test.</button>
+    <button class="option-btn" onclick="selectAnswer(40,'C')" id="q40-C"><span class="option-letter">C</span> Red activates a stress response in the brain that interferes with concentration.</button>
+    <button class="option-btn" onclick="selectAnswer(40,'D')" id="q40-D"><span class="option-letter">D</span> Red is associated with danger, so students were afraid during the test.</button>
+    <button class="option-btn" onclick="selectAnswer(40,'E')" id="q40-E"><span class="option-letter">E</span> The university tests in red rooms were more difficult than those in neutral rooms.</button>
+  </div>
+  <div class="explanation-box" id="expl-40">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C</strong></div>
+    <div class="expl-why">The text directly states: "Scientists believe this is because red triggers a stress response in the brain, which interferes with concentration." This is a direct factual question — the answer is explicitly stated in paragraph 2.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — temperature is never mentioned in the text</div>
+      <div><span class="opt-label">B</span> — study habits are not discussed</div>
+      <div><span class="opt-label">C ✓</span> — directly supported by the text</div>
+      <div><span class="opt-label">D</span> — "fear" is not mentioned; the text says stress response, not fear</div>
+      <div><span class="opt-label">E</span> — test difficulty is not mentioned; rooms had same tests</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q41 -->
+<div class="question-card" id="qcard-41">
+  <div class="q-header">
+    <div class="q-number">41</div>
+    <div class="q-text">What does the word "connotations" in the third paragraph most closely mean?</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(41,'A')" id="q41-A"><span class="option-letter">A</span> scientific facts</button>
+    <button class="option-btn" onclick="selectAnswer(41,'B')" id="q41-B"><span class="option-letter">B</span> associated meanings or ideas</button>
+    <button class="option-btn" onclick="selectAnswer(41,'C')" id="q41-C"><span class="option-letter">C</span> visual properties</button>
+    <button class="option-btn" onclick="selectAnswer(41,'D')" id="q41-D"><span class="option-letter">D</span> physical reactions</button>
+    <button class="option-btn" onclick="selectAnswer(41,'E')" id="q41-E"><span class="option-letter">E</span> cultural disagreements</button>
+  </div>
+  <div class="explanation-box" id="expl-41">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">"Connotations" refers to the secondary meanings, feelings, or ideas associated with a word or symbol beyond its literal meaning. In the text, "purple carries different connotations" = purple has different associated meanings/ideas in different cultures.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — bilimsel gerçekler (connotations are not facts; they are associations)</div>
+      <div><span class="opt-label">B ✓</span> — ilişkili anlamlar veya çağrışımlar (correct meaning of connotations)</div>
+      <div><span class="opt-label">C</span> — görsel özellikler (visual properties relate to appearance, not meaning)</div>
+      <div><span class="opt-label">D</span> — fiziksel tepkiler (physical reactions — paragraph 1's topic, not this context)</div>
+      <div><span class="opt-label">E</span> — kültürel anlaşmazlıklar (cultural disagreements — too specific and inaccurate)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q42 -->
+<div class="question-card" id="qcard-42">
+  <div class="q-header">
+    <div class="q-number">42</div>
+    <div class="q-text">Which of the following can be inferred from the text?</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(42,'A')" id="q42-A"><span class="option-letter">A</span> Colour psychology has no practical applications in professional fields.</button>
+    <button class="option-btn" onclick="selectAnswer(42,'B')" id="q42-B"><span class="option-letter">B</span> Architects and marketers can use colour psychology to create better environments.</button>
+    <button class="option-btn" onclick="selectAnswer(42,'C')" id="q42-C"><span class="option-letter">C</span> People in East Asian cultures find white more relaxing than people in Western cultures.</button>
+    <button class="option-btn" onclick="selectAnswer(42,'D')" id="q42-D"><span class="option-letter">D</span> The colour green has been proven to increase test scores in all university students.</button>
+    <button class="option-btn" onclick="selectAnswer(42,'E')" id="q42-E"><span class="option-letter">E</span> Red should never be used in any design because it always causes stress.</button>
+  </div>
+  <div class="explanation-box" id="expl-42">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">The last paragraph explicitly states: "Understanding colour psychology can therefore be a powerful tool for architects, marketers, and educators who wish to design environments that optimise human well-being." B is directly supported by this statement.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — the final paragraph says it IS a "powerful tool" for professionals</div>
+      <div><span class="opt-label">B ✓</span> — directly supported by the last paragraph</div>
+      <div><span class="opt-label">C</span> — the text says white means mourning in East Asia, not that it's more relaxing</div>
+      <div><span class="opt-label">D</span> — green is linked to creativity and reduced fatigue, not specifically to test scores</div>
+      <div><span class="opt-label">E</span> — too absolute; text says red is useful in warnings and advertisements</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q43 -->
+<div class="question-card" id="qcard-43">
+  <div class="q-header">
+    <div class="q-number">43</div>
+    <div class="q-text">What does "it" refer to in the sentence: "it is important to note that colour perception is not entirely universal"?</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(43,'A')" id="q43-A"><span class="option-letter">A</span> cultural background</button>
+    <button class="option-btn" onclick="selectAnswer(43,'B')" id="q43-B"><span class="option-letter">B</span> the research</button>
+    <button class="option-btn" onclick="selectAnswer(43,'C')" id="q43-C"><span class="option-letter">C</span> a dummy/empty subject with no specific reference</button>
+    <button class="option-btn" onclick="selectAnswer(43,'D')" id="q43-D"><span class="option-letter">D</span> the colour green</button>
+    <button class="option-btn" onclick="selectAnswer(43,'E')" id="q43-E"><span class="option-letter">E</span> colour psychology</button>
+  </div>
+  <div class="explanation-box" id="expl-43">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C</strong></div>
+    <div class="expl-why">"It is important to note that..." — here "it" is an expletive/dummy subject (Türkçe: boş özne). It has no referent in the text; it simply fills the subject position grammatically. The real subject of the sentence is the entire clause "that colour perception is not entirely universal."</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — cultural background is the topic of the paragraph, but not what "it" refers to</div>
+      <div><span class="opt-label">B</span> — the research is mentioned earlier, not what "it" refers to here</div>
+      <div><span class="opt-label">C ✓</span> — "it" is a grammatical/dummy subject (boş özne) in this structure</div>
+      <div><span class="opt-label">D</span> — colour green was the topic of the previous paragraph</div>
+      <div><span class="opt-label">E</span> — colour psychology is the general topic, not the referent of "it"</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q44 -->
+<div class="question-card" id="qcard-44">
+  <div class="q-header">
+    <div class="q-number">44</div>
+    <div class="q-text">According to the passage, which statement about cultural differences and colour is TRUE?</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(44,'A')" id="q44-A"><span class="option-letter">A</span> All cultures agree that white represents purity and peace.</button>
+    <button class="option-btn" onclick="selectAnswer(44,'B')" id="q44-B"><span class="option-letter">B</span> Purple has the same meaning in every country around the world.</button>
+    <button class="option-btn" onclick="selectAnswer(44,'C')" id="q44-C"><span class="option-letter">C</span> The meaning of colours can vary significantly depending on cultural context.</button>
+    <button class="option-btn" onclick="selectAnswer(44,'D')" id="q44-D"><span class="option-letter">D</span> East Asian cultures prefer blue to represent mourning rather than white.</button>
+    <button class="option-btn" onclick="selectAnswer(44,'E')" id="q44-E"><span class="option-letter">E</span> Cultural differences in colour perception have been fully resolved by scientists.</button>
+  </div>
+  <div class="explanation-box" id="expl-44">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: C</strong></div>
+    <div class="expl-why">Paragraph 3 directly supports this: white = purity in West but mourning in East Asia; purple = royalty in Europe but different elsewhere. This proves that the meaning of colours varies by culture. C accurately paraphrases the main point of paragraph 3.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — text says white means mourning in East Asia (not all cultures agree)</div>
+      <div><span class="opt-label">B</span> — text says purple "carries different connotations in other parts of the world"</div>
+      <div><span class="opt-label">C ✓</span> — directly supported by the third paragraph</div>
+      <div><span class="opt-label">D</span> — text says white (not blue) is associated with mourning in East Asia</div>
+      <div><span class="opt-label">E</span> — no such claim is made; the text presents ongoing research</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 9: DIALOGUE COMPLETION — 3 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 9 — Diyalog Tamamlama</div>
+    <div class="section-info">Dialogue Completion</div>
+  </div>
+  <div class="section-pill">3 Soru</div>
+</div>
+<div class="section-instruction">For questions 45–47, choose the most appropriate option to complete the dialogue.</div>
+
+<!-- Q45 -->
+<div class="question-card" id="qcard-45">
+  <div class="q-header">
+    <div class="q-number">45</div>
+    <div class="q-text">
+      <strong>Emma:</strong> I've been thinking about applying for that scholarship, but I'm not sure if I'm qualified.<br>
+      <strong>Tom:</strong> Why not? You have excellent grades and a great personal statement.<br>
+      <strong>Emma:</strong> I know, but the competition is fierce this year.<br>
+      <strong>Tom:</strong> <span style="font-weight:700">- - - -</span>
+    </div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(45,'A')" id="q45-A"><span class="option-letter">A</span> Well, there's no harm in trying. You might surprise yourself.</button>
+    <button class="option-btn" onclick="selectAnswer(45,'B')" id="q45-B"><span class="option-letter">B</span> You're right. It's probably better to wait until next year.</button>
+    <button class="option-btn" onclick="selectAnswer(45,'C')" id="q45-C"><span class="option-letter">C</span> I think you should stop worrying about grades and focus on other things.</button>
+    <button class="option-btn" onclick="selectAnswer(45,'D')" id="q45-D"><span class="option-letter">D</span> Competition is always bad for students who want to succeed.</button>
+    <button class="option-btn" onclick="selectAnswer(45,'E')" id="q45-E"><span class="option-letter">E</span> Maybe you should apply for a different university instead.</button>
+  </div>
+  <div class="explanation-box" id="expl-45">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">Tom has already been encouraging Emma ("You have excellent grades..."). After Emma expresses worry about competition, Tom should continue being supportive and encouraging. A ("no harm in trying / might surprise yourself") is the natural, supportive continuation. B agrees with Emma's doubt (contradicts Tom's encouraging stance).</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — encouragement (Tom'un önceki tutumuna uygun — consistent with his supportive role)</div>
+      <div><span class="opt-label">B</span> — agrees with Emma's doubt (inconsistent with Tom's encouraging stance)</div>
+      <div><span class="opt-label">C</span> — dismisses grades (strange after Tom just praised them)</div>
+      <div><span class="opt-label">D</span> — negative generalisation about competition (illogical as support)</div>
+      <div><span class="opt-label">E</span> — changing university is irrelevant (Emma is applying for a scholarship)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q46 -->
+<div class="question-card" id="qcard-46">
+  <div class="q-header">
+    <div class="q-number">46</div>
+    <div class="q-text">
+      <strong>Customer:</strong> Excuse me, I ordered the pasta twenty minutes ago and it still hasn't arrived.<br>
+      <strong>Waiter:</strong> I'm terribly sorry about that. Let me check with the kitchen right away.<br>
+      <strong>Customer:</strong> Thank you. Also, could you bring some more water while you're at it?<br>
+      <strong>Waiter:</strong> <span style="font-weight:700">- - - -</span>
+    </div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(46,'A')" id="q46-A"><span class="option-letter">A</span> Actually, the kitchen is closed on weekends, so there's nothing I can do.</button>
+    <button class="option-btn" onclick="selectAnswer(46,'B')" id="q46-B"><span class="option-letter">B</span> Of course! I'll bring that right away and also look into your order.</button>
+    <button class="option-btn" onclick="selectAnswer(46,'C')" id="q46-C"><span class="option-letter">C</span> You'll have to wait a little longer since we are very busy today.</button>
+    <button class="option-btn" onclick="selectAnswer(46,'D')" id="q46-D"><span class="option-letter">D</span> Sorry, but we don't serve water at this restaurant.</button>
+    <button class="option-btn" onclick="selectAnswer(46,'E')" id="q46-E"><span class="option-letter">E</span> I think the pasta was already delivered to another table by mistake.</button>
+  </div>
+  <div class="explanation-box" id="expl-46">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: B</strong></div>
+    <div class="expl-why">The waiter has been professional and apologetic. The customer makes a simple, polite request for water. A professional, helpful waiter would confirm BOTH requests: bringing water AND following up on the order. B does exactly this. C and D are unhelpful/rude responses inconsistent with the waiter's professional tone.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A</span> — "kitchen is closed" contradicts waiter checking with kitchen in previous turn</div>
+      <div><span class="opt-label">B ✓</span> — polite, helpful, and addresses both requests (water + order check)</div>
+      <div><span class="opt-label">C</span> — dismissive; contradicts the professional apology already given</div>
+      <div><span class="opt-label">D</span> — absurd: restaurants always serve water</div>
+      <div><span class="opt-label">E</span> — speculation without resolution; doesn't help the customer</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q47 -->
+<div class="question-card" id="qcard-47">
+  <div class="q-header">
+    <div class="q-number">47</div>
+    <div class="q-text">
+      <strong>Lisa:</strong> Did you manage to read that article I sent you about climate change?<br>
+      <strong>Ben:</strong> I started it, but I couldn't finish. It was really long.<br>
+      <strong>Lisa:</strong> I know, but the second half is actually the most interesting part. It talks about potential solutions.<br>
+      <strong>Ben:</strong> <span style="font-weight:700">- - - -</span>
+    </div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(47,'A')" id="q47-A"><span class="option-letter">A</span> In that case, maybe I'll skip the first part and jump straight to the solutions.</button>
+    <button class="option-btn" onclick="selectAnswer(47,'B')" id="q47-B"><span class="option-letter">B</span> Climate change is not really a topic I find interesting at all.</button>
+    <button class="option-btn" onclick="selectAnswer(47,'C')" id="q47-C"><span class="option-letter">C</span> I think I'll just delete the article without reading the rest.</button>
+    <button class="option-btn" onclick="selectAnswer(47,'D')" id="q47-D"><span class="option-letter">D</span> You should have sent me a shorter article if you wanted me to read it.</button>
+    <button class="option-btn" onclick="selectAnswer(47,'E')" id="q47-E"><span class="option-letter">E</span> Potential solutions are useless because climate change cannot be stopped.</button>
+  </div>
+  <div class="explanation-box" id="expl-47">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">Lisa just told Ben the second half (solutions) is the most interesting. Ben's natural response would be to engage with this new information and consider a way to still benefit from the article. A is logical: since the interesting part is the second half, Ben decides to skip to it. This shows engagement and responsiveness.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — logical response; shows interest in the solutions section Lisa highlighted</div>
+      <div><span class="opt-label">B</span> — contradicts the conversation flow (Ben was reading the article)</div>
+      <div><span class="opt-label">C</span> — rude dismissal after Lisa recommended it</div>
+      <div><span class="opt-label">D</span> — blames Lisa; uncooperative and off-topic</div>
+      <div><span class="opt-label">E</span> — negative and opinionated; doesn't engage with Lisa's point</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 10: SITUATION — 3 Qs
+══════════════════════════════════════════ -->
+<div class="section-banner">
+  <div>
+    <div class="section-name">Bölüm 10 — Duruma Uygun Cümle</div>
+    <div class="section-info">Appropriate Expression for the Situation</div>
+  </div>
+  <div class="section-pill">3 Soru</div>
+</div>
+<div class="section-instruction">For questions 48–50, choose the most appropriate option for the given situation.</div>
+
+<!-- Q48 -->
+<div class="question-card" id="qcard-48">
+  <div class="q-header">
+    <div class="q-number">48</div>
+    <div class="q-text">Your classmate just received the highest mark in the class on a very difficult exam. You want to congratulate him and acknowledge his hard work.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(48,'A')" id="q48-A"><span class="option-letter">A</span> Well done! You must have studied really hard to achieve such a great result.</button>
+    <button class="option-btn" onclick="selectAnswer(48,'B')" id="q48-B"><span class="option-letter">B</span> Are you sure that's your grade? It seems a bit too high for this exam.</button>
+    <button class="option-btn" onclick="selectAnswer(48,'C')" id="q48-C"><span class="option-letter">C</span> Don't worry about it. The exam was too hard for everyone anyway.</button>
+    <button class="option-btn" onclick="selectAnswer(48,'D')" id="q48-D"><span class="option-letter">D</span> I think the teacher made a mistake. You couldn't have done that well.</button>
+    <button class="option-btn" onclick="selectAnswer(48,'E')" id="q48-E"><span class="option-letter">E</span> It doesn't matter how well you do on exams as long as you try your best.</button>
+  </div>
+  <div class="explanation-box" id="expl-48">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">The situation requires: (1) congratulation, (2) acknowledging hard work. A does both: "Well done!" = congratulation; "you must have studied really hard" = acknowledging effort. B, C, D are inappropriate (doubt, dismissal, or insult). E is a consolation phrase, not congratulations.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — tebrik + emeği tanıma (congratulation + acknowledging hard work)</div>
+      <div><span class="opt-label">B</span> — doubts the result (şüphe — rude and inappropriate)</div>
+      <div><span class="opt-label">C</span> — consolation phrase for failure (not congratulations)</div>
+      <div><span class="opt-label">D</span> — accuses the teacher of making a mistake (very rude)</div>
+      <div><span class="opt-label">E</span> — generic encouragement; doesn't congratulate or acknowledge the achievement</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q49 -->
+<div class="question-card" id="qcard-49">
+  <div class="q-header">
+    <div class="q-number">49</div>
+    <div class="q-text">You borrowed a book from a friend last month and have not yet returned it. You meet your friend and remember that you still have the book. You want to apologise and promise to return it.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(49,'A')" id="q49-A"><span class="option-letter">A</span> I'm really sorry I haven't returned your book yet. I'll bring it to you tomorrow without fail.</button>
+    <button class="option-btn" onclick="selectAnswer(49,'B')" id="q49-B"><span class="option-letter">B</span> I was planning to return your book, but you should have reminded me earlier.</button>
+    <button class="option-btn" onclick="selectAnswer(49,'C')" id="q49-C"><span class="option-letter">C</span> Do you remember lending me that book? I'm not sure if I still have it.</button>
+    <button class="option-btn" onclick="selectAnswer(49,'D')" id="q49-D"><span class="option-letter">D</span> I didn't enjoy the book that much, so you can have it back whenever you want.</button>
+    <button class="option-btn" onclick="selectAnswer(49,'E')" id="q49-E"><span class="option-letter">E</span> To be honest, I think I may have lost your book. You should buy a new one.</button>
+  </div>
+  <div class="explanation-box" id="expl-49">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">The situation requires: (1) an apology, (2) a promise to return. A has both: "I'm really sorry" = genuine apology, "I'll bring it tomorrow without fail" = definite promise. B shifts blame to the friend. C expresses uncertainty (the person clearly has the book). D is rude. E admits loss and refuses responsibility.</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — özür + kesin söz (apology + definite promise)</div>
+      <div><span class="opt-label">B</span> — blame-shifting ("you should have reminded me") — inappropriate</div>
+      <div><span class="opt-label">C</span> — feigns uncertainty; undermines the apology</div>
+      <div><span class="opt-label">D</span> — careless attitude; no apology</div>
+      <div><span class="opt-label">E</span> — claims to have lost it and refuses responsibility</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q50 -->
+<div class="question-card" id="qcard-50">
+  <div class="q-header">
+    <div class="q-number">50</div>
+    <div class="q-text">You are in a library and someone next to you is talking loudly on the phone, disturbing others. You want to politely ask them to be quieter.</div>
+  </div>
+  <div class="options-list">
+    <button class="option-btn" onclick="selectAnswer(50,'A')" id="q50-A"><span class="option-letter">A</span> Would you mind keeping your voice down? People are trying to study here.</button>
+    <button class="option-btn" onclick="selectAnswer(50,'B')" id="q50-B"><span class="option-letter">B</span> Stop talking on the phone right now! This is completely unacceptable.</button>
+    <button class="option-btn" onclick="selectAnswer(50,'C')" id="q50-C"><span class="option-letter">C</span> Libraries are public places, so you're free to do whatever you like.</button>
+    <button class="option-btn" onclick="selectAnswer(50,'D')" id="q50-D"><span class="option-letter">D</span> I don't think phone calls are allowed here, but I'm not going to say anything.</button>
+    <button class="option-btn" onclick="selectAnswer(50,'E')" id="q50-E"><span class="option-letter">E</span> Could you call me back later? I can't hear anything because of the noise.</button>
+  </div>
+  <div class="explanation-box" id="expl-50">
+    <div class="expl-title">✓ Doğru Cevap &amp; Açıklama</div>
+    <div class="expl-answer"><strong>Doğru Cevap: A</strong></div>
+    <div class="expl-why">"Would you mind + -ing?" is the classic polite request structure in English. A is polite ("Would you mind"), gives a reason ("people are trying to study"), and asks for a behaviour change (keeping voice down). B is rude and confrontational. C is permissive (opposite). D is passive (does nothing). E is irrelevant (about a phone call).</div>
+    <div class="expl-options">
+      <div><span class="opt-label">A ✓</span> — "Would you mind...?" = kibar rica (polite request + reason)</div>
+      <div><span class="opt-label">B</span> — emredici, kaba (commanding and rude — situation requires politeness)</div>
+      <div><span class="opt-label">C</span> — permissive; completely opposite of the goal</div>
+      <div><span class="opt-label">D</span> — passive; speaker says they won't say anything (contradicts the goal)</div>
+      <div><span class="opt-label">E</span> — the speaker is asking to be called back (wrong direction — speaker is not on the phone)</div>
+    </div>
+  </div>
+</div>
+
+<!-- WARN + SUBMIT -->
+<div class="warn-msg" id="warnMsg">⚠️ Bazı sorular henüz cevaplanmadı. Tüm soruları cevaplayıp tekrar deneyin ya da sınavı bu haliyle teslim edin.</div>
+<div class="submit-zone">
+  <button class="btn-submit" onclick="submitExam()" id="submitBtn">Sınavı Teslim Et →</button>
+</div>
+
+<!-- RESULTS -->
+<div class="results-panel" id="resultsPanel">
+  <div class="result-score" id="finalScore">—</div>
+  <div class="result-sub" id="finalSub">—</div>
+  <div class="result-grid">
+    <div class="result-cell"><div class="label">Doğru</div><div class="value green" id="resCorrect">—</div></div>
+    <div class="result-cell"><div class="label">Yanlış</div><div class="value red" id="resWrong">—</div></div>
+    <div class="result-cell"><div class="label">Boş</div><div class="value" id="resBlank">—</div></div>
+    <div class="result-cell"><div class="label">Net Puan</div><div class="value" id="resNet">—</div></div>
+  </div>
+  <table class="breakdown-table" id="breakdownTable">
+    <thead><tr><th>Bölüm</th><th>Doğru</th><th>Yanlış</th><th>Boş</th></tr></thead>
+    <tbody id="breakdownBody"></tbody>
+  </table>
+  <p style="margin-top:20px;font-size:13px;color:var(--muted)">Her yanlış cevap net puanı etkilemez (UDSP'de yanlışlar doğruları götürmez).</p>
+  <div class="saving-msg" id="savingMsg" style="display:none;"></div>
+</div>
+
+</div><!-- /exam-body -->
+
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxvPQj78xcKfCz8zyuXgXBXtNY-qkBXq5_A9GHyuPRv75o5eFOHQTcN0VSM_qionqv3Cg/exec";
+
+const STUDENT_DATA = {
+  "HZ A": {
+    teacher: "Ödül Bıkmaz",
+    students: ["Ali Kaan Kılıççöte","Ant Yarkın Canbay","Arya Ayvazoğlu","Batuhan Eren Özeren","Batuhan Batur","Beren Naz Atabaş","Burak Kısacık","Ceren Tokatlı","Çınar Ekşi","Defne Nas Sevinç","Derin Yaz Uçar","Ecrin Ada Öztroprak","Elif Berra Korucu","Elif Naz Kantemir","Enes Bernas Kavak","Irmak Üstün","Kıvanç Topaç","Kuzey Tekin","Kuzey Volkan Muşlu","Mehmet Mirza Koçak","Meryem Azra Eser","Oleksandra Yazenok","Selin Gümüş","Turan Efe Orman"]
+  },
+  "HZ B": {
+    teacher: "Ali Ahmadzadeh",
+    students: ["Alya Çörekçioğlu","Ayşe Kutanaoğlu","Bade Artıstak","Bedirhan Arda Alma","Beren Karslı","Bora Yelboğa","Çınar Akkaya","Damla Yurga","Duru Mina Öksüz","Duru Mumcu","Eda Nur Ordu","Ege İbrahim Bacacı","Göktuğ Hakan Kaynakoğlu","Kaan Özveren","Koray Akıncı","Serdar Güçmen","Tuna Aslan","Yunus Tanık","Yusuf Taha Öztürk","Yekta Aras Kangl"]
+  },
+  "HZ C": {
+    teacher: "Yıldırım Kocakaya",
+    students: ["Ayşe Beliz Morgül","Azra Özkan","Dinç Demir","Doğa Özçelik","Ecem İlhan","Frida Lorin Alabaş","Furkan Özgürdal","Gamze Oral","Irmak Dora Yılmaz","Kadir Dağhan Aksoy","Mehmet Emir Gürsoy","Metin Mert Varol","Mehmet Aras Ünal","Nurten Tosun","Orçun Murat","Sude Naz Yücel","Verdal Işık","Zeynep Hacıbebekoğlu","Zeynep Su Basmacı","Zeynep Su Yüksel","Tanem Acar","Alperen Aydın"]
+  },
+  "HZ D": {
+    teacher: "Emrecan Boz",
+    students: ["Ada Balkır","Asrın Deniz Akman","Ecrin Ela Yavuz","Elif Beren Can","Eylül Kale","Eymen Tercan","Ezmira Çallı","Hazal Helin Fidan","İdil Güven","İpek Eken","İris Atasü","Kaan Kavak","Karan Şatana","Kemal Onurlu","Kerem Ata Kökşen","Kuzey Sezer","Mehmet Barış Akkaş","Mehmet Mirza Aktaş","Mehmet Yiğit Ercan","Ozan Aytuğ İğde","Ömür Aktürk","Sahra Nil Üstev","Talha Gül","Yağmur Gökmen"]
+  },
+  "HZ E": {
+    teacher: "Katherine Martin",
+    students: ["Ahmet Sarp Keleş","Alya Temel","Ayşe Duru Aras","Ayşe Sinem Kılıç","Batu Çelikadam","Beren Bağdatlı","Bora Ünlü","Çağla Şarman","Demir Heperler","Duru Gülsever","Ece Barak","Efe Veli Çelik","Elif Beril Yıldız","Eylül Özkan","Mehmet Artun Duru","Meriç Ata Ceyhan","Mila Ceyhan","Ömer Salih Önen","Sabri Berke Aytemiz","Poyraz Durmuş","Sarp Deniz Selçuk","Sarp Gürbüz","Tuğsem Erzurum","Ümmiye Arslan"]
+  },
+  "HZ F": {
+    teacher: "Yeşim Başer",
+    students: ["Ada Gürmeriç","Alp Aden Ortakaya","Ayşe Nira Keser","Ayten Ercan","Batuhan Kök","Beren Çağlı","Berra Divarcı","Burak Onur Ayhan","Deniz Eray","Devran Paksoy","Doğa Baysal","Duru Turanoğuz","Efe Çınar Önay","Efe Kaplan","Ege Bozkurt","Ege Ünver","Eva Naz Türkoğlu","Güney Ali Özgürsoy","Hanzade Ada Akın","Hasan Adar Filimci","Haydar Yusuf Fidan","İdil Petek","Kuzey Atlas Sunay","Naz Ecemiş"]
+  }
+};
+
+const ANSWERS = {
+  1:'E',2:'B',3:'D',4:'E',5:'B',6:'D',7:'B',
+  8:'D',9:'B',10:'E',11:'B',12:'C',13:'A',14:'D',
+  15:'A',16:'E',17:'E',18:'A',19:'C',20:'C',21:'A',22:'A',23:'C',24:'D',
+  25:'A',26:'A',27:'A',28:'A',
+  29:'B',30:'B',31:'B',32:'C',33:'A',
+  34:'A',35:'A',36:'A',37:'B',38:'A',
+  39:'B',40:'C',41:'B',42:'B',43:'C',44:'C',
+  45:'A',46:'B',47:'A',
+  48:'A',49:'A',50:'A'
+};
+
+const SECTIONS = [
+  {name:'Kelime Bilgisi',qs:[1,2,3,4,5,6,7]},
+  {name:'Dil Bilgisi',qs:[8,9,10,11,12,13,14]},
+  {name:'Boşluk Doldurma',qs:[15,16,17,18,19,20,21,22,23,24]},
+  {name:'İng→Türkçe',qs:[25,26]},
+  {name:'Türkçe→İng',qs:[27,28]},
+  {name:'Yakın Anlamlı',qs:[29,30,31,32,33]},
+  {name:'Cümle Tamamlama',qs:[34,35,36,37,38]},
+  {name:'Okuduğunu Anlama',qs:[39,40,41,42,43,44]},
+  {name:'Diyalog Tamamlama',qs:[45,46,47]},
+  {name:'Duruma Uygun',qs:[48,49,50]}
+];
+
+let userAnswers = {};
+let submitted = false;
+let timerInterval;
+let totalSeconds = 110*60;
+let warnShown = false;
+let currentStudent = '';
+let currentTeacher = '';
+let currentClass = '';
+let startTime;
+
+function startExam(){
+  const cls = document.getElementById('classSelect').value;
+  const name = document.getElementById('studentName').value.trim();
+  const err = document.getElementById('loginErr');
+
+  if(!cls){
+    err.textContent = '⚠️ Lütfen sınıfınızı seçin.';
+    err.style.display='block'; return;
+  }
+  if(!name){
+    err.textContent = '⚠️ Lütfen adınızı ve soyadınızı girin.';
+    err.style.display='block'; return;
+  }
+  const classData = STUDENT_DATA[cls];
+  const normalize = s => s.toLowerCase().replace(/\s+/g,' ').trim();
+  const isValid = classData.students.some(s => normalize(s) === normalize(name));
+  if(!isValid){
+    err.textContent = '⚠️ Bu isim ' + cls + ' listesinde bulunamadı. Tam adınızı kontrol edin.';
+    err.style.display='block'; return;
+  }
+  err.style.display='none';
+  currentStudent = name;
+  currentTeacher = classData.teacher;
+  currentClass = cls;
+  startTime = new Date();
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('examHeaderEl').style.display='block';
+  document.getElementById('examBody').style.display='block';
+  startTimer();
+  window.scrollTo(0,0);
+}
+
+
+function checkExamWindow(){
+  // No time restriction
+}
+
+function onClassChange(){
+  const cls = document.getElementById('classSelect').value;
+  if(!cls) return;
+  const data = STUDENT_DATA[cls];
+  document.getElementById('teacherDisplay').value = data.teacher;
+  const dl = document.getElementById('studentList');
+  dl.innerHTML = data.students.map(s=>`<option value="${s}">`).join('');
+  document.getElementById('studentName').value = '';
+  document.getElementById('studentName').placeholder = 'Adınızı seçin veya yazın...';
+}
+
+function startTimer(){
+  timerInterval = setInterval(()=>{
+    totalSeconds--;
+    if(totalSeconds<=0){clearInterval(timerInterval);doSubmit();return;}
+    const h=Math.floor(totalSeconds/3600);
+    const m=Math.floor((totalSeconds%3600)/60);
+    const s=totalSeconds%60;
+    const tv=document.getElementById('timer');
+    tv.textContent=`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(totalSeconds<=600) tv.className='timer-value danger';
+    else if(totalSeconds<=1800) tv.className='timer-value warning';
+  },1000);
+}
+
+function selectAnswer(q,opt){
+  if(submitted)return;
+  userAnswers[q]=opt;
+  document.querySelectorAll(`[id^="q${q}-"]`).forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`q${q}-${opt}`).classList.add('selected');
+  updateStats();
+}
+
+function updateStats(){
+  const a=Object.keys(userAnswers).length;
+  document.getElementById('answeredCount').textContent=a;
+  document.getElementById('remainingCount').textContent=50-a;
+  document.getElementById('progressBar').style.width=(a/50*100)+'%';
+}
+
+function submitExam(){
+  const answered=Object.keys(userAnswers).length;
+  if(answered<50 && !warnShown){
+    document.getElementById('warnMsg').classList.add('show');
+    warnShown=true;
+    return;
+  }
+  doSubmit();
+}
+
+function doSubmit(){
+  submitted=true;
+  clearInterval(timerInterval);
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('warnMsg').classList.remove('show');
+
+  let correct=0,wrong=0,blank=0;
+  const sectionScores={};
+
+  for(let q=1;q<=50;q++){
+    const ua=userAnswers[q];
+    const ca=ANSWERS[q];
+    if(!ua) blank++;
+    else if(ua===ca) correct++;
+    else wrong++;
+    ['A','B','C','D','E'].forEach(l=>{
+      const btn=document.getElementById(`q${q}-${l}`);
+      if(!btn)return;
+      btn.disabled=true;
+      if(l===ca) btn.classList.add(ua===ca?'correct':'revealed-correct');
+      else if(l===ua&&ua!==ca) btn.classList.add('wrong');
+    });
+    const expl=document.getElementById(`expl-${q}`);
+    if(expl) expl.classList.add('show');
+  }
+
+  const pct=Math.round(correct/50*100);
+  document.getElementById('finalScore').textContent=pct+'%';
+  document.getElementById('finalSub').textContent=`${currentStudent} — ${correct} Doğru / 50 Soru`;
+  document.getElementById('resCorrect').textContent=correct;
+  document.getElementById('resWrong').textContent=wrong;
+  document.getElementById('resBlank').textContent=blank;
+  document.getElementById('resNet').textContent=correct;
+
+  const tbody=document.getElementById('breakdownBody');
+  tbody.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    let sc=0,sw=0,sb=0;
+    sec.qs.forEach(q=>{
+      const ua=userAnswers[q];
+      if(!ua) sb++;
+      else if(ua===ANSWERS[q]) sc++;
+      else sw++;
+    });
+    sectionScores[sec.name]=`${sc}/${sec.qs.length}`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${sec.name}</td><td style="color:var(--correct);font-weight:600">${sc}</td><td style="color:var(--wrong);font-weight:600">${sw}</td><td>${sb}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth',block:'start'});
+
+  const endTime=new Date();
+  const diffSec=Math.round((endTime-startTime)/1000);
+  const timeTaken=`${Math.floor(diffSec/60)}dk ${diffSec%60}sn`;
+
+  sendToSheet({
+    studentName:currentStudent,
+    teacherName:currentTeacher,
+    className:currentClass,
+    examDay:'Gün 1',
+    score:pct,
+    correct:correct,
+    wrong:wrong,
+    blank:blank,
+    sectionScores:JSON.stringify(sectionScores),
+    timeTaken:timeTaken
+  });
+}
+
+function sendToSheet(data){
+  const msg=document.getElementById('savingMsg');
+  msg.style.display='block';
+  msg.textContent='📡 Sonuçlar kaydediliyor...';
+  msg.className='saving-msg';
+  fetch(SHEET_URL,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  })
+  .then(()=>{
+    msg.textContent='✅ Sonuçlarınız başarıyla kaydedildi!';
+    msg.className='saving-msg success';
+  })
+  .catch(()=>{
+    msg.textContent='⚠️ Kayıt sırasında sorun oluştu. Öğretmeninize bildirin.';
+    msg.className='saving-msg error';
+  });
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400);
+});
+
+checkExamWindow();
+</script>
+</body>
+</html>
