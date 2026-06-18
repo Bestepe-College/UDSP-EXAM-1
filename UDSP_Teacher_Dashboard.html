@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDSP — Öğretmen Paneli</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700&display=swap');
+  :root{
+    --navy:#1a2744;--red:#c0392b;--gold:#f0a500;
+    --bg:#f5f6fa;--white:#fff;--border:#dde1ed;--muted:#6b7a99;
+    --correct:#1a7f4b;--correct-bg:#eafaf1;--wrong:#c0392b;--wrong-bg:#fdf0ef;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;}
+
+  /* LOGIN */
+  .pw-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+  .pw-card{background:white;border-radius:16px;padding:48px 40px;box-shadow:0 8px 40px rgba(26,39,68,.15);width:100%;max-width:400px;text-align:center;}
+  .pw-badge{background:var(--navy);color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:6px;display:inline-block;margin-bottom:20px;}
+  .pw-title{font-family:'Merriweather',serif;font-size:20px;font-weight:700;margin-bottom:8px;}
+  .pw-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
+  .pw-input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:16px;font-family:'Inter',sans-serif;letter-spacing:4px;text-align:center;margin-bottom:12px;}
+  .pw-input:focus{outline:none;border-color:var(--navy);}
+  .pw-btn{width:100%;padding:14px;background:var(--navy);color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;}
+  .pw-btn:hover{background:#243258;}
+  .pw-err{color:var(--red);font-size:13px;margin-top:10px;display:none;}
+
+  /* DASHBOARD */
+  .dashboard{display:none;}
+  .dash-header{background:var(--navy);color:white;padding:20px 32px;display:flex;align-items:center;justify-content:space-between;}
+  .dash-title{font-family:'Merriweather',serif;font-size:18px;}
+  .dash-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px;}
+  .btn-refresh{background:var(--gold);color:var(--navy);border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .btn-refresh:hover{opacity:.9;}
+  .btn-excel{background:var(--correct);color:white;border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-left:8px;}
+  .btn-excel:hover{opacity:.9;}
+  .btn-logout{background:transparent;color:white;border:1.5px solid rgba(255,255,255,.4);padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-left:8px;}
+  .btn-logout:hover{background:rgba(255,255,255,.1);border-color:white;}
+  .btn-reentry{background:#fff4e8;color:#e67e22;border:1.5px solid #e67e22;padding:6px 12px;border-radius:6px;font-weight:600;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
+  .btn-reentry:hover{background:#e67e22;color:white;}
+  .btn-reentry:disabled{opacity:.7;cursor:not-allowed;}
+  .dash-tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--border);}
+  .dash-tab{padding:12px 20px;border:none;background:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;}
+  .dash-tab:hover{color:var(--navy);}
+  .dash-tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+  .study-bar-track{background:#eef1fb;border-radius:6px;height:8px;overflow:hidden;width:100%;}
+  .study-bar-fill{height:100%;background:var(--navy);border-radius:6px;}
+  .study-progress-cell{display:flex;align-items:center;gap:8px;min-width:120px;}
+  .study-progress-cell span{font-size:12px;color:var(--muted);white-space:nowrap;}
+  .sec-time-pill{display:inline-block;background:#f0f2f8;border-radius:5px;padding:2px 8px;font-size:11px;margin:2px;color:var(--navy);}
+
+  .dash-body{max-width:1200px;margin:0 auto;padding:32px 20px;}
+
+  /* SUMMARY CARDS */
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px;}
+  .sum-card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(26,39,68,.06);}
+  .sum-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+  .sum-value{font-size:32px;font-weight:700;color:var(--navy);}
+  .sum-value.green{color:var(--correct);}
+  .sum-value.gold{color:var(--gold);}
+
+  /* FILTERS */
+  .filter-bar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+  .filter-bar select,.filter-bar input{padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--navy);}
+  .filter-bar select:focus,.filter-bar input:focus{outline:none;border-color:var(--navy);}
+  .filter-label{font-size:13px;font-weight:600;color:var(--navy);}
+
+  /* TABLE */
+  .table-wrap{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(26,39,68,.06);overflow:hidden;margin-bottom:32px;}
+  .table-title{padding:16px 20px;border-bottom:1px solid var(--border);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--navy);color:white;padding:11px 14px;font-size:12px;text-align:left;white-space:nowrap;}
+  td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+  tr:hover td{background:#f8f9fd;}
+  tr:last-child td{border-bottom:none;}
+  .score-pill{padding:3px 10px;border-radius:20px;font-weight:700;font-size:12px;}
+  .score-high{background:var(--correct-bg);color:var(--correct);}
+  .score-mid{background:#fff8e1;color:#7a5900;}
+  .score-low{background:var(--wrong-bg);color:var(--wrong);}
+
+  /* SECTION ANALYSIS */
+  .section-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:32px;}
+  .sec-card{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(26,39,68,.06);}
+  .sec-name{font-weight:700;font-size:13px;margin-bottom:12px;color:var(--navy);}
+  .bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .bar-label{font-size:12px;color:var(--muted);width:30px;}
+  .bar-bg{flex:1;height:10px;background:#eee;border-radius:5px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:5px;transition:width .5s;}
+  .bar-pct{font-size:12px;font-weight:700;width:36px;text-align:right;}
+
+  .loading-msg{text-align:center;padding:60px;color:var(--muted);font-size:15px;}
+  .error-msg{text-align:center;padding:40px;color:var(--red);background:var(--wrong-bg);border-radius:12px;margin:20px 0;}
+
+  @media(max-width:600px){.dash-header{padding:16px;flex-wrap:wrap;gap:12px;}.dash-body{padding:16px 12px;}}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div class="pw-screen" id="pwScreen">
+  <div class="pw-card">
+    <div class="pw-badge">MEB · UDSP</div>
+    <div class="pw-title">Öğretmen Paneli</div>
+    <div class="pw-sub">Bu panel yalnızca öğretmenler içindir.<br>Erişim için şifrenizi girin.</div>
+    <input class="pw-input" type="password" id="pwInput" placeholder="••••••" onkeydown="if(event.key==='Enter')checkPw()"/>
+    <button class="pw-btn" onclick="checkPw()">Giriş Yap →</button>
+    <div class="pw-err" id="pwErr">❌ Yanlış şifre. Tekrar deneyin.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div>
+      <div class="dash-title">UDSP Öğretmen Paneli</div>
+      <div class="dash-sub">Hoş geldiniz: <span id="dashTeacherName" style="color:var(--gold);font-weight:700;"></span></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-refresh" onclick="loadData()">↻ Yenile</button>
+      <button class="btn-excel" onclick="exportExcel()">📥 Excel İndir</button>
+      <button class="btn-logout" onclick="logout()">🚪 Çıkış Yap</button>
+    </div>
+  </div>
+
+  <div class="dash-body">
+
+    <!-- DASHBOARD TABS -->
+    <div class="dash-tabs">
+      <button class="dash-tab active" id="dtab-results" onclick="switchDashTab('results')">📊 Sınav Sonuçları</button>
+      <button class="dash-tab" id="dtab-study" onclick="switchDashTab('study')">📖 Çalışma Takibi</button>
+    </div>
+
+    <!-- ═══ TAB: EXAM RESULTS ═══ -->
+    <div id="dashview-results">
+
+    <!-- SUMMARY -->
+    <div class="summary-grid">
+      <div class="sum-card"><div class="sum-label">Toplam Öğrenci</div><div class="sum-value" id="sumTotal">—</div></div>
+      <div class="sum-card"><div class="sum-label">Ortalama Puan</div><div class="sum-value gold" id="sumAvg">—</div></div>
+      <div class="sum-card"><div class="sum-label">En Yüksek</div><div class="sum-value green" id="sumHigh">—</div></div>
+      <div class="sum-card"><div class="sum-label">En Düşük</div><div class="sum-value" style="color:var(--wrong)" id="sumLow">—</div></div>
+      <div class="sum-card"><div class="sum-label">Geçme Oranı (≥70%)</div><div class="sum-value green" id="sumPass">—</div></div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-bar">
+      <span class="filter-label">Filtrele:</span>
+      <select id="filterTeacher" onchange="renderTable()">
+        <option value="">Tüm Öğretmenler</option>
+      </select>
+      <select id="filterExam" onchange="renderTable()">
+        <option value="">Tüm Günler</option>
+      </select>
+      <input type="text" id="filterSearch" placeholder="Öğrenci adı ara..." oninput="renderTable()" style="min-width:180px;"/>
+    </div>
+
+    <!-- RESULTS TABLE -->
+    <div class="table-wrap">
+      <div class="table-title">
+        <span>Öğrenci Sonuçları</span>
+        <span id="tableCount" style="font-size:13px;color:var(--muted);font-weight:400;"></span>
+      </div>
+      <div id="tableContainer"><div class="loading-msg">⏳ Veriler yükleniyor...</div></div>
+    </div>
+
+    <!-- SECTION ANALYSIS -->
+    <div class="table-wrap">
+      <div class="table-title">Bölüm Bazlı Başarı Analizi</div>
+      <div style="padding:20px;">
+        <div class="section-grid" id="sectionGrid">
+          <div class="loading-msg">⏳ Bölüm analizi yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /dashview-results -->
+
+    <!-- ═══ TAB: STUDY TRACKING ═══ -->
+    <div id="dashview-study" style="display:none;">
+
+      <div class="summary-grid">
+        <div class="sum-card"><div class="sum-label">Çalışma Sayfasını Açan</div><div class="sum-value" id="studyTotal">—</div></div>
+        <div class="sum-card"><div class="sum-label">Ortalama Tamamlanan Sayfa</div><div class="sum-value gold" id="studyAvgPages">—</div></div>
+        <div class="sum-card"><div class="sum-label">Ortalama Süre</div><div class="sum-value green" id="studyAvgTime">—</div></div>
+        <div class="sum-card"><div class="sum-label">Tüm Sayfaları Bitiren</div><div class="sum-value green" id="studyCompleted">—</div></div>
+      </div>
+
+      <div class="filter-bar">
+        <span class="filter-label">Filtrele:</span>
+        <select id="filterStudyClass" onchange="renderStudyTable()">
+          <option value="">Tüm Sınıflar</option>
+        </select>
+        <input type="text" id="filterStudySearch" placeholder="Öğrenci adı ara..." oninput="renderStudyTable()" style="min-width:180px;"/>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-title">
+          <span>Çalışma Rehberi Aktivitesi</span>
+          <span id="studyTableCount" style="font-size:13px;color:var(--muted);font-weight:400;"></span>
+        </div>
+        <div id="studyTableContainer"><div class="loading-msg">⏳ Veriler yükleniyor...</div></div>
+      </div>
+
+    </div><!-- /dashview-study -->
+
+  </div>
+</div>
+
+
+<script>
+// ── TEACHER PASSWORDS ──
+const TEACHER_HASHES = {
+  "Ödül Bıkmaz":       "dffbb105bdcc9376234c9ceaba99f47631523308ccb3716297d50b354e64faa8",
+  "Ali Ahmadzadeh":    "b6d8b2f8c33ab800d2fb85a3e04641f218f9faa0f65e7a9eb54cc8a705bb4c03",
+  "Yıldırım Kocakaya": "b1ed34144b8a390257196603f8a9f195bcdc11502788b7ff4fea5bba05723ed9",
+  "Emrecan Boz":       "702fe76d8dadc9ab20a5b54b46971e2deabc16d8282c9c78235f2394c817f275",
+  "Katherine Martin":  "517ea9fd91fcfd68c211a86380f96818a1b86d2b1f561a894c8759f6df62b241",
+  "Yeşim Başer":       "2e58cee015e0d726eb0d97aa247f6243b7fc808e0a53db73c865fc3e6136a107",
+  "İzver Saçkan":      "7c5af05275f1fb90ea054e492fa30d224a39366d0bd48ad5de78ac928fc940ef"
+};
+
+// Admin password — full access to all teachers' data
+const ADMIN_HASH = "6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6";
+
+let currentTeacherFilter = null;
+let isAdmin = false;
+
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkPw(){
+  const val = document.getElementById('pwInput').value;
+  const hash = await sha256(val);
+
+  // Check admin password first
+  if(hash === ADMIN_HASH){
+    isAdmin = true;
+    currentTeacherFilter = null; // no filter = sees everyone
+    document.getElementById('pwScreen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('dashTeacherName').textContent = 'Yönetici (Tüm Veriler)';
+    loadData();
+    return;
+  }
+
+  // Check against all teacher passwords
+  let matchedTeacher = null;
+  for(const [teacher, h] of Object.entries(TEACHER_HASHES)){
+    if(hash === h){ matchedTeacher = teacher; break; }
+  }
+
+  if(matchedTeacher){
+    isAdmin = false;
+    currentTeacherFilter = matchedTeacher;
+    document.getElementById('pwScreen').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('dashTeacherName').textContent = matchedTeacher;
+    loadData();
+  } else {
+    const err = document.getElementById('pwErr');
+    err.style.display='block';
+    document.getElementById('pwInput').value='';
+    setTimeout(()=>err.style.display='none',3000);
+  }
+}
+
+function logout(){
+  isAdmin = false;
+  currentTeacherFilter = null;
+  allData = [];
+  document.getElementById('pwInput').value = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('pwScreen').style.display = 'flex';
+}
+
+// ── DASHBOARD TAB SWITCHING ──
+function switchDashTab(tab){
+  document.getElementById('dtab-results').classList.toggle('active', tab === 'results');
+  document.getElementById('dtab-study').classList.toggle('active', tab === 'study');
+  document.getElementById('dashview-results').style.display = (tab === 'results') ? '' : 'none';
+  document.getElementById('dashview-study').style.display = (tab === 'study') ? '' : 'none';
+  if(tab === 'study' && studyData.length === 0){
+    loadStudyData();
+  }
+}
+
+// ── STUDY GUIDE TRACKING DATA ──
+let studyData = [];
+
+async function loadStudyData(){
+  document.getElementById('studyTableContainer').innerHTML = '<div class="loading-msg">⏳ Veriler yükleniyor...</div>';
+  try {
+    const res = await fetch(SHEET_URL + '?action=studyData');
+    const json = await res.json();
+    studyData = (json.data || []).map(r => ({
+      timestamp: r['Son Güncelleme'] || '',
+      studentName: r['Öğrenci Adı'] || '',
+      className: r['Sınıf'] || '',
+      event: r['Olay'] || '',
+      pagesVisited: Number(r['Ziyaret Edilen Sayfa']) || 0,
+      totalPages: Number(r['Toplam Sayfa']) || 6,
+      totalTimeSeconds: Number(r['Toplam Süre (sn)']) || 0,
+      sectionTimes: r['Bölüm Süreleri'] || '{}',
+      selfCheckCorrect: Number(r['Doğru Self-Check']) || 0,
+      selfCheckTotal: Number(r['Toplam Self-Check']) || 0
+    }));
+
+    // Apply teacher filter (non-admin sees only their class's students)
+    // Since study data doesn't have teacher name, we filter by matching class membership later if needed.
+    populateStudyFilters();
+    renderStudyTable();
+  } catch(e){
+    document.getElementById('studyTableContainer').innerHTML =
+      `<div class="error-msg">⚠️ Çalışma verileri yüklenemedi.<br><small>${e.message}</small></div>`;
+  }
+}
+
+function populateStudyFilters(){
+  const classSel = document.getElementById('filterStudyClass');
+  const classes = [...new Set(studyData.map(r => r.className).filter(Boolean))].sort();
+  classSel.innerHTML = '<option value="">Tüm Sınıflar</option>' +
+    classes.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function formatDuration(totalSeconds){
+  if(!totalSeconds) return '0dk';
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  if(m === 0) return `${s}sn`;
+  return `${m}dk ${s}sn`;
+}
+
+function renderStudyTable(){
+  const classFilter = document.getElementById('filterStudyClass').value;
+  const searchFilter = document.getElementById('filterStudySearch').value.toLowerCase().trim();
+
+  let filtered = studyData.filter(r => {
+    if(classFilter && r.className !== classFilter) return false;
+    if(searchFilter && !r.studentName.toLowerCase().includes(searchFilter)) return false;
+    return true;
+  });
+
+  // Summary stats
+  document.getElementById('studyTotal').textContent = filtered.length;
+  if(filtered.length){
+    const avgPages = filtered.reduce((s,r)=>s+r.pagesVisited,0) / filtered.length;
+    const avgTime = filtered.reduce((s,r)=>s+r.totalTimeSeconds,0) / filtered.length;
+    const completed = filtered.filter(r => r.pagesVisited >= r.totalPages).length;
+    const maxPages = Math.max(...filtered.map(r => r.totalPages), 1);
+    document.getElementById('studyAvgPages').textContent = avgPages.toFixed(1) + ' / ' + maxPages;
+    document.getElementById('studyAvgTime').textContent = formatDuration(Math.round(avgTime));
+    document.getElementById('studyCompleted').textContent = completed;
+  } else {
+    document.getElementById('studyAvgPages').textContent = '—';
+    document.getElementById('studyAvgTime').textContent = '—';
+    document.getElementById('studyCompleted').textContent = '—';
+  }
+
+  document.getElementById('studyTableCount').textContent = `${filtered.length} kayıt`;
+
+  if(!filtered.length){
+    document.getElementById('studyTableContainer').innerHTML =
+      '<div class="loading-msg" style="padding:30px">Henüz çalışma rehberini açan öğrenci yok.</div>';
+    return;
+  }
+
+  const sorted = [...filtered].sort((a,b) => b.pagesVisited - a.pagesVisited || b.totalTimeSeconds - a.totalTimeSeconds);
+
+  let html = `<table>
+    <thead><tr>
+      <th>#</th><th>Öğrenci</th><th>Sınıf</th><th>İlerleme</th><th>Toplam Süre</th>
+      <th>Self-Check</th><th>Bölüm Süreleri</th><th>Son Aktivite</th>
+    </tr></thead><tbody>`;
+
+  const sectionLabels = {
+    1:'Present', 2:'Past', 3:'Future', 4:'Conditionals I', 5:'Conditionals II',
+    6:'Passive', 7:'Modals/Reported', 8:'Clauses', 9:'Gerund/Infinitive',
+    10:'Kelime I', 11:'Kelime II', 12:'Çeviri I', 13:'Çeviri II',
+    14:'Yakın Anlam I', 15:'Yakın Anlam II', 16:'Diyalog', 17:'Duruma Uygun'
+  };
+
+  sorted.forEach((r,i) => {
+    const pct = Math.round((r.pagesVisited / r.totalPages) * 100);
+    const isComplete = r.pagesVisited >= r.totalPages;
+    let secTimes = {};
+    try { secTimes = JSON.parse(r.sectionTimes); } catch(e){}
+    const secHtml = Object.entries(secTimes)
+      .filter(([k,v]) => v > 0)
+      .map(([k,v]) => `<span class="sec-time-pill">${sectionLabels[k]||k}: ${formatDuration(v)}</span>`)
+      .join('') || '<span style="color:var(--muted);font-size:12px">—</span>';
+
+    const checkStr = r.selfCheckTotal > 0 ? `${r.selfCheckCorrect}/${r.selfCheckTotal}` : '—';
+    const lastActivity = r.timestamp ? new Date(r.timestamp).toLocaleString('tr-TR', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+
+    html += `<tr>
+      <td>${i+1}</td>
+      <td><strong>${r.studentName}</strong></td>
+      <td>${r.className}</td>
+      <td>
+        <div class="study-progress-cell">
+          <div class="study-bar-track"><div class="study-bar-fill" style="width:${pct}%;background:${isComplete?'var(--correct)':'var(--navy)'}"></div></div>
+          <span>${r.pagesVisited}/${r.totalPages}${isComplete?' ✓':''}</span>
+        </div>
+      </td>
+      <td>${formatDuration(r.totalTimeSeconds)}</td>
+      <td>${checkStr}</td>
+      <td>${secHtml}</td>
+      <td style="color:var(--muted);font-size:12px">${lastActivity}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('studyTableContainer').innerHTML = html;
+}
+
+// ── DATA ──
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxvPQj78xcKfCz8zyuXgXBXtNY-qkBXq5_A9GHyuPRv75o5eFOHQTcN0VSM_qionqv3Cg/exec";
+
+let allData = [];
+
+async function loadData(){
+  document.getElementById('tableContainer').innerHTML='<div class="loading-msg">⏳ Veriler yükleniyor...</div>';
+  try {
+    const res = await fetch(SHEET_URL + '?action=read');
+    const json = await res.json();
+    // Map Turkish column headers to internal keys
+    allData = (json.data || []).map(r => {
+      // score may come as number or string — force Number
+      const rawScore = r['Puan %'] ?? r['Puan (%)'] ?? r['score'] ?? 0;
+      const score = Number(String(rawScore).replace('%','').trim()) || 0;
+      return {
+        timestamp:    r['Tarih']           || r['timestamp']    || '',
+        studentName:  r['Öğrenci Adı']     || r['studentName']  || '',
+        teacherName:  r['Öğretmen Adı']    || r['teacherName']  || '',
+        className:    r['Sınıf']           || r['className']    || '—',
+        examDay:      r['Sınav Günü']      || r['examDay']      || '',
+        score:        score,
+        correct:      Number(r['Doğru']    || r['correct']      || 0),
+        wrong:        Number(r['Yanlış']   || r['wrong']        || 0),
+        blank:        Number(r['Boş']      || r['blank']        || 0),
+        sectionScores:r['Bölüm Puanları']  || r['sectionScores']|| '{}',
+        timeTaken:    r['Süre']            || r['timeTaken']    || ''
+      };
+    });
+    // Filter data by logged-in teacher
+    if(currentTeacherFilter){
+      allData = allData.filter(r => r.teacherName === currentTeacherFilter);
+    }
+    populateFilters();
+    renderSummary();
+    renderTable();
+    renderSections();
+  } catch(e){
+    document.getElementById('tableContainer').innerHTML=
+      `<div class="error-msg">⚠️ Veriler yüklenemedi.<br><small>Google Apps Script'te GET isteğine izin verildiğinden emin olun.<br>${e.message}</small></div>`;
+  }
+}
+
+function populateFilters(){
+  const teachers = [...new Set(allData.map(r=>r.teacherName).filter(Boolean))].sort();
+  const exams = [...new Set(allData.map(r=>r.examDay).filter(Boolean))].sort();
+  const tSel = document.getElementById('filterTeacher');
+  const eSel = document.getElementById('filterExam');
+  tSel.innerHTML='<option value="">Tüm Öğretmenler</option>'+teachers.map(t=>`<option>${t}</option>`).join('');
+  eSel.innerHTML='<option value="">Tüm Günler</option>'+exams.map(e=>`<option>${e}</option>`).join('');
+}
+
+function getFiltered(){
+  const teacher = document.getElementById('filterTeacher').value;
+  const exam = document.getElementById('filterExam').value;
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+  return allData.filter(r=>{
+    if(teacher && r.teacherName !== teacher) return false;
+    if(exam && r.examDay !== exam) return false;
+    if(search && !(r.studentName||'').toLowerCase().includes(search)) return false;
+    return true;
+  });
+}
+
+function renderSummary(){
+  const d = allData;
+  const scores = d.map(r=>Number(r.score)||0);
+  const avg = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : 0;
+  const pass = scores.filter(s=>s>=70).length;
+  document.getElementById('sumTotal').textContent = d.length;
+  document.getElementById('sumAvg').textContent = avg+'%';
+  document.getElementById('sumHigh').textContent = scores.length ? Math.max(...scores)+'%' : '—';
+  document.getElementById('sumLow').textContent = scores.length ? Math.min(...scores)+'%' : '—';
+  document.getElementById('sumPass').textContent = scores.length ? Math.round(pass/scores.length*100)+'%' : '—';
+}
+
+function scorePill(s){
+  const cls = s>=70?'score-high':s>=50?'score-mid':'score-low';
+  return `<span class="score-pill ${cls}">${s}%</span>`;
+}
+
+function renderTable(){
+  const data = getFiltered();
+  document.getElementById('tableCount').textContent = `${data.length} kayıt`;
+  if(!data.length){
+    document.getElementById('tableContainer').innerHTML='<div class="loading-msg" style="padding:30px">Sonuç bulunamadı.</div>';
+    return;
+  }
+  const sorted = [...data].sort((a,b)=>(b.score||0)-(a.score||0));
+  let html=`<table>
+    <thead><tr>
+      <th>#</th><th>Öğrenci</th><th>Sınıf</th><th>Gün</th>
+      <th>Puan</th><th>Doğru</th><th>Yanlış</th><th>Boş</th><th>Süre</th><th>Tarih</th><th>İşlem</th>
+    </tr></thead><tbody>`;
+  sorted.forEach((r,i)=>{
+    const date = r.timestamp ? new Date(r.timestamp).toLocaleDateString('tr-TR') : '—';
+    const safeNameAttr = (r.studentName||'').replace(/'/g,"\\'");
+    const safeExamAttr = (r.examDay||'').replace(/'/g,"\\'");
+    const safeClassAttr = (r.className||'').replace(/'/g,"\\'");
+    html+=`<tr>
+      <td>${i+1}</td>
+      <td><strong>${r.studentName||'—'}</strong></td>
+      <td>${r.className||'—'}</td>
+      <td>${r.examDay||'—'}</td>
+      <td>${scorePill(Number(r.score)||0)}</td>
+      <td style="color:var(--correct);font-weight:600">${r.correct||0}</td>
+      <td style="color:var(--wrong);font-weight:600">${r.wrong||0}</td>
+      <td>${r.blank||0}</td>
+      <td>${r.timeTaken||'—'}</td>
+      <td style="color:var(--muted)">${date}</td>
+      <td><button class="btn-reentry" onclick="grantReentry('${safeNameAttr}','${safeClassAttr}','${safeExamAttr}', this)">🔓 İzin Ver</button></td>
+    </tr>`;
+  });
+  html+='</tbody></table>';
+  document.getElementById('tableContainer').innerHTML=html;
+}
+
+async function grantReentry(studentName, className, examDay, btnEl){
+  const confirmMsg = `${studentName} (${className}, ${examDay}) için yeniden giriş izni vermek istediğinize emin misiniz?\n\nBu öğrenci bir sonraki girişinde sınava yeniden başlayabilecek.`;
+  if(!confirm(confirmMsg)) return;
+
+  btnEl.disabled = true;
+  btnEl.textContent = '⏳ İşleniyor...';
+
+  try{
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        action: 'grantReentry',
+        studentName: studentName,
+        className: className,
+        examDay: examDay
+      })
+    });
+    btnEl.textContent = '✅ İzin Verildi';
+    btnEl.style.background = 'var(--correct)';
+    btnEl.style.color = 'white';
+  } catch(e){
+    btnEl.textContent = '❌ Hata';
+    btnEl.disabled = false;
+  }
+}
+
+function renderSections(){
+  const SECTION_NAMES = [
+    'Kelime Bilgisi','Dil Bilgisi','Boşluk Doldurma',
+    'İng→Türkçe','Türkçe→İng','Yakın Anlamlı',
+    'Cümle Tamamlama','Okuduğunu Anlama','Diyalog Tamamlama','Duruma Uygun'
+  ];
+  const SECTION_MAX = [7,7,10,2,2,5,5,6,3,3];
+
+  // Aggregate section scores across all students
+  const totals = {};
+  const counts = {};
+  SECTION_NAMES.forEach(n=>{totals[n]=0;counts[n]=0;});
+
+  allData.forEach(r=>{
+    try{
+      const sc = JSON.parse(r.sectionScores||'{}');
+      Object.entries(sc).forEach(([name,val])=>{
+        if(totals[name]!==undefined){
+          const parts = val.split('/');
+          totals[name]+= parseInt(parts[0])||0;
+          counts[name]++;
+        }
+      });
+    }catch(e){}
+  });
+
+  const grid = document.getElementById('sectionGrid');
+  if(!allData.length){grid.innerHTML='<div style="color:var(--muted);padding:20px">Henüz veri yok.</div>';return;}
+
+  let html='';
+  SECTION_NAMES.forEach((name,i)=>{
+    const avg = counts[name] ? totals[name]/counts[name] : 0;
+    const maxQ = SECTION_MAX[i];
+    const pct = Math.round(avg/maxQ*100);
+    const color = pct>=70?'var(--correct)':pct>=50?'var(--gold)':'var(--wrong)';
+    html+=`<div class="sec-card">
+      <div class="sec-name">${name} <span style="color:var(--muted);font-weight:400">(${maxQ} soru)</span></div>
+      <div class="bar-wrap">
+        <div class="bar-label" style="width:auto;font-size:11px">Ort.</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        <div class="bar-pct" style="color:${color}">${pct}%</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">${counts[name]} öğrenciden ortalama: ${avg.toFixed(1)}/${maxQ}</div>
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
+
+function exportExcel(){
+  const data = getFiltered();
+  if(!data.length){ alert('Dışa aktarılacak veri bulunamadı.'); return; }
+
+  const headers = ['#','Öğrenci Adı','Sınıf','Öğretmen','Sınav Günü','Puan (%)','Doğru','Yanlış','Boş','Süre','Tarih',
+    'Kelime Bilgisi','Dil Bilgisi','Boşluk Doldurma','İng→Türkçe','Türkçe→İng',
+    'Yakın Anlamlı','Cümle Tamamlama','Okuduğunu Anlama','Diyalog Tamamlama','Duruma Uygun'];
+
+  const sectionNames = ['Kelime Bilgisi','Dil Bilgisi','Boşluk Doldurma','İng→Türkçe','Türkçe→İng',
+    'Yakın Anlamlı','Cümle Tamamlama','Okuduğunu Anlama','Diyalog Tamamlama','Duruma Uygun'];
+
+  const rows = data.map((r, i) => {
+    let sections = {};
+    try { sections = JSON.parse(r.sectionScores || '{}'); } catch(e){}
+    const sectionVals = sectionNames.map(n => {
+      const val = sections[n] || '—';
+      // Prefix with apostrophe to force Excel to treat as text, not a date
+      return val !== '—' ? "'" + val : val;
+    });
+    const date = r.timestamp ? new Date(r.timestamp).toLocaleDateString('tr-TR') : '—';
+    return [
+      i+1, r.studentName||'—', r.className||'—', r.teacherName||'—',
+      r.examDay||'—', r.score||0, r.correct||0, r.wrong||0, r.blank||0,
+      r.timeTaken||'—', date, ...sectionVals
+    ];
+  });
+
+  const escape = v => `"${String(v).replace(/"/g,'""')}"`;
+  const csv = [
+    headers.map(escape).join(','),
+    ...rows.map(row => row.map(escape).join(','))
+  ].join('\n');
+
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const today = new Date().toLocaleDateString('tr-TR').replace(/\./g,'-');
+  const teacherName = currentTeacherFilter ? currentTeacherFilter.split(' ')[0] : 'Tum';
+  a.href = url;
+  a.download = `UDSP_Sonuclar_${teacherName}_${today}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
