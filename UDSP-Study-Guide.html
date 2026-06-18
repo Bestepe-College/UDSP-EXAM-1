@@ -1,0 +1,2994 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDSP — Sınav Öncesi Çalışma Rehberi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --navy:#1a2744; --navy-light:#2a3a5c; --gold:#b8860b; --gold-light:#d4a017;
+    --cream:#faf8f3; --paper:#fffdf9; --ink:#2c2825; --muted:#6b6357;
+    --border:#e0d9c8; --correct:#1a7f4b; --wrong:#a8392e; --correct-bg:#eaf6ef; --wrong-bg:#fbeeec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;}
+
+  /* ── LOGIN SCREEN ── */
+  .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .login-card{background:var(--paper);border-radius:16px;padding:44px 40px;max-width:460px;width:100%;box-shadow:0 12px 48px rgba(26,39,68,.12);border:1px solid var(--border);}
+  .login-icon{font-size:40px;text-align:center;margin-bottom:8px;}
+  .login-title{font-family:'Source Serif 4',serif;font-size:26px;font-weight:700;text-align:center;color:var(--navy);margin-bottom:6px;}
+  .login-sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:32px;}
+  .form-group{margin-bottom:18px;}
+  .form-label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .form-input,.form-select{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'Inter',sans-serif;background:white;color:var(--ink);}
+  .form-input:focus,.form-select:focus{outline:none;border-color:var(--gold);}
+  .btn-start{width:100%;background:var(--navy);color:white;border:none;padding:15px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:'Inter',sans-serif;}
+  .btn-start:hover{background:var(--navy-light);}
+  .login-err{display:none;background:#fbeeec;color:var(--wrong);padding:11px 14px;border-radius:8px;font-size:13px;margin-top:14px;border:1px solid var(--wrong);}
+  .login-note{text-align:center;font-size:12px;color:var(--muted);margin-top:22px;line-height:1.5;}
+
+  /* ── STUDY HEADER ── */
+  .study-header{background:var(--navy);color:white;padding:16px 28px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.15);}
+  .sh-left{display:flex;align-items:center;gap:14px;}
+  .sh-title{font-family:'Source Serif 4',serif;font-weight:700;font-size:17px;}
+  .sh-student{font-size:12px;color:#c9d2e6;}
+  .sh-progress{display:flex;align-items:center;gap:10px;}
+  .progress-track{width:140px;height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--gold-light);transition:width .3s;}
+  .progress-label{font-size:12px;color:#c9d2e6;white-space:nowrap;}
+
+  /* ── PAGE NAV TABS ── */
+  .page-tabs{display:flex;gap:6px;padding:14px 28px;background:var(--paper);border-bottom:1px solid var(--border);overflow-x:auto;position:sticky;top:60px;z-index:99;}
+  .page-tab{flex-shrink:0;padding:9px 16px;border-radius:8px;border:1.5px solid var(--border);background:white;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
+  .page-tab:hover{border-color:var(--gold);}
+  .page-tab.active{background:var(--navy);color:white;border-color:var(--navy);}
+  .page-tab.visited::after{content:' ✓';color:var(--correct);}
+  .page-tab.active.visited::after{color:var(--gold-light);}
+
+  /* ── STUDY CONTENT ── */
+  .study-container{max-width:760px;margin:0 auto;padding:36px 24px 80px;}
+  .study-page{display:none;}
+  .study-page.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .page-header{margin-bottom:28px;}
+  .page-eyebrow{font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+  .page-header h2{font-family:'Source Serif 4',serif;font-size:26px;font-weight:700;color:var(--navy);}
+
+  .note-block{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:18px;border-left:4px solid var(--navy);}
+  .note-title{font-weight:700;font-size:15.5px;color:var(--navy);margin-bottom:10px;}
+  .note-body{font-size:14.5px;color:var(--ink);margin-bottom:4px;}
+  .note-body ul{margin:8px 0 4px 0;padding-left:20px;}
+  .note-body li{margin-bottom:7px;line-height:1.55;}
+  .note-body li:last-child{margin-bottom:0;}
+  .note-body p{margin-bottom:8px;}
+  .note-body p:last-child{margin-bottom:0;}
+  .note-body strong{color:var(--navy);}
+
+  .example-box{background:var(--cream);border-radius:8px;padding:14px 16px;margin-top:12px;}
+  .example-line{font-size:14px;margin-bottom:8px;padding-left:4px;}
+  .example-line:last-child{margin-bottom:0;}
+  .example-line strong{color:var(--navy);}
+  .ex-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;margin-right:6px;background:var(--correct-bg);color:var(--correct);}
+  .ex-wrong .ex-tag{background:var(--wrong-bg);color:var(--wrong);}
+  .example-line em{color:var(--muted);font-size:13px;}
+
+  .tip-callout{background:#fff8e8;border:1.5px solid var(--gold-light);border-radius:10px;padding:16px 20px;font-size:14px;margin:24px 0;line-height:1.6;}
+  .tip-callout strong{color:#8a6300;}
+
+  /* ── SELF CHECK ── */
+  .self-check{margin-top:32px;background:#f4f7fc;border-radius:12px;padding:22px 24px;border:1px solid #d8e0f0;}
+  .sc-title{font-weight:700;color:var(--navy);font-size:15px;margin-bottom:16px;}
+  .sc-question{margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid #d8e0f0;}
+  .sc-question:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .sc-question p{font-size:14.5px;margin-bottom:12px;color:var(--ink);}
+  .sc-options{display:flex;flex-direction:column;gap:8px;}
+  .sc-opt{text-align:left;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;background:white;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+  .sc-opt:hover:not(:disabled){border-color:var(--navy);background:#f8f9fd;}
+  .sc-opt:disabled{cursor:default;}
+  .sc-opt.correct-answer{background:var(--correct-bg);border-color:var(--correct);color:var(--correct);font-weight:600;}
+  .sc-opt.wrong-answer{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong);font-weight:600;}
+  .sc-feedback{margin-top:10px;font-size:13px;font-weight:600;display:none;}
+  .sc-feedback.show{display:block;}
+  .sc-feedback.correct{color:var(--correct);}
+  .sc-feedback.wrong{color:var(--wrong);}
+
+  .finish-block{margin-top:36px;text-align:center;padding:32px;background:linear-gradient(135deg,#1a2744,#2a3a5c);border-radius:14px;color:white;}
+  .finish-title{font-family:'Source Serif 4',serif;font-size:22px;font-weight:700;margin-bottom:8px;}
+  .finish-sub{font-size:14px;color:#c9d2e6;}
+
+  /* ── NAV BUTTONS BOTTOM ── */
+  .page-nav-btns{display:flex;justify-content:space-between;margin-top:32px;gap:12px;}
+  .nav-btn-prev,.nav-btn-next{padding:12px 22px;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;border:1.5px solid var(--border);background:white;color:var(--navy);}
+  .nav-btn-next{background:var(--navy);color:white;border-color:var(--navy);margin-left:auto;}
+  .nav-btn-prev:disabled,.nav-btn-next:disabled{opacity:.4;cursor:not-allowed;}
+  .nav-btn-prev:hover:not(:disabled){border-color:var(--navy);}
+  .nav-btn-next:hover:not(:disabled){background:var(--navy-light);}
+
+  @media(max-width:640px){
+    .study-header{padding:14px 16px;flex-wrap:wrap;gap:10px;}
+    .progress-track{width:90px;}
+    .page-tabs{padding:12px 16px;}
+    .study-container{padding:24px 16px 60px;}
+    .page-header h2{font-size:21px;}
+    .note-block{padding:18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-icon">📖</div>
+    <div class="login-title">Sınav Öncesi Çalışma Rehberi</div>
+    <div class="login-sub">UDSP İngilizce Yeterlilik Sınavı — Tüm Günler İçin Tekrar Notları</div>
+
+    <div class="form-group">
+      <label class="form-label">Sınıfınız</label>
+      <select class="form-select" id="classSelect" onchange="onClassChange()">
+        <option value="">Seçiniz...</option>
+        <option>HZ A</option><option>HZ B</option><option>HZ C</option>
+        <option>HZ D</option><option>HZ E</option><option>HZ F</option>
+        <option>Grade 8</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Adınız Soyadınız</label>
+      <input class="form-input" type="text" id="studentName" placeholder="Önce sınıfınızı seçin..." autocomplete="off" list="studentList" disabled>
+      <datalist id="studentList"></datalist>
+    </div>
+
+    <button class="btn-start" onclick="startStudy()">Çalışmaya Başla →</button>
+    <div class="login-err" id="loginErr"></div>
+
+    <div class="login-note">Bu bölüm isteğe bağlıdır ve notla ilgisi yoktur. Sınava girmeden önce konuları tekrar etmenize yardımcı olur.</div>
+  </div>
+</div>
+
+<!-- STUDY HEADER -->
+<div class="study-header" id="studyHeader" style="display:none;">
+  <div class="sh-left">
+    <div>
+      <div class="sh-title">📖 Çalışma Rehberi</div>
+      <div class="sh-student" id="shStudentInfo"></div>
+    </div>
+  </div>
+  <div class="sh-progress">
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 6 sayfa</div>
+  </div>
+</div>
+
+<!-- PAGE TABS -->
+<div class="page-tabs" id="pageTabs" style="display:none;">
+  <button class="page-tab active" onclick="goToPage(1)" id="tab-1">1. Present</button>
+  <button class="page-tab" onclick="goToPage(2)" id="tab-2">2. Past</button>
+  <button class="page-tab" onclick="goToPage(3)" id="tab-3">3. Future</button>
+  <button class="page-tab" onclick="goToPage(4)" id="tab-4">4. Conditionals I</button>
+  <button class="page-tab" onclick="goToPage(5)" id="tab-5">5. Conditionals II</button>
+  <button class="page-tab" onclick="goToPage(6)" id="tab-6">6. Passive</button>
+  <button class="page-tab" onclick="goToPage(7)" id="tab-7">7. Modals/Reported</button>
+  <button class="page-tab" onclick="goToPage(8)" id="tab-8">8. Clauses</button>
+  <button class="page-tab" onclick="goToPage(9)" id="tab-9">9. Gerund/Infinitive</button>
+  <button class="page-tab" onclick="goToPage(10)" id="tab-10">10. Kelime I</button>
+  <button class="page-tab" onclick="goToPage(11)" id="tab-11">11. Kelime II</button>
+  <button class="page-tab" onclick="goToPage(12)" id="tab-12">12. Çeviri I</button>
+  <button class="page-tab" onclick="goToPage(13)" id="tab-13">13. Çeviri II</button>
+  <button class="page-tab" onclick="goToPage(14)" id="tab-14">14. Yakın Anlam I</button>
+  <button class="page-tab" onclick="goToPage(15)" id="tab-15">15. Yakın Anlam II</button>
+  <button class="page-tab" onclick="goToPage(16)" id="tab-16">16. Diyalog</button>
+  <button class="page-tab" onclick="goToPage(17)" id="tab-17">17. Duruma Uygun</button>
+</div>
+
+<!-- STUDY CONTAINER -->
+<div class="study-container" id="studyContainer" style="display:none;">
+
+
+
+
+
+<!-- PAGE 1: PRESENT TENSES -->
+<div class="study-page active" id="page-1" data-page="1">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 1 / 17 — Grammar</div>
+    <h2>Present Tenses</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Simple — Facts, Habits, Routines</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for things that are <strong>generally true</strong> — facts, scientific truths, permanent situations.</li>
+        <li>Used for <strong>habits and routines</strong> — things that happen regularly, not just "right now."</li>
+        <li>Used for <strong>schedules and timetables</strong> that are fixed.</li>
+        <li>Common mistake: using Present Continuous for habits just because the sentence is in the present — habits always take Present Simple.</li>
+        <li>Frequency adverbs (<em>always, usually, often, sometimes, rarely, never</em>) are a strong signal for this tense, placed before the main verb (but after "to be").</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">fact</span> Water <strong>boils</strong> at 100°C at sea level.</div>
+      <div class="example-line"><span class="ex-tag">habit</span> She <strong>goes</strong> to the gym every morning before work.</div>
+      <div class="example-line"><span class="ex-tag">routine</span> The 8:15 train <strong>leaves</strong> from platform 3.</div>
+      <div class="example-line"><span class="ex-tag">frequency adverb</span> He <strong>rarely complains</strong> about his workload.</div>
+      <div class="example-line"><span class="ex-tag">permanent situation</span> My parents <strong>live</strong> in a small town near the coast.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Continuous — Now, Temporary, Changing</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for actions happening <strong>at this exact moment</strong>.</li>
+        <li>Used for <strong>temporary situations</strong> — true only "around now," not permanently.</li>
+        <li>Used for describing a <strong>trend or change</strong> currently in progress.</li>
+        <li>Also used for fixed future arrangements (see below).</li>
+        <li>Key contrast with Present Simple: "I work in marketing" = permanent job; "I'm working on a new campaign this week" = temporary activity.</li>
+        <li><strong>Stative verbs</strong> (know, believe, want, need, like, own, belong) describe states, not actions — they are NOT normally used in continuous form.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">right now</span> Please be quiet — the baby <strong>is sleeping</strong>.</div>
+      <div class="example-line"><span class="ex-tag">temporary</span> She normally works from the office, but this month she<strong>'s working</strong> from home.</div>
+      <div class="example-line"><span class="ex-tag">trend/change</span> More and more people <strong>are choosing</strong> to work remotely these days.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> I <strong>am knowing</strong> the answer. <em>(stative verb — never use continuous)</em></div>
+      <div class="example-line"><span class="ex-tag">✓ correct</span> I <strong>know</strong> the answer.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Perfect — Connecting Past to Now</div>
+    <div class="note-body">
+      <ul>
+        <li>Links a past action/state to the present moment, <strong>without specifying exactly when</strong> it happened.</li>
+        <li>Used for <strong>life experiences</strong> with no fixed time — "I have visited Japan."</li>
+        <li>Used with <strong>"since"</strong> + starting point or <strong>"for"</strong> + duration, to show something continuing up to now.</li>
+        <li>Used with <strong>"already," "yet," "just," "ever," "never"</strong> for recent or unspecified past events.</li>
+        <li>Used when the <strong>result</strong> of a past action is still relevant now.</li>
+        <li>Biggest trap: if a specific time is mentioned (yesterday, in 2020, last week), you MUST use Past Simple, not Present Perfect.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">life experience</span> I <strong>have visited</strong> Paris twice. <em>(no specific time)</em></div>
+      <div class="example-line"><span class="ex-tag">since</span> She <strong>has worked</strong> here <strong>since</strong> 2020.</div>
+      <div class="example-line"><span class="ex-tag">for</span> They <strong>have lived</strong> in this city <strong>for</strong> ten years.</div>
+      <div class="example-line"><span class="ex-tag">already/yet</span> Have you <strong>finished</strong> the report <strong>yet</strong>? — Yes, I<strong>'ve</strong> already <strong>finished</strong> it.</div>
+      <div class="example-line"><span class="ex-tag">result relevant now</span> I <strong>have lost</strong> my keys. <em>(I still don't have them)</em></div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> I <strong>have visited</strong> Paris in 2019. <em>(specific time → must be Past Simple)</em></div>
+      <div class="example-line"><span class="ex-tag">✓ correct</span> I <strong>visited</strong> Paris in 2019.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Perfect Continuous — Emphasising Duration</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for an action that started in the past and is <strong>still continuing now</strong>.</li>
+        <li>Also used when an action has just stopped but has a <strong>visible/felt effect</strong> on the present.</li>
+        <li>Focus is on the <strong>duration or ongoing nature</strong>, not the result.</li>
+        <li>Compare: "I have written three reports today" (Present Perfect — focus on completed result, how many) vs "I have been writing reports all day" (Present Perfect Continuous — focus on the ongoing, tiring activity).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">still ongoing</span> They <strong>have been negotiating</strong> the contract for three weeks.</div>
+      <div class="example-line"><span class="ex-tag">visible effect now</span> I<strong>'m</strong> exhausted because I <strong>have been studying</strong> all night.</div>
+      <div class="example-line"><span class="ex-tag">duration emphasis</span> It <strong>has been raining</strong> non-stop since this morning.</div>
+      <div class="example-line"><span class="ex-tag">result emphasis (contrast)</span> I <strong>have written</strong> five emails this morning.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Continuous for Future Arrangements</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for <strong>fixed, already-arranged</strong> future plans.</li>
+        <li>Usually involves another person, a booking, or a specific confirmed time.</li>
+        <li>Different from "going to," which expresses intention without a confirmed exact arrangement.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I<strong>'m meeting</strong> the dentist at 5 PM tomorrow. <em>(already booked)</em></div>
+      <div class="example-line">We<strong>'re flying</strong> to Istanbul next Friday. <em>(tickets already bought)</em></div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> Three quick checks for present-tense gap-fills: (1) is there a specific past date? → not Present Perfect. (2) is there "since/for/already/yet/just/ever/never"? → likely Present Perfect. (3) is it a stative verb (know, want, belong)? → never use continuous form.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p1a">
+      <p>1) The sun <strong>- - - -</strong> in the east — this never changes.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) rises</button>
+        <button class="sc-opt" data-correct="false">B) is rising</button>
+        <button class="sc-opt" data-correct="false">C) has risen</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p1b">
+      <p>2) I can't talk right now — I <strong>- - - -</strong> dinner.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) cook</button>
+        <button class="sc-opt" data-correct="true">B) am cooking</button>
+        <button class="sc-opt" data-correct="false">C) have cooked</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p1c">
+      <p>3) She <strong>- - - -</strong> three different countries, but she's never been to Asia.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) visited</button>
+        <button class="sc-opt" data-correct="true">B) has visited</button>
+        <button class="sc-opt" data-correct="false">C) is visiting</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p1d">
+      <p>4) My brother <strong>- - - -</strong> a new car — he's wanted one for years. <em>(state verb)</em></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) wants</button>
+        <button class="sc-opt" data-correct="false">B) is wanting</button>
+        <button class="sc-opt" data-correct="false">C) want</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p1e">
+      <p>5) We <strong>- - - -</strong> for over an hour, and the bus still hasn't arrived.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) wait</button>
+        <button class="sc-opt" data-correct="false">B) have waited</button>
+        <button class="sc-opt" data-correct="true">C) have been waiting</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: PAST TENSES -->
+<div class="study-page" id="page-2" data-page="2">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 2 / 17 — Grammar</div>
+    <h2>Past Tenses</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Past Simple — Finished Actions at a Specific Time</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for a <strong>completed action or state</strong> at a definite point in the past.</li>
+        <li>The time may be <strong>stated explicitly</strong> (yesterday, in 2020, last week) or understood from context.</li>
+        <li>Used for a <strong>sequence of completed past actions</strong>, one after another.</li>
+        <li>Used for past habits or states that are <strong>no longer true</strong> (often with "used to").</li>
+        <li>Key requirement: the action must be seen as finished — not ongoing, not open-ended.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">specific time</span> She <strong>graduated</strong> from university in 2019.</div>
+      <div class="example-line"><span class="ex-tag">sequence of actions</span> He <strong>woke up</strong>, <strong>made</strong> coffee, and <strong>left</strong> for work.</div>
+      <div class="example-line"><span class="ex-tag">past habit, no longer true</span> When I was a child, I <strong>played</strong> football every weekend.</div>
+      <div class="example-line"><span class="ex-tag">implied time (from context)</span> A: Did you call her? B: Yes, I <strong>called</strong> her this morning.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Past Continuous — Action in Progress in the Past</div>
+    <div class="note-body">
+      <ul>
+        <li>Describes an action <strong>in progress at a specific moment</strong> in the past.</li>
+        <li>Often <strong>interrupted by a shorter action</strong>, which takes Past Simple.</li>
+        <li>Used for <strong>two simultaneous ongoing actions</strong> in the past.</li>
+        <li>Used to <strong>set the background scene</strong> of a story before the main event.</li>
+        <li>Typical pairing: Past Continuous (background, longer action) + Past Simple (interruption, shorter action), connected by "when" or "while."</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">interrupted action</span> I <strong>was cooking</strong> dinner when the phone <strong>rang</strong>.</div>
+      <div class="example-line"><span class="ex-tag">two simultaneous actions</span> While she <strong>was driving</strong>, he <strong>was checking</strong> the map.</div>
+      <div class="example-line"><span class="ex-tag">background/scene-setting</span> It <strong>was raining</strong> heavily, and the streets <strong>were</strong> almost empty, when the accident happened.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> While she <strong>drove</strong> to work, it <strong>started</strong> to rain. <em>(the longer, background action should be continuous)</em></div>
+      <div class="example-line"><span class="ex-tag">✓ correct</span> While she <strong>was driving</strong> to work, it <strong>started</strong> to rain.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Past Perfect — The "Earlier Past"</div>
+    <div class="note-body">
+      <ul>
+        <li>Used when already talking about the past, to refer to something that happened <strong>even earlier</strong> — before that past point.</li>
+        <li>Establishes a clear sequence: Past Perfect for the earlier event, Past Simple for the later one.</li>
+        <li>Common trigger words: <strong>by the time, before, after, when, already, never...until, no sooner...than</strong>.</li>
+        <li>One of the most frequently tested structures — many learners use Past Simple for both events and lose the sense of sequence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">by the time</span> By the time we <strong>arrived</strong>, the film <strong>had already started</strong>. <em>(film started first)</em></div>
+      <div class="example-line"><span class="ex-tag">before</span> She <strong>had finished</strong> the report <strong>before</strong> her manager <strong>asked</strong> for it.</div>
+      <div class="example-line"><span class="ex-tag">after</span> <strong>After</strong> he <strong>had left</strong> the office, he realised he'd forgotten his keys.</div>
+      <div class="example-line"><span class="ex-tag">when</span> <strong>When</strong> I got there, everyone <strong>had already gone</strong> home.</div>
+      <div class="example-line"><span class="ex-tag">never... until</span> She <strong>had never seen</strong> snow <strong>until</strong> she moved to Canada.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> By the time she <strong>arrived</strong>, the meeting <strong>started</strong>. <em>(no clear sequence shown)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Past Perfect Continuous — Duration Before a Past Point</div>
+    <div class="note-body">
+      <ul>
+        <li>Emphasises <strong>how long</strong> an action had been going on before another point in the past.</li>
+        <li>Works the same way Present Perfect Continuous does, but shifted to the past.</li>
+        <li>Often explains the <strong>cause</strong> of a later past situation.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">She <strong>had been waiting</strong> for over an hour when the bus finally arrived.</div>
+      <div class="example-line">They <strong>had been working</strong> on the project for months before it was cancelled.</div>
+      <div class="example-line">His eyes were red because he <strong>had been crying</strong>.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Used to vs Would (Past Habits)</div>
+    <div class="note-body">
+      <ul>
+        <li>Both describe repeated past actions that are no longer true.</li>
+        <li><strong>"used to"</strong> can also describe past <strong>states</strong> (not just actions).</li>
+        <li><strong>"would"</strong> is only for repeated <strong>actions</strong>, never for states.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">action — both possible</span> We <strong>used to</strong> / <strong>would</strong> go camping every summer.</div>
+      <div class="example-line"><span class="ex-tag">state — only "used to"</span> There <strong>used to be</strong> a cinema on this street. <em>(NOT "would be")</em></div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> When two past events are mentioned, always ask "which happened first?" If one clearly happened before the other, the earlier one needs Past Perfect, not Past Simple.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p2a">
+      <p>1) By the time the ambulance arrived, the situation <strong>- - - -</strong> already under control.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) is</button>
+        <button class="sc-opt" data-correct="true">B) had been</button>
+        <button class="sc-opt" data-correct="false">C) will be</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p2b">
+      <p>2) I <strong>- - - -</strong> dinner when the lights suddenly went out.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) was cooking</button>
+        <button class="sc-opt" data-correct="false">B) cook</button>
+        <button class="sc-opt" data-correct="false">C) have cooked</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p2c">
+      <p>3) She was tired because she <strong>- - - -</strong> all night for the exam.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) studied</button>
+        <button class="sc-opt" data-correct="true">B) had been studying</button>
+        <button class="sc-opt" data-correct="false">C) studies</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p2d">
+      <p>4) There <strong>- - - -</strong> a small shop on this corner, but it closed years ago.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) used to be</button>
+        <button class="sc-opt" data-correct="false">B) would be</button>
+        <button class="sc-opt" data-correct="false">C) was being</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p2e">
+      <p>5) He <strong>- - - -</strong> his keys, his wallet, and finally his phone before he could leave the house.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) found</button>
+        <button class="sc-opt" data-correct="false">B) was finding</button>
+        <button class="sc-opt" data-correct="false">C) had found</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: FUTURE FORMS -->
+<div class="study-page" id="page-3" data-page="3">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 3 / 17 — Grammar</div>
+    <h2>Future Forms</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Will — Predictions and Spontaneous Decisions</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for <strong>predictions based on opinion</strong> or general belief (no strong evidence needed).</li>
+        <li>Used for <strong>spontaneous decisions</strong> made at the moment of speaking.</li>
+        <li>Used for <strong>promises and offers</strong>.</li>
+        <li>Used for facts about the future we have <strong>no control over</strong>.</li>
+        <li>The most "neutral" future form — used when there's no prior plan, just an expectation or in-the-moment choice.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">prediction/opinion</span> I think it <strong>will</strong> rain later.</div>
+      <div class="example-line"><span class="ex-tag">spontaneous decision</span> It's cold in here — I<strong>'ll</strong> close the window.</div>
+      <div class="example-line"><span class="ex-tag">promise</span> I <strong>will</strong> call you as soon as I land.</div>
+      <div class="example-line"><span class="ex-tag">offer</span> Don't worry, I<strong>'ll</strong> help you carry those boxes.</div>
+      <div class="example-line"><span class="ex-tag">fact, no control</span> She <strong>will turn</strong> 30 next month.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Going to — Plans and Evidence-Based Predictions</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for intentions/plans decided <strong>before</strong> the moment of speaking.</li>
+        <li>Used for predictions based on <strong>strong, visible evidence</strong> right now.</li>
+        <li>Contrast with "will": <strong>will</strong> = decided now/opinion; <strong>going to</strong> = decided earlier/clear evidence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">prior plan</span> We<strong>'re going to</strong> renovate the kitchen next year.</div>
+      <div class="example-line"><span class="ex-tag">evidence now</span> Look at those dark clouds — it<strong>'s going to</strong> rain.</div>
+      <div class="example-line"><span class="ex-tag">intention</span> He<strong>'s going to</strong> apply for the manager position.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Continuous for Fixed Arrangements</div>
+    <div class="note-body">
+      <ul>
+        <li>Used when there's a <strong>fixed, confirmed arrangement</strong> — booking, appointment, meeting.</li>
+        <li>Usually involves a specific time, place, or another person.</li>
+        <li>Slightly "more certain" than "going to" — implies confirmation already in place.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I<strong>'m meeting</strong> the dentist at 5 PM tomorrow.</div>
+      <div class="example-line">We<strong>'re flying</strong> to Istanbul next Friday.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ less natural</span> I think it<strong>'s raining</strong> tomorrow. <em>(weather isn't a fixed arrangement)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Present Simple for Timetables and Schedules</div>
+    <div class="note-body">
+      <ul>
+        <li>Used for future events that are part of a <strong>fixed timetable</strong> — trains, flights, official calendars.</li>
+        <li>Not a personal arrangement, but something officially fixed and unlikely to change.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">The train <strong>leaves</strong> at 9 AM tomorrow.</div>
+      <div class="example-line">The conference <strong>starts</strong> on the 14th and <strong>ends</strong> on the 16th.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Future Perfect — Completed Before a Future Point</div>
+    <div class="note-body">
+      <ul>
+        <li>Describes something that will be <strong>finished before</strong> a specific point in the future.</li>
+        <li>Commonly used with "by," "by the time," or "before."</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">By next June, she <strong>will have graduated</strong> from university.</div>
+      <div class="example-line">By the time you get this message, I <strong>will have already left</strong>.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Future Perfect Continuous — Duration up to a Future Point</div>
+    <div class="note-body">
+      <ul>
+        <li>Emphasises the <strong>duration</strong> of an action still ongoing up to a future point.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">By the end of this year, he <strong>will have been working</strong> here for a decade.</div>
+      <div class="example-line">In one more hour, we <strong>will have been driving</strong> for twelve hours straight.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Future Continuous — Action in Progress at a Future Time</div>
+    <div class="note-body">
+      <ul>
+        <li>Describes an action that will be <strong>in progress</strong> at a specific moment in the future — like Past Continuous, shifted to the future.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">This time tomorrow, I <strong>will be lying</strong> on a beach.</div>
+      <div class="example-line">Don't call at 8 PM — we <strong>will be having</strong> dinner then.</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> Ask: is there visible evidence or a prior plan (→ going to), a fixed booking (→ present continuous), an official schedule (→ present simple), or just an opinion/spontaneous choice (→ will)?
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p3a">
+      <p>1) Look at the score — Brazil <strong>- - - -</strong> win this match easily. <em>(clear evidence now)</em></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) will</button>
+        <button class="sc-opt" data-correct="true">B) is going to</button>
+        <button class="sc-opt" data-correct="false">C) is winning</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p3b">
+      <p>2) The flight <strong>- - - -</strong> at 7:45 according to the schedule.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) departs</button>
+        <button class="sc-opt" data-correct="false">B) is departing</button>
+        <button class="sc-opt" data-correct="false">C) will have departed</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p3c">
+      <p>3) By 2030, scientists <strong>- - - -</strong> a cure for many more diseases.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) will find</button>
+        <button class="sc-opt" data-correct="true">B) will have found</button>
+        <button class="sc-opt" data-correct="false">C) find</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p3d">
+      <p>4) I<strong>'m</strong> already <strong>- - - -</strong> my sister at the airport — we confirmed it yesterday.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) meeting</button>
+        <button class="sc-opt" data-correct="false">B) going to meet</button>
+        <button class="sc-opt" data-correct="false">C) meet</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p3e">
+      <p>5) It's cold in here — I think I <strong>- - - -</strong> the heater on. <em>(decided right now)</em></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) will turn</button>
+        <button class="sc-opt" data-correct="false">B) am turning</button>
+        <button class="sc-opt" data-correct="false">C) turn</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: CONDITIONALS PART 1 -->
+<div class="study-page" id="page-4" data-page="4">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 4 / 17 — Grammar</div>
+    <h2>Conditionals (Part 1): Zero, First, Second</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Zero Conditional — General Truths and Facts</div>
+    <div class="note-body">
+      <ul>
+        <li>Describes things that are <strong>always true</strong> — scientific facts, natural laws, general cause-and-effect.</li>
+        <li>Doesn't depend on a specific time.</li>
+        <li>Both clauses use <strong>Present Simple</strong>.</li>
+        <li>"If" can usually be replaced with <strong>"when"</strong> or <strong>"whenever"</strong> without changing the meaning, since the result is automatic and certain.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">If you <strong>heat</strong> ice, it <strong>melts</strong>. <em>(scientific fact)</em></div>
+      <div class="example-line">If prices <strong>rise</strong>, demand usually <strong>falls</strong>. <em>(general principle)</em></div>
+      <div class="example-line">When/If you <strong>mix</strong> red and blue, you <strong>get</strong> purple.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 First Conditional — Real, Likely Future Situations</div>
+    <div class="note-body">
+      <ul>
+        <li>Talks about <strong>realistic, possible</strong> situations in the future and their probable results.</li>
+        <li>The "if" clause uses <strong>Present Simple</strong> (NOT "will," even though it's about the future).</li>
+        <li>The main clause uses <strong>"will" + base verb</strong>.</li>
+        <li>Describes something that could genuinely happen — a real possibility worth planning for.</li>
+        <li>Other modals (can, may, might, should) can replace "will" for different functions (permission, advice).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">If it <strong>rains</strong> tomorrow, we <strong>will postpone</strong> the trip.</div>
+      <div class="example-line">If you <strong>don't hurry</strong>, you <strong>will miss</strong> the bus.</div>
+      <div class="example-line"><span class="ex-tag">with "can"</span> If you <strong>finish</strong> early, you <strong>can leave</strong>. <em>(permission)</em></div>
+      <div class="example-line"><span class="ex-tag">with "should"</span> If you <strong>feel</strong> unwell, you <strong>should see</strong> a doctor. <em>(advice)</em></div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> If it <strong>will rain</strong> tomorrow, we will postpone. <em>("will" never appears in the if-clause)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Second Conditional — Unreal Present or Future</div>
+    <div class="note-body">
+      <ul>
+        <li>For <strong>hypothetical, unlikely, or imaginary</strong> situations in the present or future.</li>
+        <li>Things that are not true now and probably won't happen, but we imagine them anyway.</li>
+        <li>The "if" clause uses <strong>Past Simple</strong> (a grammatical signal of "unreality," not a real past tense).</li>
+        <li>The main clause uses <strong>"would" + base verb</strong>.</li>
+        <li>With "to be," correct (and more formal) usage is <strong>"were"</strong> for ALL subjects — "If I were you..." not "If I was you..."</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">If I <strong>won</strong> the lottery, I <strong>would travel</strong> around the world.</div>
+      <div class="example-line">If she <strong>had</strong> more free time, she <strong>would learn</strong> a new language.</div>
+      <div class="example-line"><span class="ex-tag">"were" for all subjects</span> If I <strong>were</strong> you, I <strong>would accept</strong> the offer.</div>
+      <div class="example-line">If he <strong>were</strong> taller, he <strong>could play</strong> professional basketball.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 First vs Second Conditional — How to Choose</div>
+    <div class="note-body">
+      <ul>
+        <li>The choice is about how <strong>LIKELY</strong> you consider the situation, not objective truth.</li>
+        <li>The same real-world situation can be expressed with either, depending on the speaker's attitude.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">First — feels likely</span> If I <strong>get</strong> the promotion, I <strong>will buy</strong> a new car.</div>
+      <div class="example-line"><span class="ex-tag">Second — feels unlikely</span> If I <strong>got</strong> the promotion, I <strong>would buy</strong> a new car. <em>(speaker doubts it will happen)</em></div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> If the "if" clause has Present Simple, expect "will" in the result (First — real). If the "if" clause has Past Simple, expect "would" (Second — unreal) — never mix "will" into an "if" clause.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p4a">
+      <p>1) If you <strong>- - - -</strong> water below 0°C, it freezes.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) cool</button>
+        <button class="sc-opt" data-correct="false">B) will cool</button>
+        <button class="sc-opt" data-correct="false">C) cooled</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p4b">
+      <p>2) If she <strong>- - - -</strong> the bus, she'll be late for the interview.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) misses</button>
+        <button class="sc-opt" data-correct="false">B) will miss</button>
+        <button class="sc-opt" data-correct="false">C) missed</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p4c">
+      <p>3) If I <strong>- - - -</strong> a million dollars, I would buy a house by the sea.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) win</button>
+        <button class="sc-opt" data-correct="true">B) won</button>
+        <button class="sc-opt" data-correct="false">C) will win</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p4d">
+      <p>4) If I <strong>- - - -</strong> you, I wouldn't trust him so quickly.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) am</button>
+        <button class="sc-opt" data-correct="true">B) were</button>
+        <button class="sc-opt" data-correct="false">C) was being</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p4e">
+      <p>5) If you heat metal, it <strong>- - - -</strong>.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) expands</button>
+        <button class="sc-opt" data-correct="false">B) will expand</button>
+        <button class="sc-opt" data-correct="false">C) would expand</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: CONDITIONALS PART 2 -->
+<div class="study-page" id="page-5" data-page="5">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 5 / 17 — Grammar</div>
+    <h2>Conditionals (Part 2): Third, Mixed, Inverted &amp; Wish</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Third Conditional — Unreal Past</div>
+    <div class="note-body">
+      <ul>
+        <li>Describes a past situation that did <strong>NOT actually happen</strong>, and the imagined result if it had.</li>
+        <li>Purely hypothetical — both the condition and the result are contrary to what really happened.</li>
+        <li>Structure: <strong>If + had + V3, ... would/could/might + have + V3</strong>.</li>
+        <li>One of the most heavily tested structures — requires controlling two "have" auxiliaries at once.</li>
+        <li>Common mistake: defaulting to Second Conditional forms instead.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">If they <strong>had left</strong> earlier, they <strong>would have caught</strong> the train. <em>(in reality, they missed it)</em></div>
+      <div class="example-line">If she <strong>had studied</strong> harder, she <strong>might have passed</strong> the exam. <em>(in reality, she failed)</em></div>
+      <div class="example-line">If we <strong>had known</strong> about the traffic, we <strong>could have left</strong> earlier.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> If they <strong>left</strong> earlier, they <strong>would catch</strong> the train. <em>(Second Conditional — wrong for a past situation)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Mixed Conditionals</div>
+    <div class="note-body">
+      <ul>
+        <li>Combine a condition from one time period with a result in a <strong>different</strong> time period.</li>
+        <li>Most common: a <strong>past condition + present result</strong>.</li>
+        <li>Also possible: a <strong>general/permanent trait + past result</strong>.</li>
+        <li>Describe how an unreal past action still affects the present, or how a permanent characteristic affected something in the past.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">past condition → present result</span> If she <strong>had taken</strong> that job offer, she <strong>would be</strong> living abroad now.</div>
+      <div class="example-line"><span class="ex-tag">past condition → present result</span> If I <strong>hadn't missed</strong> the flight, I <strong>would be</strong> at the conference right now.</div>
+      <div class="example-line"><span class="ex-tag">general trait → past result</span> If he <strong>were</strong> more organised, he <strong>wouldn't have missed</strong> the deadline.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Inverted Conditionals (Formal Style, No "If")</div>
+    <div class="note-body">
+      <ul>
+        <li>In formal writing, "if" can be dropped and replaced by <strong>inverting</strong> the subject and auxiliary.</li>
+        <li>Common with <strong>"were," "had,"</strong> and <strong>"should."</strong></li>
+        <li>Recognising this structure is essential — without "if," it can look confusing at first.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>Were</strong> she to apply, she would have an excellent chance. <em>(= If she applied...)</em></div>
+      <div class="example-line"><strong>Had</strong> the engineers tested it more carefully, the failure could have been avoided. <em>(= If the engineers had tested...)</em></div>
+      <div class="example-line"><strong>Should</strong> you need any help, don't hesitate to call. <em>(= If you should need any help...)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Wish + Past Simple — Desire About the Present</div>
+    <div class="note-body">
+      <ul>
+        <li>Expresses a desire for something to be different <strong>right now</strong>, even though it cannot be.</li>
+        <li>Similar logic to Second Conditional — past tense marks unreality, not real past time.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I <strong>wish</strong> I <strong>spoke</strong> French fluently. <em>(I don't, but I want to)</em></div>
+      <div class="example-line">She <strong>wishes</strong> she <strong>had</strong> more free time.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Wish/If Only + Had + V3 — Regret About the Past</div>
+    <div class="note-body">
+      <ul>
+        <li>Expresses regret about something in the past that cannot be changed.</li>
+        <li>Very similar in logic to Third Conditional.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>If only</strong> I <strong>had listened</strong> to her advice. <em>(I didn't, and now I regret it)</em></div>
+      <div class="example-line">I <strong>wish</strong> I <strong>hadn't said</strong> that to him.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Wish + Would — Wanting Someone Else to Change</div>
+    <div class="note-body">
+      <ul>
+        <li>Expresses frustration or a desire for <strong>someone else's behaviour</strong> to change.</li>
+        <li>Cannot be used about yourself.</li>
+        <li>Often carries a sense of complaint or irritation.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I <strong>wish</strong> he <strong>would stop</strong> interrupting during meetings.</div>
+      <div class="example-line">I <strong>wish</strong> the neighbours <strong>would turn</strong> the music down.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Unless, Provided that, As long as, On condition that</div>
+    <div class="note-body">
+      <ul>
+        <li>All introduce a condition, similar to "if (not)."</li>
+        <li>Common in more formal contexts.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>Unless</strong> you book early, tickets will sell out. <em>(= if you don't book early)</em></div>
+      <div class="example-line">You can borrow the car <strong>provided that</strong> you return it by 6 PM.</div>
+      <div class="example-line"><strong>As long as</strong> you finish the report today, the deadline is fine.</div>
+      <div class="example-line">The bank approved the loan <strong>on condition that</strong> he provided a guarantor.</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> If you see "Were/Had/Should" at the very start of a sentence with no "if," check whether removing the inversion and adding "if" makes sense — this confirms an inverted conditional.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p5a">
+      <p>1) If the engineers <strong>- - - -</strong> the bridge more carefully, the accident could have been prevented.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) inspect</button>
+        <button class="sc-opt" data-correct="true">B) had inspected</button>
+        <button class="sc-opt" data-correct="false">C) inspected</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p5b">
+      <p>2) If I <strong>hadn't stayed up</strong> so late last night, I <strong>- - - -</strong> so tired right now.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) wouldn't have been</button>
+        <button class="sc-opt" data-correct="true">B) wouldn't be</button>
+        <button class="sc-opt" data-correct="false">C) hadn't been</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p5c">
+      <p>3) I wish I <strong>- - - -</strong> more time to prepare for the interview yesterday.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) have</button>
+        <button class="sc-opt" data-correct="true">B) had had</button>
+        <button class="sc-opt" data-correct="false">C) will have</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p5d">
+      <p>4) I wish my colleague <strong>- - - -</strong> arriving late every single day.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) stops</button>
+        <button class="sc-opt" data-correct="true">B) would stop</button>
+        <button class="sc-opt" data-correct="false">C) stopped</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p5e">
+      <p>5) <strong>- - - -</strong> you finish the assignment by Friday, you'll be allowed to join the trip.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Provided that</button>
+        <button class="sc-opt" data-correct="false">B) Despite</button>
+        <button class="sc-opt" data-correct="false">C) Although</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6: PASSIVE VOICE -->
+<div class="study-page" id="page-6" data-page="6">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 6 / 17 — Grammar</div>
+    <h2>Passive Voice — All Forms</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Why and When We Use Passive Voice</div>
+    <div class="note-body">
+      <ul>
+        <li>Shifts the focus from <strong>WHO performs</strong> an action to <strong>WHAT</strong> the action is done to.</li>
+        <li>Used when the doer is <strong>unknown, unimportant, obvious</strong>, or deliberately left out.</li>
+        <li>Common in formal, scientific, or news writing.</li>
+        <li>Structure: always <strong>be + past participle</strong>, with "be" changing form by tense.</li>
+        <li>Test: is the subject DOING the action, or RECEIVING it? If receiving, passive is required.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">active</span> The committee <strong>approved</strong> the new budget. <em>(committee = doer)</em></div>
+      <div class="example-line"><span class="ex-tag">passive</span> The new budget <strong>was approved</strong> by the committee. <em>(budget = receiver)</em></div>
+      <div class="example-line"><span class="ex-tag">passive, doer unknown</span> My phone <strong>was stolen</strong> last night.</div>
+      <div class="example-line"><span class="ex-tag">passive, doer obvious</span> The suspect <strong>was arrested</strong> yesterday.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Passive Across All Tenses</div>
+    <div class="note-body">
+      <ul>
+        <li>The passive structure can appear in <strong>any tense</strong>.</li>
+        <li>Only the form of <strong>"be"</strong> changes; the past participle stays the same.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">Present Simple</span> The reports <strong>are reviewed</strong> every Monday.</div>
+      <div class="example-line"><span class="ex-tag">Present Continuous</span> The building <strong>is being renovated</strong> this month.</div>
+      <div class="example-line"><span class="ex-tag">Present Perfect</span> The documents <strong>have been reviewed</strong> already.</div>
+      <div class="example-line"><span class="ex-tag">Past Simple</span> The bridge <strong>was built</strong> in 1932.</div>
+      <div class="example-line"><span class="ex-tag">Past Continuous</span> The building <strong>was being renovated</strong> last year.</div>
+      <div class="example-line"><span class="ex-tag">Past Perfect</span> The contract <strong>had been signed</strong> before the deadline.</div>
+      <div class="example-line"><span class="ex-tag">Future Simple</span> A decision <strong>will be made</strong> next week.</div>
+      <div class="example-line"><span class="ex-tag">Future Perfect</span> The project <strong>will have been completed</strong> by June.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Passive with Modal Verbs</div>
+    <div class="note-body">
+      <ul>
+        <li>Structure: <strong>modal + be + past participle</strong>.</li>
+        <li>Extremely common in formal, rule-based, or instructional sentences — laws, regulations, manuals.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">The contract <strong>must be signed</strong> by both parties.</div>
+      <div class="example-line">The results <strong>should be announced</strong> by Friday.</div>
+      <div class="example-line">All visitors <strong>can be asked</strong> to show identification.</div>
+      <div class="example-line">This issue <strong>might have been avoided</strong> if testing had been done properly.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Passive with Two Objects (Indirect Passive)</div>
+    <div class="note-body">
+      <ul>
+        <li>Some active sentences have two objects (a person and a thing).</li>
+        <li>Either object can become the subject of the passive sentence.</li>
+        <li>Making the <strong>PERSON</strong> the subject is more common and natural.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">active</span> The company <strong>gave</strong> her a bonus.</div>
+      <div class="example-line"><span class="ex-tag">passive (more natural)</span> She <strong>was given</strong> a bonus.</div>
+      <div class="example-line"><span class="ex-tag">passive (less common)</span> A bonus <strong>was given</strong> to her.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Passive with "by" and "with"</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>"By"</strong> introduces the agent (who/what performed the action).</li>
+        <li><strong>"With"</strong> introduces the instrument or material used.</li>
+        <li>Both are optional and often omitted if not important.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">The window was broken <strong>by</strong> the storm. <em>(agent)</em></div>
+      <div class="example-line">The door was opened <strong>with</strong> a key. <em>(instrument)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Get + Past Participle (Informal Passive)</div>
+    <div class="note-body">
+      <ul>
+        <li>In informal English, <strong>"get"</strong> sometimes replaces "be" to form the passive.</li>
+        <li>Often used for unplanned or sudden events.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">My car <strong>got damaged</strong> in the storm. <em>(informal for "was damaged")</em></div>
+      <div class="example-line">He <strong>got fired</strong> last week.</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> For passive questions, identify the real subject of the action first. If the sentence's grammatical subject is the receiver (not the doer) of the verb, the passive form is almost always required.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p6a">
+      <p>1) The new policy <strong>- - - -</strong> by the board next Monday.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) will be announced</button>
+        <button class="sc-opt" data-correct="false">B) will announce</button>
+        <button class="sc-opt" data-correct="false">C) announces</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p6b">
+      <p>2) This report <strong>- - - -</strong> right now, so please don't disturb the team.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) writes</button>
+        <button class="sc-opt" data-correct="true">B) is being written</button>
+        <button class="sc-opt" data-correct="false">C) has written</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p6c">
+      <p>3) All employees <strong>- - - -</strong> to attend the safety training.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) are required</button>
+        <button class="sc-opt" data-correct="false">B) require</button>
+        <button class="sc-opt" data-correct="false">C) are requiring</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p6d">
+      <p>4) The window was broken <strong>- - - -</strong> a falling branch.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) by</button>
+        <button class="sc-opt" data-correct="false">B) with</button>
+        <button class="sc-opt" data-correct="false">C) from</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p6e">
+      <p>5) The mistake <strong>- - - -</strong> if the report had been checked twice.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) avoids</button>
+        <button class="sc-opt" data-correct="true">B) could have been avoided</button>
+        <button class="sc-opt" data-correct="false">C) avoided</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7: MODALS & REPORTED SPEECH -->
+<div class="study-page" id="page-7" data-page="7">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 7 / 17 — Grammar</div>
+    <h2>Modal Verbs &amp; Reported Speech</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Modals of Obligation: Must vs Have to</div>
+    <div class="note-body">
+      <ul>
+        <li>Both express strong obligation, but the <strong>source</strong> differs.</li>
+        <li><strong>"Must"</strong> = obligation from the speaker's own judgement/feeling (internal).</li>
+        <li><strong>"Have to"</strong> = obligation from an external source — law, rule, authority.</li>
+        <li>In the negative, meanings split completely: <strong>"mustn't"</strong> = prohibition (forbidden); <strong>"don't have to"</strong> = no obligation (optional).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">must — speaker's own feeling</span> I <strong>must</strong> call my mother today — I haven't spoken to her in weeks.</div>
+      <div class="example-line"><span class="ex-tag">have to — external rule</span> Employees <strong>have to</strong> wear safety helmets on site.</div>
+      <div class="example-line"><span class="ex-tag">mustn't — prohibition</span> You <strong>mustn't</strong> smoke in this building.</div>
+      <div class="example-line"><span class="ex-tag">don't have to — no obligation</span> You <strong>don't have to</strong> attend if you're busy.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Should / Ought to — Advice and Expectation</div>
+    <div class="note-body">
+      <ul>
+        <li>Express <strong>advice, recommendation</strong>, or what is expected/likely (not a strict obligation).</li>
+        <li><strong>"Should"</strong> is far more common in everyday and exam English.</li>
+        <li><strong>"Ought to"</strong> is more formal, slightly less frequent, but means the same.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">You <strong>should</strong> see a doctor about that cough.</div>
+      <div class="example-line">The package <strong>ought to</strong> arrive by Friday.</div>
+      <div class="example-line">You <strong>shouldn't</strong> leave your laptop unattended in a café.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Modals of Deduction (Certainty About the Present)</div>
+    <div class="note-body">
+      <ul>
+        <li>Express how certain we are about something happening <strong>NOW</strong>, based on evidence.</li>
+        <li><strong>must</strong> = strong positive certainty.</li>
+        <li><strong>can't</strong> = strong negative certainty (logically impossible).</li>
+        <li><strong>might/may/could</strong> = uncertain possibility.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">She <strong>must be</strong> exhausted — she's been working for sixteen hours straight.</div>
+      <div class="example-line">That <strong>can't be</strong> right — the shop closed an hour ago.</div>
+      <div class="example-line">He <strong>might be</strong> stuck in traffic.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Modals of Deduction About the Past: must/can't/might have + V3</div>
+    <div class="note-body">
+      <ul>
+        <li>The same certainty logic applies to the past, combined with <strong>"have + past participle."</strong></li>
+        <li>One of the most tested modal structures in advanced exams.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">She <strong>must have left</strong> already — her coat is gone.</div>
+      <div class="example-line">He <strong>can't have finished</strong> the report — he only started an hour ago.</div>
+      <div class="example-line">They <strong>might have missed</strong> the train.</div>
+      <div class="example-line">She <strong>could have called</strong> to let us know. <em>(criticism — she had the option but didn't)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Reported Speech — Backshift of Tenses</div>
+    <div class="note-body">
+      <ul>
+        <li>When reporting what someone said, tenses generally shift <strong>one step further into the past</strong>.</li>
+        <li>Present → Past &nbsp;|&nbsp; Past Simple → Past Perfect &nbsp;|&nbsp; Present Perfect → Past Perfect &nbsp;|&nbsp; "will" → "would."</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Direct: "I <strong>am tired</strong>." → Reported: She said she <strong>was tired</strong>.</div>
+      <div class="example-line">Direct: "I <strong>have finished</strong> the report." → Reported: He said he <strong>had finished</strong> the report.</div>
+      <div class="example-line">Direct: "I <strong>will call</strong> you." → Reported: She said she <strong>would call</strong> me.</div>
+      <div class="example-line">Direct: "I <strong>went</strong> there yesterday." → Reported: He said he <strong>had gone</strong> there the day before.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Reported Questions</div>
+    <div class="note-body">
+      <ul>
+        <li>Lose the original question word order (<strong>no auxiliary inversion</strong>) and lose the question mark.</li>
+        <li>Become normal statement word order.</li>
+        <li>"Yes/No" questions are introduced with <strong>"if"</strong> or <strong>"whether."</strong></li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Direct: "Where do you live?" → Reported: He asked where <strong>I lived</strong>. <em>(not "did I live")</em></div>
+      <div class="example-line">Direct: "Are you coming to the party?" → Reported: She asked <strong>if/whether I was coming</strong> to the party.</div>
+      <div class="example-line">Direct: "What time does the shop close?" → Reported: He wanted to know what time <strong>the shop closed</strong>.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Reported Requests and Commands</div>
+    <div class="note-body">
+      <ul>
+        <li>Usually expressed with <strong>to + infinitive</strong> (positive commands).</li>
+        <li>Or <strong>not to + infinitive</strong> (negative commands/prohibitions).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Direct: "Please close the door." → Reported: She asked me <strong>to close</strong> the door.</div>
+      <div class="example-line">Direct: "Don't be late." → Reported: He told us <strong>not to be</strong> late.</div>
+      <div class="example-line">Direct: "Sit down!" → Reported: The teacher told the students <strong>to sit down</strong>.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Subjunctive-Style Structures After Insist/Suggest/Recommend</div>
+    <div class="note-body">
+      <ul>
+        <li>After verbs like "insist," "suggest," "recommend," "demand" (expressing a strong wish), a base-form structure or <strong>"should + base verb"</strong> is often used in formal English.</li>
+        <li>Applies regardless of the subject.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">The manager insisted that the report <strong>must be finished</strong> by Friday.</div>
+      <div class="example-line">The doctor recommended that he <strong>rest</strong> for a few days.</div>
+      <div class="example-line">She suggested that we <strong>should leave</strong> earlier to avoid traffic.</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> For deduction modals, decide first whether you're talking about NOW (must/can't/might + base verb) or the PAST (must/can't/might + have + past participle) — mixing these up is one of the most common mistakes.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p7a">
+      <p>1) You <strong>- - - -</strong> wear a seatbelt in this country — it's the law.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) have to</button>
+        <button class="sc-opt" data-correct="false">B) should</button>
+        <button class="sc-opt" data-correct="false">C) might</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p7b">
+      <p>2) She <strong>- - - -</strong> already left — the lights in her office are off.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) must have</button>
+        <button class="sc-opt" data-correct="false">B) should</button>
+        <button class="sc-opt" data-correct="false">C) can</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p7c">
+      <p>3) Direct: "Where is the nearest station?" → Reported: He asked where <strong>- - - -</strong>.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) is the nearest station</button>
+        <button class="sc-opt" data-correct="true">B) the nearest station was</button>
+        <button class="sc-opt" data-correct="false">C) was the nearest station</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p7d">
+      <p>4) Direct: "Don't touch that." → Reported: She told the child <strong>- - - -</strong> it.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) don't touch</button>
+        <button class="sc-opt" data-correct="true">B) not to touch</button>
+        <button class="sc-opt" data-correct="false">C) to not touching</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p7e">
+      <p>5) He <strong>- - - -</strong> taken the earlier train, but he overslept.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) could have</button>
+        <button class="sc-opt" data-correct="false">B) must</button>
+        <button class="sc-opt" data-correct="false">C) should</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8: CLAUSES & CONNECTORS -->
+<div class="study-page" id="page-8" data-page="8">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 8 / 17 — Grammar</div>
+    <h2>Relative Clauses &amp; Connectors</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Relative Pronouns: who, whom, which, whose, where, when</div>
+    <div class="note-body">
+      <ul>
+        <li>Connect a clause to a noun mentioned earlier, adding information about it.</li>
+        <li><strong>who/whom</strong> → people (who = subject, whom = object, though "who" is common for both informally).</li>
+        <li><strong>which</strong> → things.</li>
+        <li><strong>whose</strong> → possession (regardless of whether the owner is a person or thing).</li>
+        <li><strong>where</strong> → places.</li>
+        <li><strong>when</strong> → time.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">who</span> The engineer <strong>who</strong> designed the bridge later won an award.</div>
+      <div class="example-line"><span class="ex-tag">whom</span> The man <strong>whom</strong> I met yesterday is the new director.</div>
+      <div class="example-line"><span class="ex-tag">which</span> The report, <strong>which</strong> took weeks to prepare, was finally approved.</div>
+      <div class="example-line"><span class="ex-tag">whose</span> The director, <strong>whose</strong> latest film won several awards, gave a short speech.</div>
+      <div class="example-line"><span class="ex-tag">where</span> The town <strong>where</strong> she grew up has changed completely.</div>
+      <div class="example-line"><span class="ex-tag">when</span> I still remember the day <strong>when</strong> we first met.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Defining vs Non-Defining Relative Clauses</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>Defining</strong> (restrictive) clauses give <strong>essential</strong> information — without it, the sentence would be unclear; no commas.</li>
+        <li><strong>Non-defining</strong> (non-restrictive) clauses add <strong>extra</strong> information that could be removed; always separated by commas.</li>
+        <li>Key rule: <strong>"that"</strong> can replace "who/which" in defining clauses, but <strong>NEVER</strong> in non-defining clauses.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">defining — essential</span> The man <strong>who called you</strong> is my uncle. <em>(tells us WHICH man — no commas)</em></div>
+      <div class="example-line"><span class="ex-tag">non-defining — extra</span> My uncle, <strong>who lives in Berlin</strong>, called me yesterday.</div>
+      <div class="example-line"><span class="ex-tag">"that" in defining</span> The book <strong>that</strong> I borrowed was excellent.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> My uncle, <strong>that</strong> lives in Berlin, called me. <em>("that" cannot be used in non-defining clauses)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Omitting the Relative Pronoun</div>
+    <div class="note-body">
+      <ul>
+        <li>In defining clauses, the relative pronoun can be omitted when it acts as the <strong>OBJECT</strong> of the clause.</li>
+        <li>It <strong>cannot</strong> be omitted when it is the subject.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">can omit (object)</span> The book (<strong>that</strong>) I borrowed was excellent.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ cannot omit (subject)</span> The man called me is my uncle. <em>(must be: The man WHO called me...)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Although / Even though vs Despite / In spite of</div>
+    <div class="note-body">
+      <ul>
+        <li>All four express contrast/concession, but different grammar follows.</li>
+        <li><strong>Although / Even though</strong> + full clause (subject + verb).</li>
+        <li><strong>Despite / In spite of</strong> + noun, pronoun, or -ing form — never a full clause directly.</li>
+        <li><strong>"Despite the fact that"</strong> is an exception that DOES allow a full clause.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">Although</span> <strong>Although</strong> it was raining heavily, the event continued as planned.</div>
+      <div class="example-line"><span class="ex-tag">Despite</span> <strong>Despite</strong> the heavy rain, the event continued as planned.</div>
+      <div class="example-line"><span class="ex-tag">Despite + the fact that</span> <strong>Despite the fact that</strong> it was raining, the event continued.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> <strong>Despite</strong> it was raining heavily, the event continued.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Because / Since / As vs Because of / Due to / Owing to</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>Because, since, as</strong> introduce a full clause explaining a reason.</li>
+        <li><strong>Because of, due to, owing to</strong> + noun phrase, not a full clause.</li>
+        <li>"Since" and "as" are more formal and common at the start of a sentence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>Because</strong> the roads were icy, the school closed early.</div>
+      <div class="example-line"><strong>Since</strong> she had no further questions, the meeting ended early.</div>
+      <div class="example-line"><strong>Because of</strong> the icy roads, the school closed early.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> <strong>Due to</strong> the roads were icy, the school closed. <em>("due to" can't take a full clause)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Subject-Verb Agreement: Neither/Either, Each/Every, Collective Nouns</div>
+    <div class="note-body">
+      <ul>
+        <li>With <strong>"neither...nor"</strong> and <strong>"either...or,"</strong> the verb agrees with the noun <strong>closest</strong> to it.</li>
+        <li><strong>"Each"</strong> and <strong>"every"</strong> always take a singular verb, even for many people.</li>
+        <li>Collective nouns (team, family, government) can take singular OR plural depending on emphasis (one unit vs individual members).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Neither the manager nor the <strong>employees</strong> <strong>were</strong> informed.</div>
+      <div class="example-line">Either the students or the <strong>teacher</strong> <strong>has</strong> to submit the form.</div>
+      <div class="example-line"><strong>Every</strong> employee <strong>is</strong> required to attend.</div>
+      <div class="example-line">The team <strong>is</strong> playing well this season.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 So...that / Such...that — Result Clauses</div>
+    <div class="note-body">
+      <ul>
+        <li>Introduce a result caused by an extreme degree of something.</li>
+        <li><strong>so + adjective/adverb + that</strong></li>
+        <li><strong>such + (a/an) + adjective + noun + that</strong></li>
+        <li>"so" goes before an adjective/adverb; "such" goes before a full noun phrase.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">The lecture was <strong>so</strong> complicated <strong>that</strong> hardly anyone understood it.</div>
+      <div class="example-line">It was <strong>such</strong> a complicated lecture <strong>that</strong> hardly anyone understood it.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Participle Clauses (Reduced Clauses)</div>
+    <div class="note-body">
+      <ul>
+        <li>A participle phrase at the start of a sentence must logically refer to the <strong>SUBJECT</strong> of the main clause.</li>
+        <li>Otherwise it creates a <strong>"dangling participle"</strong> error.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>Having spent years researching the disease</strong>, the scientist announced a breakthrough.</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> <strong>Having spent years researching the disease</strong>, the funding was finally approved. <em>(funding didn't research — illogical)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Comparatives in Parallel Structures</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>The + comparative..., the + comparative...</strong> shows two things changing proportionally together.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>The more</strong> experiments they ran, <strong>the more</strong> confident they became.</div>
+      <div class="example-line"><strong>The sooner</strong> we start, <strong>the sooner</strong> we'll finish.</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> When you see a comma followed by "which/who/whose," check whether removing that clause changes the core meaning — if not, it's non-defining and "that" cannot be used.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p8a">
+      <p>1) The bridge, <strong>- - - -</strong> was built over a century ago, is still in use today.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) which</button>
+        <button class="sc-opt" data-correct="false">B) who</button>
+        <button class="sc-opt" data-correct="false">C) whose</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p8b">
+      <p>2) <strong>- - - -</strong> the heavy traffic, we still managed to reach the airport on time.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Although</button>
+        <button class="sc-opt" data-correct="true">B) Despite</button>
+        <button class="sc-opt" data-correct="false">C) Because</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p8c">
+      <p>3) The exam was <strong>- - - -</strong> difficult <strong>that</strong> many students left early.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) so</button>
+        <button class="sc-opt" data-correct="false">B) such</button>
+        <button class="sc-opt" data-correct="false">C) too</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p8d">
+      <p>4) Neither the players nor the <strong>coach</strong> <strong>- - - -</strong> happy with the result.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) was</button>
+        <button class="sc-opt" data-correct="false">B) were</button>
+        <button class="sc-opt" data-correct="false">C) have been</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p8e">
+      <p>5) <strong>- - - -</strong> dinner, she suddenly remembered the meeting.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) While preparing</button>
+        <button class="sc-opt" data-correct="false">B) Although she prepared</button>
+        <button class="sc-opt" data-correct="false">C) Despite she prepared</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9: GERUND/INFINITIVE & MISC -->
+<div class="study-page" id="page-9" data-page="9">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 9 / 17 — Grammar</div>
+    <h2>Gerunds, Infinitives &amp; Other Key Structures</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Verb + Gerund (-ing)</div>
+    <div class="note-body">
+      <ul>
+        <li>Many verbs are always followed by the <strong>-ing form</strong>, never "to + verb."</li>
+        <li>Typically describe enjoyment, avoidance, suggestion, or completion.</li>
+        <li>No single logical rule — must be memorised as a group.</li>
+        <li>Common ones: enjoy, avoid, suggest, consider, mind, finish, deny, admit, recommend, imagine, risk, postpone.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">She <strong>enjoys reading</strong> historical novels.</div>
+      <div class="example-line">He <strong>denied taking</strong> the missing documents.</div>
+      <div class="example-line">Have you <strong>considered applying</strong> for the scholarship?</div>
+      <div class="example-line">They <strong>postponed announcing</strong> the results until next week.</div>
+      <div class="example-line">Would you <strong>mind closing</strong> the window?</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Verb + Infinitive (to + base verb)</div>
+    <div class="note-body">
+      <ul>
+        <li>Other verbs are always followed by <strong>"to + verb."</strong></li>
+        <li>Often describe decisions, intentions, promises, hopes, future-oriented actions.</li>
+        <li>Common ones: decide, agree, promise, refuse, manage, afford, hope, expect, plan, offer, threaten, pretend.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">They <strong>decided to postpone</strong> the meeting.</div>
+      <div class="example-line">She <strong>refused to sign</strong> the agreement.</div>
+      <div class="example-line">We can't <strong>afford to lose</strong> this client.</div>
+      <div class="example-line">He <strong>promised to call</strong> as soon as he landed.</div>
+      <div class="example-line">She <strong>pretended not to notice</strong> the mistake.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Verbs That Change Meaning: Gerund vs Infinitive</div>
+    <div class="note-body">
+      <ul>
+        <li>A small group of verbs (remember, forget, stop, try, regret, mean, go on) change <strong>MEANING</strong> depending on -ing vs "to + verb."</li>
+        <li>Frequent exam trap — both forms are grammatically correct, but only one fits the intended meaning.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I <strong>remember locking</strong> the door. <em>(a memory of doing it)</em></div>
+      <div class="example-line">I <strong>remembered to lock</strong> the door. <em>(didn't forget to do this task)</em></div>
+      <div class="example-line">She <strong>stopped to answer</strong> the phone. <em>(paused one activity to do another)</em></div>
+      <div class="example-line">She <strong>stopped answering</strong> his calls. <em>(no longer answers)</em></div>
+      <div class="example-line">He <strong>tried to open</strong> the jar, but it was too tight. <em>(attempted, with effort)</em></div>
+      <div class="example-line">He <strong>tried opening</strong> the window for some fresh air. <em>(experimented, to see the result)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Used to / Be used to / Get used to</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>used to + base verb</strong> = a past habit, no longer true.</li>
+        <li><strong>be used to + noun/-ing</strong> = already familiar/accustomed (a state).</li>
+        <li><strong>get used to + noun/-ing</strong> = becoming familiar over time (a process).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I <strong>used to live</strong> in a small village. <em>(past habit, not now)</em></div>
+      <div class="example-line">She<strong>'s used to working</strong> long hours. <em>(already familiar — a state)</em></div>
+      <div class="example-line">He<strong>'s getting used to</strong> the new schedule. <em>(adapting — a process)</em></div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ wrong</span> I <strong>am used to live</strong> in a small village. <em>(needs noun/-ing, not base verb)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Causative Verbs: have/get something done</div>
+    <div class="note-body">
+      <ul>
+        <li>Used when someone <strong>ELSE</strong> performs an action for you.</li>
+        <li>Structure: <strong>have/get + object + past participle</strong>.</li>
+        <li>"Get" is slightly more informal, sometimes implying more effort/persuasion.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I <strong>had my car repaired</strong> last week.</div>
+      <div class="example-line">She wants to <strong>get her hair cut</strong> before the event.</div>
+      <div class="example-line">We <strong>had the house painted</strong> over the summer.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Quantifiers: few/a few, little/a little, much/many</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>few/little</strong> (without "a") = <strong>negative</strong> tone — almost none, not enough.</li>
+        <li><strong>a few/a little</strong> (with "a") = <strong>neutral/positive</strong> tone — some, a small but sufficient amount.</li>
+        <li><strong>many/few</strong> for countable nouns; <strong>much/little</strong> for uncountable nouns.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">He has <strong>few</strong> friends here. <em>(almost none — negative)</em></div>
+      <div class="example-line">He has <strong>a few</strong> friends here. <em>(some — fine)</em></div>
+      <div class="example-line">There's <strong>little</strong> hope of finishing on time. <em>(almost no hope)</em></div>
+      <div class="example-line">There's <strong>a little</strong> time left — let's hurry but we can make it.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Articles: a / an / the / (no article)</div>
+    <div class="note-body">
+      <ul>
+        <li><strong>a/an</strong> = general, non-specific, singular noun (often first mention).</li>
+        <li><strong>the</strong> = specific noun — already mentioned, unique, or clear from context.</li>
+        <li><strong>(no article)</strong> = general plural nouns or abstract concepts.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">I saw <strong>a</strong> dog in the park. <strong>The</strong> dog was barking loudly.</div>
+      <div class="example-line"><strong>(no article)</strong> Education is important for everyone.</div>
+      <div class="example-line"><strong>The</strong> Eiffel Tower is in Paris. <em>(unique landmark)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Phrasal Verbs Frequently Tested</div>
+    <div class="note-body">
+      <ul>
+        <li>Carry meanings completely different from their individual words — learn as whole units.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>come up with</strong> = think of an idea → "She <strong>came up with</strong> a brilliant solution."</div>
+      <div class="example-line"><strong>put off</strong> = postpone → "They <strong>put off</strong> the decision until next month."</div>
+      <div class="example-line"><strong>look into</strong> = investigate → "The police are <strong>looking into</strong> the incident."</div>
+      <div class="example-line"><strong>bring about</strong> = cause → "The reform <strong>brought about</strong> major changes."</div>
+      <div class="example-line"><strong>carry out</strong> = perform/conduct → "Researchers <strong>carried out</strong> a detailed study."</div>
+      <div class="example-line"><strong>set up</strong> = establish/arrange → "They <strong>set up</strong> a new department last year."</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> When a verb is followed by a blank, first check whether that verb is normally followed by -ing or "to + verb" — this short list of "fixed partners" is one of the fastest, highest-payoff things to memorise.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="p9a">
+      <p>1) The committee finally <strong>- - - -</strong> to postpone the launch date.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) decided</button>
+        <button class="sc-opt" data-correct="false">B) enjoyed</button>
+        <button class="sc-opt" data-correct="false">C) suggested</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p9b">
+      <p>2) After moving to a new city, it took him months to <strong>- - - -</strong> living without his old friends nearby.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) use</button>
+        <button class="sc-opt" data-correct="true">B) get used to</button>
+        <button class="sc-opt" data-correct="false">C) used to</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p9c">
+      <p>3) We have <strong>- - - -</strong> time before the train leaves, so let's hurry.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) little</button>
+        <button class="sc-opt" data-correct="false">B) few</button>
+        <button class="sc-opt" data-correct="false">C) many</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p9d">
+      <p>4) I'll never forget <strong>- - - -</strong> the news for the first time.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) hearing</button>
+        <button class="sc-opt" data-correct="false">B) to hear</button>
+        <button class="sc-opt" data-correct="false">C) hear</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="p9e">
+      <p>5) We're going to <strong>- - - -</strong> the kitchen repainted next month.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) have</button>
+        <button class="sc-opt" data-correct="false">B) make</button>
+        <button class="sc-opt" data-correct="false">C) do</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: VOCABULARY PART 1 -->
+<div class="study-page" id="page-10" data-page="10">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 10 / 17 — Vocabulary</div>
+    <h2>Vocabulary (Part 1): Tone, Collocations &amp; Idioms</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Word Tone: Positive, Negative, or Neutral</div>
+    <div class="note-body">
+      <ul>
+        <li>Every word carries an emotional <strong>"tone"</strong> — even words with similar definitions feel different.</li>
+        <li>Recognising tone is one of the fastest ways to eliminate wrong answers.</li>
+        <li>Contrast connectors ("although," "despite," "but," "however") almost always signal a <strong>SHIFT in tone</strong> between two parts of a sentence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"Even though the plan looked promising, it turned out to be a complete <strong>disaster</strong>." <em>(positive setup → negative outcome)</em></div>
+      <div class="example-line">"Although the meeting started badly, it ended on a surprisingly <strong>positive</strong> note." <em>(negative setup → positive outcome)</em></div>
+      <div class="example-line">"The new policy was <strong>warmly welcomed</strong> by staff." <em>(clearly positive)</em></div>
+      <div class="example-line">"The new policy was <strong>met with fierce resistance</strong>." <em>(clearly negative)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Collocations — Words That Travel Together</div>
+    <div class="note-body">
+      <ul>
+        <li>Word combinations that native speakers use together naturally, even when other combinations seem logically possible.</li>
+        <li>Often no grammatical "rule" — must be learned as fixed pairs through exposure.</li>
+        <li>A wrong collocation, while understandable, simply "sounds wrong" to a fluent speaker.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>make</strong> a decision <em>(not "take")</em> &nbsp;|&nbsp; <strong>reach</strong> an agreement &nbsp;|&nbsp; <strong>raise</strong> awareness &nbsp;|&nbsp; <strong>play</strong> a role</div>
+      <div class="example-line"><strong>strong</strong> coffee <em>(not "powerful")</em> &nbsp;|&nbsp; <strong>heavy</strong> traffic &nbsp;|&nbsp; <strong>tight</strong> schedule &nbsp;|&nbsp; <strong>high</strong> expectations</div>
+      <div class="example-line"><strong>meet</strong> a deadline &nbsp;|&nbsp; <strong>keep</strong> a promise &nbsp;|&nbsp; <strong>break</strong> a record &nbsp;|&nbsp; <strong>face</strong> a challenge</div>
+      <div class="example-line">The new policy <strong>raised awareness</strong> about recycling across the city.</div>
+      <div class="example-line">Despite the <strong>tight schedule</strong>, the team managed to <strong>meet the deadline</strong>.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Idiomatic Phrases That Often Appear in Exams</div>
+    <div class="note-body">
+      <ul>
+        <li>Carry a meaning very different from their individual words.</li>
+        <li>Cannot be understood literally — must be memorised as whole expressions.</li>
+        <li>Test genuine familiarity with English, not just dictionary knowledge.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>stay afloat</strong> = survive financially → "The small shop struggled to <strong>stay afloat</strong> after the mall opened."</div>
+      <div class="example-line"><strong>fall behind</strong> = lag, fail to keep pace → "He started to <strong>fall behind</strong> in his studies after missing two weeks."</div>
+      <div class="example-line"><strong>bring about</strong> = cause something → "The new law is expected to <strong>bring about</strong> major changes."</div>
+      <div class="example-line"><strong>come up with</strong> = think of an idea → "The team finally <strong>came up with</strong> a solution."</div>
+      <div class="example-line"><strong>put off</strong> = postpone → "They <strong>put off</strong> the announcement until next week."</div>
+      <div class="example-line"><strong>look into</strong> = investigate → "Authorities are <strong>looking into</strong> the cause of the accident."</div>
+      <div class="example-line"><strong>get away with</strong> = avoid punishment for something wrong → "He <strong>got away with</strong> arriving late every day."</div>
+      <div class="example-line"><strong>run out of</strong> = have no more of something → "We've <strong>run out of</strong> time to finish this properly."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Synonyms vs Near-Synonyms — Small Differences Matter</div>
+    <div class="note-body">
+      <ul>
+        <li>Similar-meaning words can differ in <strong>INTENSITY</strong> (how strong) or <strong>FORMALITY</strong> (how casual/professional).</li>
+        <li>Choosing a "near-synonym" with the wrong intensity is one of the most common traps.</li>
+        <li>The word isn't wrong in general — just wrong for THIS specific sentence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>angry</strong> (neutral) → <strong>furious</strong> (very strong) → <strong>annoyed</strong> (mild)</div>
+      <div class="example-line"><strong>important</strong> (neutral) → <strong>crucial/vital</strong> (extreme) → <strong>minor</strong> (opposite — small)</div>
+      <div class="example-line"><strong>big</strong> (neutral) → <strong>enormous/massive</strong> (very large) → <strong>tiny</strong> (opposite)</div>
+      <div class="example-line">"The deadline is <strong>crucial</strong> — missing it could cost the company the entire contract." <em>(needs the strong word)</em></div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> Even if you don't recognise a specific word, the overall emotional direction of the sentence (positive or negative) can still point you toward the correct answer — eliminate options with the opposite tone first.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="v1a">
+      <p>1) The small bakery struggled to stay <strong>- - - -</strong> after the new supermarket opened nearby.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) curious</button>
+        <button class="sc-opt" data-correct="true">B) afloat</button>
+        <button class="sc-opt" data-correct="false">C) cheerful</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v1b">
+      <p>2) The committee finally <strong>- - - -</strong> a decision after hours of debate.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) made</button>
+        <button class="sc-opt" data-correct="false">B) took</button>
+        <button class="sc-opt" data-correct="false">C) did</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v1c">
+      <p>3) Losing this client would be <strong>- - - -</strong> for the company's future, not a minor setback.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) crucial</button>
+        <button class="sc-opt" data-correct="false">B) irrelevant</button>
+        <button class="sc-opt" data-correct="false">C) convenient</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v1d">
+      <p>4) They <strong>- - - -</strong> the announcement until all the details were confirmed.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) put off</button>
+        <button class="sc-opt" data-correct="false">B) ran out of</button>
+        <button class="sc-opt" data-correct="false">C) got away with</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v1e">
+      <p>5) He was <strong>- - - -</strong> when he discovered someone had used his car without asking. <em>(strong anger)</em></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) annoyed</button>
+        <button class="sc-opt" data-correct="true">B) furious</button>
+        <button class="sc-opt" data-correct="false">C) calm</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11: VOCABULARY PART 2 -->
+<div class="study-page" id="page-11" data-page="11">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 11 / 17 — Vocabulary</div>
+    <h2>Vocabulary (Part 2): Word Building &amp; Register</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Elimination Strategy: Remove the Clearly Wrong Options First</div>
+    <div class="note-body">
+      <ul>
+        <li>In five-option vocabulary questions, usually two choices have nothing to do with the context.</li>
+        <li>Identify and eliminate these immediately.</li>
+        <li>This narrows your focus to the remaining three, saves time, and reduces careless mistakes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Prefixes — Guessing Meaning From Word Beginnings</div>
+    <div class="note-body">
+      <ul>
+        <li>Prefixes typically add negation, repetition, excess, or direction to the base word.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>over-</strong> = too much → "overestimate," "overworked"</div>
+      <div class="example-line"><strong>under-</strong> = too little → "underpaid," "underestimate"</div>
+      <div class="example-line"><strong>mis-</strong> = wrongly/badly → "misunderstand," "misinterpret"</div>
+      <div class="example-line"><strong>re-</strong> = again → "rebuild," "reconsider"</div>
+      <div class="example-line"><strong>dis-</strong> = not/opposite → "disagree," "dishonest"</div>
+      <div class="example-line"><strong>im-/in-/un-</strong> = not → "impossible," "incomplete," "unhappy"</div>
+      <div class="example-line">"The new instructions were so confusing that most employees <strong>misunderstood</strong> them."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Suffixes — Guessing Word Type and Meaning</div>
+    <div class="note-body">
+      <ul>
+        <li>Often change a word's grammatical category (noun, adjective, verb).</li>
+        <li>Add specific shades of meaning.</li>
+        <li>Help identify whether a missing word should be a noun, adjective, or verb.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>-less</strong> = without → "harmless," "careless" <em>(adjective)</em></div>
+      <div class="example-line"><strong>-ful</strong> = full of → "powerful," "successful" <em>(adjective)</em></div>
+      <div class="example-line"><strong>-able/-ible</strong> = capable of being → "manageable," "flexible" <em>(adjective)</em></div>
+      <div class="example-line"><strong>-tion/-sion</strong> = verb → noun → "decision," "explanation" <em>(noun)</em></div>
+      <div class="example-line"><strong>-ness</strong> = adjective → noun → "happiness," "awareness" <em>(noun)</em></div>
+      <div class="example-line"><strong>-ify/-ise/-ize</strong> = noun/adjective → verb → "simplify," "modernise" <em>(verb)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Formal vs Informal Vocabulary</div>
+    <div class="note-body">
+      <ul>
+        <li>Exam reading passages and formal letters/reports use a <strong>formal register</strong>.</li>
+        <li>Recognising formal equivalents of everyday words helps with vocabulary AND translation/rephrasing questions.</li>
+        <li>Exam answer choices often test whether you can match the correct formality level.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>get</strong> → <strong>obtain / acquire</strong> <em>(formal)</em></div>
+      <div class="example-line"><strong>find out</strong> → <strong>determine / discover</strong> <em>(formal)</em></div>
+      <div class="example-line"><strong>a lot of</strong> → <strong>numerous / considerable</strong> <em>(formal)</em></div>
+      <div class="example-line"><strong>show</strong> → <strong>demonstrate / indicate</strong> <em>(formal)</em></div>
+      <div class="example-line"><strong>ask for</strong> → <strong>request</strong> <em>(formal)</em></div>
+      <div class="example-line">"Researchers <strong>determined</strong> that the results were statistically significant."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Confusable Word Pairs</div>
+    <div class="note-body">
+      <ul>
+        <li>Some words look or sound similar but have distinctly <strong>different meanings</strong>.</li>
+        <li>Frequently tested because choosing the wrong one is an easy, common mistake even for advanced learners.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>affect</strong> (verb — to influence) vs <strong>effect</strong> (noun — a result) → "The weather <strong>affected</strong> our plans, and the <strong>effect</strong> was a delayed flight."</div>
+      <div class="example-line"><strong>economic</strong> (relating to the economy) vs <strong>economical</strong> (cost-saving) → "The government announced new <strong>economic</strong> policies." / "This car is very <strong>economical</strong> on fuel."</div>
+      <div class="example-line"><strong>sensible</strong> (good judgement) vs <strong>sensitive</strong> (easily affected emotionally) → "It was a <strong>sensible</strong> decision." / "He's quite <strong>sensitive</strong> about criticism."</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> If two options look like the same word with different endings (economic/economical, sensible/sensitive), this is almost always a deliberate trap — check the suffix carefully before choosing.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="v2a">
+      <p>1) The new instructions were so confusing that most employees <strong>- - - -</strong> them.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) misunderstood</button>
+        <button class="sc-opt" data-correct="false">B) overestimated</button>
+        <button class="sc-opt" data-correct="false">C) reconsidered</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v2b">
+      <p>2) Researchers needed several months to <strong>- - - -</strong> the exact cause of the failure.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) determine</button>
+        <button class="sc-opt" data-correct="false">B) get</button>
+        <button class="sc-opt" data-correct="false">C) show off</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v2c">
+      <p>3) The storm had a serious <strong>- - - -</strong> on the local fishing industry.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) affect</button>
+        <button class="sc-opt" data-correct="true">B) effect</button>
+        <button class="sc-opt" data-correct="false">C) effective</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v2d">
+      <p>4) Buying in bulk is a more <strong>- - - -</strong> way to shop for a large family.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) economical</button>
+        <button class="sc-opt" data-correct="false">B) economic</button>
+        <button class="sc-opt" data-correct="false">C) economy</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="v2e">
+      <p>5) Her constant <strong>- - - -</strong> made her a valuable member of the negotiating team.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) awareness</button>
+        <button class="sc-opt" data-correct="false">B) awareless</button>
+        <button class="sc-opt" data-correct="false">C) awareful</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12: TRANSLATION PART 1 -->
+<div class="study-page" id="page-12" data-page="12">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 12 / 17 — Translation</div>
+    <h2>Translation (Part 1): Structure &amp; Negation</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Identify the Structure Before You Translate</div>
+    <div class="note-body">
+      <ul>
+        <li>The first step is NOT translating word by word.</li>
+        <li>Recognise the grammatical structure first: conditional? Passive? Comparison? Relative clause?</li>
+        <li>Once the structure is clear, finding the matching equivalent is far easier.</li>
+        <li>You're less likely to be misled by an option that "sounds similar" but uses the wrong grammar.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"<strong>Had</strong> the team prepared better, they <strong>would have won</strong> the competition." → recognise Third Conditional before translating any word.</div>
+      <div class="example-line">"The proposal, <strong>which</strong> took months to draft, was rejected immediately." → recognise the non-defining relative clause first.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Watch Out for Negation Traps</div>
+    <div class="note-body">
+      <ul>
+        <li>One of the most common tricks: flipping a positive statement into a negative one, or the reverse.</li>
+        <li>Especially dangerous because the rest of the sentence may look almost identical.</li>
+        <li>Always check words like "never," "rarely," "hardly," "barely," "no," "not" carefully — in both the original and each option.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "The plan <strong>was never</strong> approved by the board."</div>
+      <div class="example-line ex-wrong">Trap: "Plan, yönetim kurulu tarafından <strong>onaylandı</strong>." <em>(meaning reversed!)</em></div>
+      <div class="example-line">Correct: "Plan, yönetim kurulu tarafından <strong>hiçbir zaman onaylanmadı</strong>."</div>
+      <div class="example-line">Original: "Few people <strong>doubted</strong> her ability to lead the project."</div>
+      <div class="example-line ex-wrong">Trap: "Çoğu insan onun projeyi yönetme yeteneğinden <strong>şüphe duydu</strong>." <em>(reverses "few" into "most")</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Preserve the Degree of Certainty</div>
+    <div class="note-body">
+      <ul>
+        <li>The difference between possibility ("might/may/could") and certainty ("will/must/definitely") must always be preserved.</li>
+        <li>Translating a possibility as a certainty (or vice versa) changes the entire meaning, even if other words are correct.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "Experts <strong>predict</strong> that prices will rise." → confident prediction.</div>
+      <div class="example-line ex-wrong">Trap: "Bazı uzmanlara göre fiyatlar <strong>belki</strong> artabilir." <em>(certainty weakened)</em></div>
+      <div class="example-line">Original: "The committee <strong>might consider</strong> the proposal." → only a possibility.</div>
+      <div class="example-line ex-wrong">Trap: "Komite, teklifi <strong>değerlendirecektir</strong>." <em>(certainty wrongly added)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Preserve Tense and Timeframe</div>
+    <div class="note-body">
+      <ul>
+        <li>Past, present, and future must stay consistent between original and translation.</li>
+        <li>A translation shifting "already happened" to "will happen," or "ongoing" to "finished," is incorrect — even with accurate vocabulary.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "The company <strong>has been struggling</strong> financially for two years." <em>(ongoing, still true)</em></div>
+      <div class="example-line ex-wrong">Trap: "Şirket iki yıl önce mali olarak zor günler <strong>geçirmişti</strong>." <em>(implies it's over — wrong)</em></div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> Before reading the answer options, try forming your OWN rough translation of the original sentence in your head first — then compare it to the options. This prevents you from being misled by a well-written but incorrect option.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="t1a">
+      <p>1) "The new regulation <strong>was rarely enforced</strong> by local authorities." cümlesinin en doğru Türkçe çevirisi hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Yeni düzenleme yerel yetkililer tarafından her zaman uygulandı.</button>
+        <button class="sc-opt" data-correct="true">B) Yeni düzenleme yerel yetkililer tarafından nadiren uygulandı.</button>
+        <button class="sc-opt" data-correct="false">C) Yeni düzenleme hiçbir zaman yürürlüğe girmedi.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="t1b">
+      <p>2) "Researchers <strong>might eventually</strong> discover a cure." cümlesinin anlamına en yakın seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Araştırmacılar kesinlikle bir tedavi bulacaktır.</button>
+        <button class="sc-opt" data-correct="true">B) Araştırmacılar belki bir gün bir tedavi bulabilirler.</button>
+        <button class="sc-opt" data-correct="false">C) Araştırmacılar bir tedavi bulmayı çoktan başardılar.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="t1c">
+      <p>3) "Few residents <strong>opposed</strong> the new construction project." cümlesine en yakın çeviri hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Çok az sayıda sakin yeni inşaat projesine karşı çıktı.</button>
+        <button class="sc-opt" data-correct="false">B) Çoğu sakin yeni inşaat projesine karşı çıktı.</button>
+        <button class="sc-opt" data-correct="false">C) Hiçbir sakin yeni inşaat projesinden haberdar değildi.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="t1d">
+      <p>4) "The company <strong>has been losing</strong> money for the past year." cümlesinin doğru çevirisi hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Şirket geçtiğimiz yıl boyunca para kaybetmeye devam ediyor.</button>
+        <button class="sc-opt" data-correct="false">B) Şirket geçen yıl bir kerelik büyük bir zarar etti.</button>
+        <button class="sc-opt" data-correct="false">C) Şirket geçen yıl tüm kayıplarını telafi etti.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 13: TRANSLATION PART 2 -->
+<div class="study-page" id="page-13" data-page="13">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 13 / 17 — Translation</div>
+    <h2>Translation (Part 2): Logic, Tone &amp; Completeness</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Don't Reverse Cause and Effect</div>
+    <div class="note-body">
+      <ul>
+        <li>Some wrong options swap the cause and the result.</li>
+        <li>This error can be subtle — individual words may be translated correctly, only the LOGICAL DIRECTION is wrong.</li>
+        <li>Always ask: "in the original sentence, what causes what?"</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "Poor planning <strong>led to</strong> the project's failure." → poor planning (cause) → failure (result).</div>
+      <div class="example-line ex-wrong">Trap: "Projenin başarısızlığı kötü planlamaya <strong>yol açtı</strong>." <em>(reversed)</em></div>
+      <div class="example-line">Original: "Heavy rainfall <strong>caused</strong> the river to flood."</div>
+      <div class="example-line ex-wrong">Trap: "Nehrin taşması yoğun yağmura <strong>neden oldu</strong>." <em>(reversed)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Don't Add or Remove Information</div>
+    <div class="note-body">
+      <ul>
+        <li>A correct translation never adds information not in the original.</li>
+        <li>It also never silently drops information that WAS there.</li>
+        <li>Be suspicious of: an extra specific detail (a number, a name, an exaggeration), or a detail clearly stated but missing.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "The factory reduced emissions <strong>by 20%</strong> last year."</div>
+      <div class="example-line ex-wrong">Trap: "Fabrika geçen yıl emisyonlarını <strong>tamamen</strong> ortadan kaldırdı." <em>("20%" replaced with exaggerated "completely")</em></div>
+      <div class="example-line">Original: "The mayor <strong>briefly</strong> addressed the crowd before leaving."</div>
+      <div class="example-line ex-wrong">Trap: "Belediye başkanı kalabalığa <strong>uzun bir konuşma yaptı</strong>." <em>(reverses "briefly")</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Keep the Tone and Formality Level</div>
+    <div class="note-body">
+      <ul>
+        <li>A formal, measured sentence should be translated into similarly formal, measured language.</li>
+        <li>Don't let an informal or neutral sentence become dramatic or exaggerated in translation.</li>
+        <li>Harder to spot — the core facts may be accurate; only the EMOTIONAL INTENSITY has changed.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "The board <strong>expressed concern</strong> about the budget." <em>(formal, measured)</em></div>
+      <div class="example-line ex-wrong">Trap: "Yönetim kurulu bütçe konusunda <strong>çok endişeliydi ve paniğe kapıldı</strong>." <em>("panic" much stronger than "concern")</em></div>
+      <div class="example-line">Original: "Sales <strong>declined slightly</strong> in the third quarter."</div>
+      <div class="example-line ex-wrong">Trap: "Satışlar üçüncü çeyrekte <strong>tamamen çöktü</strong>." <em>("collapsed completely" far stronger)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Multi-Clause Sentences: Translate Each Part Correctly</div>
+    <div class="note-body">
+      <ul>
+        <li>Longer sentences often have two or three clauses joined by connectors (although, because, and, but).</li>
+        <li>A wrong option might translate ONE clause correctly while getting another wrong.</li>
+        <li>Always check every part of a long sentence individually, not just the overall "feel."</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "<strong>Although the budget was limited</strong>, the team <strong>managed to complete</strong> the project <strong>on time</strong>."</div>
+      <div class="example-line">Check each part separately: (1) budget was limited; (2) team completed it; (3) on time. All three must match.</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> For every translation option, ask three questions in order: Does it have the same FACTS? The same TONE/intensity? The same CAUSE-EFFECT direction? If any answer is "no," eliminate that option.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="t2a">
+      <p>1) "Poor communication <strong>resulted in</strong> several costly mistakes." cümlesine en yakın çeviri hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Zayıf iletişim birkaç maliyetli hataya yol açtı.</button>
+        <button class="sc-opt" data-correct="false">B) Birkaç maliyetli hata zayıf iletişime yol açtı.</button>
+        <button class="sc-opt" data-correct="false">C) İletişim, hatalar sayesinde önemli ölçüde gelişti.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="t2b">
+      <p>2) "The CEO <strong>briefly</strong> mentioned the merger during the call." cümlesinin en doğru çevirisi hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) CEO, görüşme sırasında birleşmeyi uzun uzun anlattı.</button>
+        <button class="sc-opt" data-correct="true">B) CEO, görüşme sırasında birleşmeden kısaca bahsetti.</button>
+        <button class="sc-opt" data-correct="false">C) CEO, görüşme sırasında birleşmeden hiç bahsetmedi.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="t2c">
+      <p>3) "Sales <strong>declined slightly</strong> in the third quarter." cümlesinin en doğru çevirisi hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Satışlar üçüncü çeyrekte tamamen çöktü.</button>
+        <button class="sc-opt" data-correct="true">B) Satışlar üçüncü çeyrekte hafifçe azaldı.</button>
+        <button class="sc-opt" data-correct="false">C) Satışlar üçüncü çeyrekte önemli ölçüde arttı.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="t2d">
+      <p>4) "<strong>Although</strong> the budget was limited, the team <strong>managed to complete</strong> the project <strong>on time</strong>." cümlesine en yakın çeviri hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Bütçe sınırlı olmasına rağmen, takım projeyi zamanında tamamlamayı başardı.</button>
+        <button class="sc-opt" data-correct="false">B) Bütçe sınırlı olduğu için takım projeyi zamanında tamamlayamadı.</button>
+        <button class="sc-opt" data-correct="false">C) Bütçe yeterli olduğu için takım projeyi geciktirmeden tamamladı.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 14: REPHRASING PART 1 -->
+<div class="study-page" id="page-14" data-page="14">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 14 / 17 — Rephrasing</div>
+    <h2>Rephrasing (Part 1): Word Overlap &amp; Sequencing</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Same Words ≠ Same Meaning</div>
+    <div class="note-body">
+      <ul>
+        <li>An option isn't automatically correct just because it repeats many words from the original.</li>
+        <li>An option isn't automatically wrong just because it uses different vocabulary.</li>
+        <li>Always focus on whether the <strong>MEANING</strong> matches, not the words.</li>
+        <li>Test writers deliberately create high-word-overlap options with distorted meaning, to catch students who scan for familiar words.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "The manager <strong>rarely praises</strong> his team."</div>
+      <div class="example-line ex-wrong">Trap (same words, wrong meaning): "The manager <strong>always praises</strong> his team rarely." <em>(nonsensical)</em></div>
+      <div class="example-line">Correct (different words, same meaning): "The manager hardly ever says anything positive about his team."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 "It wasn't until..." and "Only after..." Structures</div>
+    <div class="note-body">
+      <ul>
+        <li>Describe something that happened <strong>ONLY AFTER</strong> a specific event — never before, not at the same time.</li>
+        <li>Getting the sequence exactly right is essential.</li>
+        <li>Designed to test whether you can track time order through a rephrased sentence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"It wasn't until he failed twice that he finally succeeded." = "Only after failing twice did he succeed."</div>
+      <div class="example-line ex-wrong">Wrong: "He succeeded before failing twice." <em>(sequence reversed)</em></div>
+      <div class="example-line">"It wasn't until the storm passed that the ships could leave the harbour." = "Only after the storm passed could the ships leave."</div>
+      <div class="example-line">"Not until she apologised did he agree to speak with her again." = "He only agreed to speak with her again after she apologised."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 No sooner... than / Hardly... when — Immediate Sequence</div>
+    <div class="note-body">
+      <ul>
+        <li>Describe one event happening immediately after another — almost simultaneously.</li>
+        <li>Both require <strong>inversion</strong> (auxiliary before subject) at the start of a sentence.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>No sooner had</strong> she sat down <strong>than</strong> the phone rang. <em>(= as soon as she sat down...)</em></div>
+      <div class="example-line"><strong>Hardly had</strong> he finished speaking <strong>when</strong> the audience began applauding.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Don't Change the Degree (hardly any / most / all)</div>
+    <div class="note-body">
+      <ul>
+        <li>Quantity words ("hardly any," "barely," "almost none") are very different from "all," "most," "the majority of."</li>
+        <li>If a rephrased option shifts this degree — even slightly — it changes the factual claim.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "Hardly any of the staff understood the new policy."</div>
+      <div class="example-line ex-wrong">Wrong: "Most of the staff understood the new policy." <em>(degree completely reversed)</em></div>
+      <div class="example-line">Correct: "Very few of the staff understood the new policy."</div>
+      <div class="example-line">Original: "The majority of customers were satisfied with the service."</div>
+      <div class="example-line ex-wrong">Wrong: "A small number of customers were satisfied." <em>(degree reversed)</em></div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> Circle (mentally or literally) every quantity/frequency word in the original sentence — hardly, rarely, most, all, never, always — and verify the chosen option keeps the exact same strength.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="r1a">
+      <p>1) "Barely anyone in the room had heard of the new policy." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Almost everyone in the room knew about the new policy.</button>
+        <button class="sc-opt" data-correct="true">B) Very few people in the room were aware of the new policy.</button>
+        <button class="sc-opt" data-correct="false">C) No one in the room had ever heard of any policy.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="r1b">
+      <p>2) "It wasn't until the manager apologised that the customer calmed down." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) The customer calmed down before the manager apologised.</button>
+        <button class="sc-opt" data-correct="true">B) Only after the manager apologised did the customer calm down.</button>
+        <button class="sc-opt" data-correct="false">C) The manager never apologised to the customer.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="r1c">
+      <p>3) "No sooner had the meeting started than the fire alarm went off." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) The fire alarm went off almost immediately after the meeting started.</button>
+        <button class="sc-opt" data-correct="false">B) The fire alarm went off long before the meeting started.</button>
+        <button class="sc-opt" data-correct="false">C) The meeting continued despite the fire alarm.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="r1d">
+      <p>4) "The majority of residents supported the new park." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Only a small number of residents supported the new park.</button>
+        <button class="sc-opt" data-correct="true">B) Most residents were in favour of the new park.</button>
+        <button class="sc-opt" data-correct="false">C) No residents had an opinion about the new park.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 15: REPHRASING PART 2 -->
+<div class="study-page" id="page-15" data-page="15">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 15 / 17 — Rephrasing</div>
+    <h2>Rephrasing (Part 2): Conditionals &amp; Logical Relationships</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Real or Hypothetical? Check the Conditional Type</div>
+    <div class="note-body">
+      <ul>
+        <li>The most important question: did the event actually happen in reality?</li>
+        <li>Third Conditional ALWAYS describes something that did NOT happen.</li>
+        <li>A correct rephrased version must describe the real, opposite outcome that DID happen — not pretend the hypothetical was real.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"If the team had practised more, they would have won." → the team did NOT win.</div>
+      <div class="example-line">Correct: "The team lost because they hadn't practised enough."</div>
+      <div class="example-line ex-wrong">Wrong: "The team practised a lot and won the match." <em>(treats the hypothetical as real)</em></div>
+      <div class="example-line">"Had she known about the traffic, she would have left earlier." → she did NOT leave earlier.</div>
+      <div class="example-line">Correct: "She left late because she didn't know about the traffic."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Cause, Result, Contrast, or Addition? Preserve the Logical Relationship</div>
+    <div class="note-body">
+      <ul>
+        <li>A correctly rephrased sentence must preserve the EXACT logical relationship of the original.</li>
+        <li>Replacing "because" (cause) with "despite" (contrast) completely reverses the logic.</li>
+        <li>Identify the connector's FUNCTION first: explaining WHY, or showing an unexpected contrast?</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "<strong>Because</strong> of the heavy snow, the flight was delayed." <em>(cause → result)</em></div>
+      <div class="example-line ex-wrong">Wrong: "<strong>Despite</strong> the heavy snow, the flight was delayed." <em>(implies snow should have prevented delay — wrong logic)</em></div>
+      <div class="example-line">Original: "<strong>Despite</strong> the heavy snow, all flights departed on schedule." <em>(contrast)</em></div>
+      <div class="example-line ex-wrong">Wrong: "<strong>Because</strong> of the heavy snow, all flights departed on schedule." <em>(illogical)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Rephrasing Comparisons</div>
+    <div class="note-body">
+      <ul>
+        <li>When a sentence involves a comparison ("more...than," "as...as," "the same as," "different from"), the rephrased version must keep the <strong>SAME relative ranking</strong>.</li>
+        <li>Don't accidentally swap which one is bigger, better, or more important.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original: "This year's profits were <strong>significantly higher than</strong> last year's."</div>
+      <div class="example-line">Correct: "Profits increased significantly compared to last year."</div>
+      <div class="example-line ex-wrong">Wrong: "This year's profits were <strong>lower than</strong> last year's." <em>(direction reversed)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Rephrasing Passive ↔ Active Without Changing Meaning</div>
+    <div class="note-body">
+      <ul>
+        <li>A sentence can often be rephrased between active and passive while keeping the exact same meaning.</li>
+        <li>The subject and object roles must be correctly swapped (original subject → "by" agent; original object → new subject).</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">Original (active): "The committee rejected the proposal."</div>
+      <div class="example-line">Correct (passive): "The proposal was rejected by the committee."</div>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> After choosing your answer, briefly explain to yourself, in your own words, why each of the other options is wrong — naming the specific error (reversed cause, wrong tense, changed degree) builds a habit that prevents careless mistakes.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="r2a">
+      <p>1) "If she had left earlier, she wouldn't have missed the flight." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) She left early and caught her flight without any trouble.</button>
+        <button class="sc-opt" data-correct="true">B) She missed her flight because she didn't leave early enough.</button>
+        <button class="sc-opt" data-correct="false">C) She will leave early next time to avoid missing her flight.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="r2b">
+      <p>2) "Because the bridge was closed, traffic was diverted through the city centre." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Traffic was diverted through the city centre due to the bridge closure.</button>
+        <button class="sc-opt" data-correct="false">B) Despite the bridge closure, traffic continued as normal.</button>
+        <button class="sc-opt" data-correct="false">C) The bridge was closed because traffic was diverted.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="r2c">
+      <p>3) "This year's sales were significantly higher than last year's." cümlesine en yakın anlamlı seçenek hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Sales decreased considerably compared to last year.</button>
+        <button class="sc-opt" data-correct="true">B) Sales increased considerably compared to last year.</button>
+        <button class="sc-opt" data-correct="false">C) Sales remained exactly the same as last year.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="r2d">
+      <p>4) "The board approved the new policy." cümlesinin pasif yapıdaki en doğru karşılığı hangisidir?</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) The new policy was approved by the board.</button>
+        <button class="sc-opt" data-correct="false">B) The board was approved by the new policy.</button>
+        <button class="sc-opt" data-correct="false">C) The new policy approved the board.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 16: DIALOGUE COMPLETION -->
+<div class="study-page" id="page-16" data-page="16">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 16 / 17 — Dialogue Completion</div>
+    <h2>Dialogue Completion — What to Watch For</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Follow the Flow and Emotional Tone of the Conversation</div>
+    <div class="note-body">
+      <ul>
+        <li>The correct answer must be a <strong>natural continuation</strong> of the conversation.</li>
+        <li>Should not suddenly change the established emotional tone (worried, happy, confused, frustrated).</li>
+        <li>Should not jump to a completely unrelated topic.</li>
+        <li>Predict in your own words what kind of response makes sense, then match the closest option.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">A: "I'm worried the presentation went badly." → B's reply should stay connected to this worry — not lunch plans.</div>
+      <div class="example-line">A: "I just got some amazing news!" → B's reply should match the excited, positive tone.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Eliminate Options That Contradict the Previous Line</div>
+    <div class="note-body">
+      <ul>
+        <li>If a speaker clearly stated something, the next line should not <strong>directly deny</strong> it without a clear reason.</li>
+        <li>Watch for options that conflict with something already established earlier.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">A: "I'm still not sure if I should take the job."</div>
+      <div class="example-line ex-wrong">B (wrong): "Actually, I've already accepted three job offers this year." <em>(contradicts A's uncertainty)</em></div>
+      <div class="example-line">B (correct): "That's understandable — it's a big decision to make."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 If a Question or Suggestion Is Made, the Reply Must Address It</div>
+    <div class="note-body">
+      <ul>
+        <li>When one speaker asks a question or makes a suggestion, the reply should respond <strong>directly</strong>.</li>
+        <li>A reply that ignores the question and changes the subject is almost always wrong.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">A: "Why don't we reschedule the meeting for Friday?"</div>
+      <div class="example-line">B (correct): "Friday works for me — I'll let the others know."</div>
+      <div class="example-line ex-wrong">B (wrong): "I had pasta for lunch today." <em>(unrelated)</em></div>
+      <div class="example-line">A: "Could you send me the file again? I think I lost it."</div>
+      <div class="example-line">B (correct): "Sure, no problem — I'll send it right now."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Formal or Informal? Match the Register</div>
+    <div class="note-body">
+      <ul>
+        <li>Look at the context: workplace/customer service/academic (formal) vs friends/family (informal).</li>
+        <li>The correct answer should match this level of formality consistently.</li>
+        <li>A sudden formal ↔ casual shift within the same dialogue usually signals a wrong option.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><span class="ex-tag">formal</span> Customer service: "I completely understand your concern, and I'll resolve this for you right away."</div>
+      <div class="example-line"><span class="ex-tag">informal</span> Between friends: "Oh no, that's rough! Want to talk about it?"</div>
+      <div class="example-line ex-wrong"><span class="ex-tag">✗ mismatched</span> Customer service: "Yeah, that totally sucks, I feel you." <em>(too informal)</em></div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Be Cautious of Extreme or Absolute Statements</div>
+    <div class="note-body">
+      <ul>
+        <li>Phrases like "I will never...", "Nothing can be done...", "Everyone agrees..." are usually WRONG answers.</li>
+        <li>Real conversations are rarely this absolute or dramatic.</li>
+        <li>Exam writers often include one "too extreme" option as a distractor.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line ex-wrong">"I will never trust anyone at this company again." <em>(too extreme)</em></div>
+      <div class="example-line">More natural: "It's going to take some time before I trust the new system again."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Pay Attention to Pronoun and Reference Consistency</div>
+    <div class="note-body">
+      <ul>
+        <li>The correct reply must use pronouns/references that logically connect to what was just said.</li>
+        <li>If Speaker A mentions "my sister," Speaker B's reply should refer back correctly ("her"/"your sister") — not introduce a confusing reference.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> Try reading the full dialogue aloud (or silently) with each option inserted — whichever answer sounds completely "natural" in the flow, and which sounds slightly "odd," even if you can't explain exactly why? This test often leads you straight to the right choice.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="dlg1">
+      <p>1)<br><strong>Ela:</strong> I'm really nervous about my presentation tomorrow.<br><strong>Burak:</strong> Don't worry, you've prepared really well.<br><strong>Ela: - - - -</strong></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Actually, I've given hundreds of presentations before, it's nothing new.</button>
+        <button class="sc-opt" data-correct="true">B) I hope so. I just keep thinking about all the things that could go wrong.</button>
+        <button class="sc-opt" data-correct="false">C) I've decided to cancel the presentation altogether.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="dlg2">
+      <p>2)<br><strong>Manager:</strong> Could we move tomorrow's meeting to 3 PM instead?<br><strong>Assistant: - - - -</strong></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Sure, I'll send everyone an updated invite right away.</button>
+        <button class="sc-opt" data-correct="false">B) I had a meeting like that once, years ago.</button>
+        <button class="sc-opt" data-correct="false">C) Meetings are usually a waste of time anyway.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="dlg3">
+      <p>3)<br><strong>Customer:</strong> This is the second time my order has arrived damaged.<br><strong>Representative: - - - -</strong></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Damaged orders happen all the time, there's nothing we can do.</button>
+        <button class="sc-opt" data-correct="true">B) I'm very sorry to hear that. Let me arrange a replacement and look into what went wrong.</button>
+        <button class="sc-opt" data-correct="false">C) Maybe you should be more careful when opening packages.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="dlg4">
+      <p>4)<br><strong>Aylin:</strong> I heard you're moving to a new apartment next month!<br><strong>Deniz: - - - -</strong></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Yes, I'm really excited, although there's still a lot to organise.</button>
+        <button class="sc-opt" data-correct="false">B) No, I've lived in the same place for ten years and never plan to move.</button>
+        <button class="sc-opt" data-correct="false">C) Apartments in this city are far too expensive nowadays.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="dlg5">
+      <p>5)<br><strong>Colleague 1:</strong> Do you think we'll finish the report by Friday?<br><strong>Colleague 2: - - - -</strong></p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) I think so, as long as we get the data from the other team soon.</button>
+        <button class="sc-opt" data-correct="false">B) Reports in general are not very useful for most companies.</button>
+        <button class="sc-opt" data-correct="false">C) I've never written a report in my entire career.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 17: SITUATIONAL SENTENCES -->
+<div class="study-page" id="page-17" data-page="17">
+  <div class="page-header">
+    <div class="page-eyebrow">Page 17 / 17 — Situational Sentences</div>
+    <h2>Situational Sentences — What to Watch For</h2>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 First Identify the Situation, Then the Purpose</div>
+    <div class="note-body">
+      <ul>
+        <li>The situation description is always given first, in plain language.</li>
+        <li>First job: identify exactly <strong>WHO</strong> is speaking to <strong>WHOM</strong>, and the relationship (friend, stranger, boss, customer).</li>
+        <li>Second job: identify the <strong>PURPOSE/GOAL</strong> — apologising, praising, polite request, complaining, advice, declining?</li>
+        <li>Misreading the relationship or the goal is the most common source of error.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Polite Request Patterns</div>
+    <div class="note-body">
+      <ul>
+        <li>Standard patterns soften a request and show respect.</li>
+        <li>Essential whenever the situation calls for politeness — strangers, superiors, professional contexts.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line"><strong>Would you mind closing the window?</strong> &nbsp;|&nbsp; <strong>Could you possibly send that file again?</strong> &nbsp;|&nbsp; <strong>I wonder if you could help me with this.</strong></div>
+      <div class="example-line"><strong>Would it be possible to reschedule our meeting?</strong> &nbsp;|&nbsp; <strong>Do you think you could lower your voice a little?</strong></div>
+      <div class="example-line ex-wrong">Direct command ("Close the window now.") is usually <strong>not appropriate</strong> for a polite request.</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Apology and Responsibility Patterns</div>
+    <div class="note-body">
+      <ul>
+        <li>The strongest apology answers usually contain up to three elements together:</li>
+        <li>(1) a clear apology</li>
+        <li>(2) acknowledging responsibility</li>
+        <li>(3) an offer of a solution/fix/compensation</li>
+        <li>An answer that only apologises, without addressing the problem, is often weaker than one combining all three.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"I'm sorry about the mix-up — let me sort it out for you right away."</div>
+      <div class="example-line">"I apologise for the delay. I'll have the report ready by tomorrow morning."</div>
+      <div class="example-line">"I'm really sorry I forgot your birthday — let me make it up to you this weekend."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Praise and Compliment Sentences</div>
+    <div class="note-body">
+      <ul>
+        <li>Should be <strong>sincere, clear, and warm</strong> — never dismissive, conditional, or backhanded.</li>
+        <li>Watch for options that seem complimentary but include a hidden criticism or condition.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"This is truly impressive work — you should be proud of what you've achieved."</div>
+      <div class="example-line ex-wrong">"I guess it's okay, considering you didn't have much time." <em>(backhanded)</em></div>
+      <div class="example-line">"You did an excellent job handling that difficult client."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Giving Advice or Warning Politely</div>
+    <div class="note-body">
+      <ul>
+        <li>Language should be <strong>softened</strong> — "should," "might want to," "it would probably be a good idea to."</li>
+        <li>Avoid blunt commands, especially with someone who isn't a close friend.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"You might want to double-check those numbers before sending the report."</div>
+      <div class="example-line">"It would probably be a good idea to leave a bit earlier, given the traffic."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Politely Declining or Disagreeing</div>
+    <div class="note-body">
+      <ul>
+        <li>Acknowledge the other person's point first.</li>
+        <li>Then express disagreement/refusal gently, often with a brief reason.</li>
+      </ul>
+    </div>
+    <div class="example-box">
+      <div class="example-line">"That's a fair point, but I think we should consider the budget first."</div>
+      <div class="example-line">"Thank you for the offer, but I won't be able to make it this time."</div>
+    </div>
+  </div>
+
+  <div class="note-block">
+    <div class="note-title">📌 Common Types of Wrong Options to Avoid</div>
+    <div class="note-body">
+      <ul>
+        <li>🚫 A sentence completely unrelated to the described situation</li>
+        <li>🚫 A sentence with a rude, sarcastic, or disrespectful tone where politeness was required</li>
+        <li>🚫 A sentence that does the exact OPPOSITE of what's needed (criticising instead of praising, accepting instead of declining)</li>
+        <li>🚫 A sentence about the right topic, but addressed to the wrong person or wrong point of view</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip-callout">
+    💡 <strong>Exam tip:</strong> The situation description almost always states the goal directly using a clear verb (apologise, request, praise, complain, advise, decline). Underline that verb first — it is the single biggest clue to the correct answer.
+  </div>
+
+  <div class="self-check">
+    <div class="sc-title">✏️ Check Yourself</div>
+    <div class="sc-question" data-qid="sit1">
+      <p>1) You borrowed your classmate's notebook and accidentally tore a page. You want to apologise and offer to fix it.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) It's just a notebook, these things happen sometimes.</button>
+        <button class="sc-opt" data-correct="true">B) I'm really sorry about the torn page — let me get you a new notebook to make up for it.</button>
+        <button class="sc-opt" data-correct="false">C) You shouldn't have given me such an old notebook anyway.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="sit2">
+      <p>2) You want to ask your neighbour politely to turn down the music because you have an early class tomorrow.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Would you mind turning the music down a bit? I have an early start tomorrow.</button>
+        <button class="sc-opt" data-correct="false">B) Turn that music off right now, I can't stand it.</button>
+        <button class="sc-opt" data-correct="false">C) Some people have absolutely no consideration for their neighbours.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="sit3">
+      <p>3) Your colleague just finished a major project ahead of schedule. You want to praise their effort sincerely.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) Honestly, this is fantastic work — finishing this early shows real dedication.</button>
+        <button class="sc-opt" data-correct="false">B) Not bad, I suppose, considering how much help you probably got.</button>
+        <button class="sc-opt" data-correct="false">C) I expected this to be finished even sooner, to be honest.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="sit4">
+      <p>4) A friend asks you to lend them money, but you'd rather not. You want to decline politely.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="false">A) Absolutely not, I would never lend money to anyone.</button>
+        <button class="sc-opt" data-correct="true">B) I really wish I could help, but I'm a bit tight on money myself right now.</button>
+        <button class="sc-opt" data-correct="false">C) Why don't you just ask someone else, it's not my problem.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+    <div class="sc-question" data-qid="sit5">
+      <p>5) You notice a colleague is about to send an email with several mistakes. You want to point this out helpfully.</p>
+      <div class="sc-options">
+        <button class="sc-opt" data-correct="true">A) You might want to take another quick look before sending — I noticed a couple of small errors.</button>
+        <button class="sc-opt" data-correct="false">B) This email is full of mistakes, you really need to be more careful.</button>
+        <button class="sc-opt" data-correct="false">C) It doesn't matter, just send it, no one reads these things carefully anyway.</button>
+      </div>
+      <div class="sc-feedback"></div>
+    </div>
+  </div>
+
+  <div class="finish-block">
+    <div class="finish-title">🎉 Well done — you've completed all sections!</div>
+    <div class="finish-sub">You're ready for the exam. Good luck!</div>
+  </div>
+</div>
+
+  <div class="page-nav-btns">
+    <button class="nav-btn-prev" id="prevBtn" onclick="prevPage()" disabled>← Önceki</button>
+    <button class="nav-btn-next" id="nextBtn" onclick="nextPage()">Sonraki →</button>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+const STUDENT_DATA_KEYS = ["HZ A","HZ B","HZ C","HZ D","HZ E","HZ F","Grade 8"];
+let currentStudent = '', currentClass = '';
+let currentPage = 1;
+const TOTAL_PAGES = 17;
+const visitedPages = new Set([1]);
+
+// Time tracking per section (in seconds)
+const sectionTimes = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0};
+let pageEnterTime = null;
+let sessionStartTime = null;
+let trackingInterval = null;
+
+// Self-check results tracking
+const selfCheckResults = {};
+
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxvPQj78xcKfCz8zyuXgXBXtNY-qkBXq5_A9GHyuPRv75o5eFOHQTcN0VSM_qionqv3Cg/exec";
+
+const STUDENT_DATA = {
+  "HZ A": { teacher:"Ödül Bıkmaz", students:["Ali Kaan Kılıççöte","Ant Yarkın Canbay","Arya Ayvazoğlu","Batuhan Eren Özeren","Batuhan Batur","Beren Naz Atabaş","Burak Kısacık","Ceren Tokatlı","Çınar Ekşi","Defne Nas Sevinç","Derin Yaz Uçar","Ecrin Ada Öztroprak","Elif Berra Korucu","Elif Naz Kantemir","Enes Bernas Kavak","Irmak Üstün","Kıvanç Topaç","Kuzey Tekin","Kuzey Volkan Muşlu","Mehmet Mirza Koçak","Meryem Azra Eser","Oleksandra Yazenok","Selin Gümüş","Turan Efe Orman"] },
+  "HZ B": { teacher:"Ali Ahmadzadeh", students:["Alya Çörekçioğlu","Ayşe Kutanaoğlu","Bade Artıstak","Bedirhan Arda Alma","Beren Karslı","Bora Yelboğa","Çınar Akkaya","Damla Yurga","Duru Mina Öksüz","Duru Mumcu","Eda Nur Ordu","Ege İbrahim Bacacı","Göktuğ Hakan Kaynakoğlu","Kaan Özveren","Koray Akıncı","Serdar Güçmen","Tuna Aslan","Yunus Tanık","Yusuf Taha Öztürk","Yekta Aras Kangl"] },
+  "HZ C": { teacher:"Yıldırım Kocakaya", students:["Ayşe Beliz Morgül","Azra Özkan","Dinç Demir","Doğa Özçelik","Ecem İlhan","Frida Lorin Alabaş","Furkan Özgürdal","Gamze Oral","Irmak Dora Yılmaz","Kadir Dağhan Aksoy","Mehmet Emir Gürsoy","Metin Mert Varol","Mehmet Aras Ünal","Nurten Tosun","Orçun Murat","Sude Naz Yücel","Verdal Işık","Zeynep Hacıbebekoğlu","Zeynep Su Basmacı","Zeynep Su Yüksel","Tanem Acar","Alperen Aydın"] },
+  "HZ D": { teacher:"Emrecan Boz", students:["Ada Balkır","Asrın Deniz Akman","Ecrin Ela Yavuz","Elif Beren Can","Eylül Kale","Eymen Tercan","Ezmira Çallı","Hazal Helin Fidan","İdil Güven","İpek Eken","İris Atasü","Kaan Kavak","Karan Şatana","Kemal Onurlu","Kerem Ata Kökşen","Kuzey Sezer","Mehmet Barış Akkaş","Mehmet Mirza Aktaş","Mehmet Yiğit Ercan","Ozan Aytuğ İğde","Ömür Aktürk","Sahra Nil Üstev","Talha Gül","Yağmur Gökmen"] },
+  "HZ E": { teacher:"Katherine Martin", students:["Ahmet Sarp Keleş","Alya Temel","Ayşe Duru Aras","Ayşe Sinem Kılıç","Batu Çelikadam","Beren Bağdatlı","Bora Ünlü","Çağla Şarman","Demir Heperler","Duru Gülsever","Ece Barak","Efe Veli Çelik","Elif Beril Yıldız","Eylül Özkan","Mehmet Artun Duru","Meriç Ata Ceyhan","Mila Ceyhan","Ömer Salih Önen","Sabri Berke Aytemiz","Poyraz Durmuş","Sarp Deniz Selçuk","Sarp Gürbüz","Tuğsem Erzurum","Ümmiye Arslan"] },
+  "HZ F": { teacher:"Yeşim Başer", students:["Ada Gürmeriç","Alp Aden Ortakaya","Ayşe Nira Keser","Ayten Ercan","Batuhan Kök","Beren Çağlı","Berra Divarcı","Burak Onur Ayhan","Deniz Eray","Devran Paksoy","Doğa Baysal","Duru Turanoğuz","Efe Çınar Önay","Efe Kaplan","Ege Bozkurt","Ege Ünver","Eva Naz Türkoğlu","Güney Ali Özgürsoy","Hanzade Ada Akın","Hasan Adar Filimci","Haydar Yusuf Fidan","İdil Petek","Kuzey Atlas Sunay","Naz Ecemiş"] },
+  "Grade 8": { teacher:"İzver Saçkan", students:["Ahmet Can Çelik","Alp Tarakçıoğlu","Arman Kaltalı","Bennu Uçar","Çınar Doğu","Defne Mine Özünlü","Elif Arya Karaca","Enes Sözen","Erdem Tolga Şengezer","Harun Çağan Top","Hüseyin Ervahan Gülen","Kaan Tekin","Tahir Can Zengin","Ufuk Işık Akkurt"] }
+};
+
+function onClassChange(){
+  const cls = document.getElementById('classSelect').value;
+  const input = document.getElementById('studentName');
+  const datalist = document.getElementById('studentList');
+  input.value = '';
+  datalist.innerHTML = '';
+  if(!cls){
+    input.placeholder = 'Önce sınıfınızı seçin...';
+    input.disabled = true;
+    return;
+  }
+  input.disabled = false;
+  input.placeholder = 'Listeden adınızı seçin veya yazın';
+  STUDENT_DATA[cls].students.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    datalist.appendChild(opt);
+  });
+}
+
+function startStudy(){
+  const cls = document.getElementById('classSelect').value;
+  const name = document.getElementById('studentName').value.trim();
+  const err = document.getElementById('loginErr');
+
+  if(!cls){ err.textContent='⚠️ Lütfen sınıfınızı seçin.'; err.style.display='block'; return; }
+  if(!name){ err.textContent='⚠️ Lütfen listeden adınızı seçin.'; err.style.display='block'; return; }
+
+  const normalize = s => s.toLowerCase().replace(/\s+/g,' ').trim();
+  const isValid = STUDENT_DATA[cls].students.some(s => normalize(s) === normalize(name));
+  if(!isValid){
+    err.textContent = '⚠️ Bu isim ' + cls + ' listesinde bulunamadı. Listeden seçim yapın.';
+    err.style.display = 'block';
+    return;
+  }
+
+  err.style.display='none';
+  currentStudent = name;
+  currentClass = cls;
+  sessionStartTime = new Date();
+  pageEnterTime = new Date();
+
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('studyHeader').style.display='flex';
+  document.getElementById('pageTabs').style.display='flex';
+  document.getElementById('studyContainer').style.display='block';
+  document.getElementById('shStudentInfo').textContent = `${name} — ${cls}`;
+
+  updateProgress();
+  window.scrollTo(0,0);
+
+  // Send a "started" ping immediately so teacher can see live activity
+  sendProgressUpdate('started');
+
+  // Periodically send progress (every 30 seconds) while active
+  trackingInterval = setInterval(()=>sendProgressUpdate('active'), 30000);
+
+  // Send final update when leaving the page
+  window.addEventListener('beforeunload', () => {
+    recordCurrentPageTime();
+    sendProgressUpdate('left', true);
+  });
+}
+
+function recordCurrentPageTime(){
+  if(pageEnterTime){
+    const elapsed = Math.round((new Date() - pageEnterTime) / 1000);
+    sectionTimes[currentPage] = (sectionTimes[currentPage] || 0) + elapsed;
+    pageEnterTime = new Date();
+  }
+}
+
+function goToPage(n){
+  if(n < 1 || n > TOTAL_PAGES) return;
+  recordCurrentPageTime();
+
+  document.querySelectorAll('.study-page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${n}`).classList.add('active');
+
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`tab-${n}`).classList.add('active');
+
+  visitedPages.add(n);
+  document.querySelectorAll('.page-tab').forEach((t,i) => {
+    if(visitedPages.has(i+1)) t.classList.add('visited');
+  });
+
+  currentPage = n;
+  document.getElementById('prevBtn').disabled = (n === 1);
+  document.getElementById('nextBtn').textContent = (n === TOTAL_PAGES) ? 'Tamamlandı ✓' : 'Sonraki →';
+  document.getElementById('nextBtn').disabled = (n === TOTAL_PAGES);
+
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+  sendProgressUpdate('page_change');
+}
+
+function nextPage(){ goToPage(currentPage + 1); }
+function prevPage(){ goToPage(currentPage - 1); }
+
+function updateProgress(){
+  const pct = Math.round((visitedPages.size / TOTAL_PAGES) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${visitedPages.size} / ${TOTAL_PAGES} sayfa`;
+}
+
+// ── SELF-CHECK LOGIC ──
+document.addEventListener('click', function(e){
+  if(e.target.classList.contains('sc-opt')){
+    const questionDiv = e.target.closest('.sc-question');
+    const qid = questionDiv.dataset.qid;
+    const allOpts = questionDiv.querySelectorAll('.sc-opt');
+    const feedback = questionDiv.querySelector('.sc-feedback');
+    const isCorrect = e.target.dataset.correct === 'true';
+
+    allOpts.forEach(o => {
+      o.disabled = true;
+      if(o.dataset.correct === 'true') o.classList.add('correct-answer');
+    });
+    if(!isCorrect) e.target.classList.add('wrong-answer');
+
+    feedback.classList.add('show');
+    feedback.classList.add(isCorrect ? 'correct' : 'wrong');
+    feedback.textContent = isCorrect ? '✓ Doğru! Harika gidiyorsun.' : '✗ Yanlış cevap. Doğru cevap işaretlendi — notları tekrar gözden geçirebilirsin.';
+
+    selfCheckResults[qid] = isCorrect;
+  }
+});
+
+// ── SEND PROGRESS TO GOOGLE SHEET ──
+function sendProgressUpdate(eventType, isFinal){
+  if(!currentStudent) return;
+  recordCurrentPageTime();
+
+  const totalSeconds = Object.values(sectionTimes).reduce((a,b)=>a+b, 0);
+  const correctCount = Object.values(selfCheckResults).filter(v=>v).length;
+  const totalChecks = Object.keys(selfCheckResults).length;
+
+  const payload = {
+    action: 'studyProgress',
+    studentName: currentStudent,
+    className: currentClass,
+    event: eventType,
+    pagesVisited: visitedPages.size,
+    totalPages: TOTAL_PAGES,
+    totalTimeSeconds: totalSeconds,
+    sectionTimes: JSON.stringify(sectionTimes),
+    selfCheckCorrect: correctCount,
+    selfCheckTotal: totalChecks,
+    timestamp: new Date().toISOString()
+  };
+
+  try{
+    if(isFinal && navigator.sendBeacon){
+      const blob = new Blob([JSON.stringify(payload)], {type:'application/json'});
+      navigator.sendBeacon(SHEET_URL, blob);
+    } else {
+      fetch(SHEET_URL, {
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+    }
+  } catch(e){ /* fail silently, don't block the student's study experience */ }
+}
+</script>
+</body>
+</html>
