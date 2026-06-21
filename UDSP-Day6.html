@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDSP İngilizce Yeterlilik Sınavı — Gün 6</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+  :root{
+    --navy:#1a2744;--red:#c0392b;--red-light:#e74c3c;--gold:#f0a500;
+    --bg:#f5f6fa;--white:#fff;--text:#1a2744;--muted:#6b7a99;--border:#dde1ed;
+    --correct:#1a7f4b;--correct-bg:#eafaf1;--wrong:#c0392b;--wrong-bg:#fdf0ef;
+    --option-hover:#eef1fb;--option-selected:#dde4f7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg);}
+  .login-card{background:white;border-radius:16px;padding:48px 40px;box-shadow:0 8px 40px rgba(26,39,68,.15);width:100%;max-width:440px;text-align:center;}
+  .login-logo{background:var(--navy);color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:6px;display:inline-block;margin-bottom:20px;}
+  .login-title{font-family:'Merriweather',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .login-sub{font-size:13px;color:var(--muted);margin-bottom:32px;}
+  .login-field{margin-bottom:16px;text-align:left;}
+  .login-field label{display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .login-field input,.login-field select{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);background:white;transition:border-color .2s;}
+  .login-field input:focus,.login-field select:focus{outline:none;border-color:var(--navy);}
+  .btn-start{width:100%;padding:14px;background:var(--navy);color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;transition:background .2s;}
+  .btn-start:hover{background:#243258;}
+  .study-link-box{margin-top:18px;padding-top:18px;border-top:1px dashed var(--border);text-align:center;}
+  .exam-warning-banner{background:#fff4e8;border:2px solid #e67e22;border-radius:12px;padding:16px 18px;margin-bottom:18px;text-align:left;}
+  .exam-warning-banner .ewb-title{display:flex;align-items:center;gap:8px;font-weight:800;color:#b3540a;font-size:14.5px;margin-bottom:8px;}
+  .exam-warning-banner ul{margin:0;padding-left:20px;color:#6b4a1f;font-size:13px;line-height:1.6;}
+  .exam-warning-banner li{margin-bottom:4px;}
+  .exam-warning-banner li:last-child{margin-bottom:0;}
+  .exam-warning-banner strong{color:#b3540a;}
+  .study-link-box a{display:inline-flex;align-items:center;gap:6px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;padding:9px 16px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;}
+  .study-link-box a:hover{border-color:#b8860b;background:#fff8e8;}
+  .study-link-note{font-size:11.5px;color:#9aa3b8;margin-top:7px;}
+  .login-err{color:var(--red);font-size:13px;margin-top:10px;}
+  .saving-msg{margin-top:20px;font-size:13px;color:var(--muted);padding:12px;background:var(--bg);border-radius:8px;}
+  .saving-msg.success{color:var(--correct);background:var(--correct-bg);}
+  .saving-msg.error{color:var(--wrong);background:var(--wrong-bg);}
+  .exam-header{background:var(--navy);color:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+  .header-top{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .header-brand{display:flex;align-items:center;gap:14px;}
+  .meb-badge{background:var(--red);color:white;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 8px;border-radius:4px;}
+  .header-title{font-family:'Merriweather',serif;font-size:14px;font-weight:700;}
+  .header-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+  .timer-block{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);padding:10px 20px;border-radius:8px;}
+  .timer-label{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;}
+  .timer-value{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:2px;}
+  .timer-value.warning{color:var(--gold);}
+  .timer-value.danger{color:#ff6b6b;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  .progress-bar-wrap{height:4px;background:rgba(255,255,255,.1);}
+  .progress-bar{height:4px;background:var(--gold);transition:width .3s;}
+  .header-stats{display:flex;gap:24px;padding:10px 32px;background:rgba(0,0,0,.15);}
+  .stat{font-size:12px;color:rgba(255,255,255,.7);}
+  .stat span{font-weight:700;color:white;}
+  .exam-body{max-width:900px;margin:0 auto;padding:32px 20px 80px;}
+  .section-banner{background:var(--navy);color:white;padding:14px 24px;border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:space-between;margin-top:36px;}
+  .section-name{font-family:'Merriweather',serif;font-size:14px;font-weight:700;}
+  .section-info{font-size:12px;color:rgba(255,255,255,.65);}
+  .section-pill{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+  .section-instruction{background:#fffbf0;border-left:4px solid var(--gold);padding:12px 20px;font-size:13px;font-style:italic;color:#5a4a00;}
+  .question-card{background:white;border:1px solid var(--border);border-radius:10px;margin-top:16px;overflow:hidden;transition:box-shadow .2s;}
+  .question-card:hover{box-shadow:0 4px 16px rgba(26,39,68,.08);}
+  .q-header{display:flex;align-items:flex-start;gap:14px;padding:18px 22px 14px;}
+  .q-number{min-width:34px;height:34px;background:var(--navy);color:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+  .q-flag-btn{background:none;border:1.5px solid var(--border);border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:14px;flex-shrink:0;margin-left:auto;transition:all .15s;opacity:.5;}
+  .q-flag-btn:hover{opacity:1;border-color:#e67e22;}
+  .q-flag-btn.flagged{background:#fff4e8;border-color:#e67e22;opacity:1;}
+  .q-text{font-size:15px;line-height:1.65;font-weight:500;padding-top:4px;}
+  .passage-box{background:#f8f9fd;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:0 22px 14px;font-size:14px;line-height:1.75;color:#2c3a5a;}
+  .blank{font-weight:700;color:var(--red);letter-spacing:1px;}
+  .options-list{padding:4px 22px 18px;display:flex;flex-direction:column;gap:8px;}
+  .option-btn{display:flex;align-items:center;gap:12px;padding:11px 16px;border:1.5px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:14px;text-align:left;transition:all .15s;width:100%;font-family:'Inter',sans-serif;}
+  .option-btn:hover:not(:disabled){border-color:var(--navy);background:var(--option-hover);}
+  .option-btn.selected{border-color:var(--navy);background:var(--option-selected);}
+  .option-btn.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);}
+  .option-btn.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);}
+  .option-btn.revealed-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);}
+  .option-letter{min-width:26px;height:26px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+  .option-btn.correct .option-letter,.option-btn.revealed-correct .option-letter{background:var(--correct);color:white;}
+  .option-btn.wrong .option-letter{background:var(--wrong);color:white;}
+  .explanation-box{display:none;margin:0 22px 18px;background:#f0f4ff;border-left:4px solid var(--navy);border-radius:0 8px 8px 0;padding:14px 18px;font-size:13.5px;line-height:1.7;}
+  .explanation-box.show{display:block;}
+  .expl-title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;}
+  .expl-answer{margin-bottom:8px;}
+  .expl-why{color:#3a4a6a;margin-bottom:8px;}
+  .expl-options{font-size:12.5px;color:#5a6a8a;}
+  .expl-options div{margin-bottom:3px;}
+  .opt-label{font-weight:700;color:var(--navy);}
+  .submit-zone{margin-top:40px;text-align:center;}
+  .btn-submit{background:var(--red);color:white;border:none;padding:16px 48px;font-size:16px;font-weight:700;border-radius:10px;cursor:pointer;transition:background .2s,transform .1s;font-family:'Inter',sans-serif;}
+  .btn-submit:hover{background:var(--red-light);transform:translateY(-1px);}
+  .btn-submit:disabled{background:var(--muted);cursor:not-allowed;transform:none;}
+  .warn-msg{background:#fff8e1;border:1px solid var(--gold);color:#7a5900;padding:12px 20px;border-radius:8px;margin-top:16px;font-size:13px;display:none;}
+  .warn-msg.show{display:block;}
+  .results-panel{display:none;background:white;border-radius:16px;padding:36px;margin-top:32px;box-shadow:0 8px 32px rgba(26,39,68,.12);text-align:center;}
+  .results-panel.show{display:block;}
+  .result-score{font-size:64px;font-weight:700;color:var(--navy);font-family:'Merriweather',serif;}
+  .result-sub{font-size:18px;color:var(--muted);margin-top:4px;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-top:28px;}
+  .result-cell{background:var(--bg);border-radius:10px;padding:16px;}
+  .result-cell .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+  .result-cell .value{font-size:22px;font-weight:700;}
+  .value.green{color:var(--correct);}
+  .value.red{color:var(--wrong);}
+  .breakdown-table{width:100%;border-collapse:collapse;margin-top:24px;text-align:left;}
+  .breakdown-table th{background:var(--navy);color:white;padding:10px 14px;font-size:12px;}
+  .breakdown-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;background:var(--navy);color:white;border-radius:50%;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;}
+  .scroll-top.visible{opacity:1;}
+  @media(max-width:600px){.header-top{padding:12px 16px;flex-wrap:wrap;gap:12px;}.q-text{font-size:14px;}}
+  /* ── QUESTION NAVIGATOR ── */
+  .exam-layout{display:flex;gap:20px;max-width:1180px;margin:0 auto;padding:32px 20px 80px;}
+  .nav-panel{width:220px;flex-shrink:0;}
+  .nav-sticky{position:sticky;top:100px;}
+  .nav-card{background:white;border-radius:12px;border:1px solid var(--border);padding:16px;box-shadow:0 2px 8px rgba(26,39,68,.06);}
+  .nav-title{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+  .nav-legend{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;font-size:11px;color:var(--muted);}
+  .nav-legend div{display:flex;align-items:center;gap:6px;}
+  .legend-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+  .leg-answered{background:var(--navy);}
+  .leg-flagged{background:#e67e22;}
+  .leg-empty{background:#e0e4f0;border:1px solid var(--border);}
+  .nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+  .nav-btn{
+    width:100%;aspect-ratio:1;border:1.5px solid var(--border);
+    border-radius:5px;background:#f0f2f8;
+    font-size:10px;font-weight:700;color:var(--muted);
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .nav-btn:hover{border-color:var(--navy);background:var(--option-hover);}
+  .nav-btn.nav-answered{background:var(--navy);color:white;border-color:var(--navy);}
+  .nav-btn.nav-flagged{background:#e67e22;color:white;border-color:#e67e22;}
+  .nav-btn.nav-flagged::after{content:'🚩';position:absolute;top:-4px;right:-4px;font-size:8px;}
+  .nav-section-sep{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0;}
+  .nav-flag-hint{font-size:10px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.4;}
+  .nav-stats{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);}
+  .nav-stat{text-align:center;}
+  .nav-stat .ns-val{font-size:16px;font-weight:700;color:var(--navy);}
+  .nav-stat .ns-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;}
+
+  /* Adjust main exam body for layout */
+  .exam-body{max-width:none;margin:0;padding:0;flex:1;min-width:0;}
+
+  /* Tab warning banner */
+  .tab-warning{
+    display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:#e74c3c;color:white;padding:28px 48px;border-radius:14px;
+    font-weight:700;font-size:20px;z-index:9999;text-align:center;
+    box-shadow:0 8px 40px rgba(0,0,0,.45);line-height:1.6;
+    max-width:500px;width:90%;
+    animation:popIn .3s ease;
+  }
+  @keyframes popIn{from{transform:translate(-50%,-50%) scale(.8);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+  .tab-warning.show{display:block;}
+  .tab-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;}
+  .tab-overlay.show{display:block;}
+
+  @media(max-width:900px){
+    .exam-layout{flex-direction:column;}
+    .nav-panel{width:100%;}
+    .nav-sticky{position:static;}
+    .nav-grid{grid-template-columns:repeat(10,1fr);}
+  }
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">MEB · UDSP 2026</div>
+    <div class="login-title">Yabancı Dil Yeterlilik Sınavı</div>
+    <div class="login-sub">İngilizce — Gün 6 &nbsp;|&nbsp; 50 Soru &nbsp;|&nbsp; 110 Dakika</div>
+
+    <div class="exam-warning-banner">
+      <div class="ewb-title">⚠️ Sınava Başlamadan Önce Lütfen Okuyun</div>
+      <ul>
+        <li><strong>Telefon ile girmeyin:</strong> Sınava cep telefonundan girmeniz önerilmez. Bilgisayar veya tablet kullanın.</li>
+        <li><strong>Sekme/uygulama değiştirmeyin:</strong> Sınav sırasında başka bir sekmeye, uygulamaya veya ekrana geçerseniz bu durum sistem tarafından algılanır.</li>
+        <li><strong>3 kez tekrarlarsa sınavdan atılırsınız:</strong> Sekme değişikliği 3 kez tekrarlanırsa sınavınız otomatik olarak sonlandırılır ve tekrar giremezsiniz.</li>
+      </ul>
+    </div>
+
+    <div id="loginForm">
+      <div class="login-field">
+        <label>Sınıfınızı Seçin</label>
+        <select id="classSelect" onchange="onClassChange()">
+          <option value="">— Sınıf Seçin —</option>
+          <option>HZ A</option><option>HZ B</option><option>HZ C</option>
+          <option>HZ D</option><option>HZ E</option><option>HZ F</option><option>Grade 8</option>
+        </select>
+      </div>
+      <div class="login-field">
+        <label>Adınız ve Soyadınız</label>
+        <input type="text" id="studentName" placeholder="Önce sınıfınızı seçin..." autocomplete="off" list="studentList"/>
+        <datalist id="studentList"></datalist>
+      </div>
+      <div class="login-field">
+        <label>Öğretmeniniz</label>
+        <input type="text" id="teacherDisplay" readonly style="background:#f5f6fa;color:#6b7a99;cursor:not-allowed;" placeholder="Sınıf seçilince otomatik gelir"/>
+      </div>
+      <button class="btn-start" onclick="startExam()">Sınava Başla →</button>
+      <div class="login-err" id="loginErr" style="display:none;"></div>
+
+      <div class="study-link-box">
+        <a href="UDSP-Study-Guide.html" target="_blank">📖 Sınavdan Önce Çalışma Rehberine Göz At</a>
+        <div class="study-link-note">İsteğe bağlıdır, notla ilgisi yoktur — yeni sekmede açılır.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="exam-header" id="examHeaderEl" style="display:none;">
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="meb-badge">MEB</div>
+      <div>
+        <div class="header-title">UDSP Yabancı Dil Yeterlilik Sınavı</div>
+        <div class="header-sub">İngilizce — Gün 6</div>
+      </div>
+    </div>
+    <div class="timer-block">
+      <div><div class="timer-label">Süre</div><div class="timer-value" id="timer">1:50:00</div></div>
+    </div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="header-stats">
+    <div class="stat">Toplam: <span>50</span></div>
+    <div class="stat">Cevaplanan: <span id="answeredCount">0</span></div>
+    <div class="stat">Kalan: <span id="remainingCount">50</span></div>
+  </div>
+</header>
+
+<!-- EXAM BODY -->
+<div class="tab-overlay" id="tabOverlay"></div>
+<div class="tab-warning" id="tabWarning"></div>
+
+<div class="exam-layout" id="examLayout" style="display:none;">
+
+<!-- QUESTION NAVIGATOR -->
+<div class="nav-panel">
+  <div class="nav-sticky">
+    <div class="nav-card">
+      <div class="nav-title">Soru Gezgini</div>
+      <div class="nav-legend">
+        <div><span class="legend-dot leg-answered"></span> Cevaplandı</div>
+        <div><span class="legend-dot leg-flagged"></span> İşaretlendi</div>
+        <div><span class="legend-dot leg-empty"></span> Boş</div>
+      </div>
+      <div class="nav-grid" id="navGrid"></div>
+      <div class="nav-flag-hint">🚩 simgesine veya sağ tık ile işaretle</div>
+      <div class="nav-stats">
+        <div class="nav-stat"><div class="ns-val" id="ns-answered">0</div><div class="ns-lbl">Cevaplı</div></div>
+        <div class="nav-stat"><div class="ns-val" id="ns-flagged">0</div><div class="ns-lbl">İşaretli</div></div>
+        <div class="nav-stat"><div class="ns-val" id="ns-empty">50</div><div class="ns-lbl">Boş</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN EXAM CONTENT -->
+<div class="exam-body" id="examBody">
+
+
+
+
+
+<!-- SECTION 1: VOCABULARY -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 1 — Kelime Bilgisi</div><div class="section-info">VOCABULARY</div></div>
+  <div class="section-pill">7 Soru</div>
+</div>
+<div class="section-instruction">For questions 1–7, choose the option that best completes the sentence.</div>
+
+<!-- Q1 answer: D -->
+<div class="question-card" id="qcard-1">
+  <div class="q-header">
+    <div class="q-number">1</div>
+    <div class="q-text">The ocean's capacity to absorb carbon dioxide — a process that has so far <b>- - - -</b> the full effects of climate change — is expected to decline as seawater becomes more acidic.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(1)" id="flag-1" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(1,'A')" id="q1-A"><span class="option-letter">A</span> worsened</button>
+  <button class="option-btn" onclick="selectAnswer(1,'B')" id="q1-B"><span class="option-letter">B</span> accelerated</button>
+  <button class="option-btn" onclick="selectAnswer(1,'C')" id="q1-C"><span class="option-letter">C</span> questioned</button>
+  <button class="option-btn" onclick="selectAnswer(1,'D')" id="q1-D"><span class="option-letter">D</span> mitigated</button>
+  <button class="option-btn" onclick="selectAnswer(1,'E')" id="q1-E"><span class="option-letter">E</span> predicted</button>
+  </div>
+<div class="explanation-box" id="expl-1">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> kötüleştirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> hızlandırmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> sorgulamak</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> hafifletmek / azaltmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> tahmin etmek</div>
+</div>
+<div class="expl-why">The ocean absorbing CO₂ has been slowing down climate change's effects — not worsening or accelerating them. 'Mitigated' (D) = reduced the severity of something, the precise word for a buffer that lessens an impact. 'Worsened' (A) is the opposite. 'Accelerated' (B) would mean speeding up the effects — also opposite. 'Questioned' (C) and 'Predicted' (E) are semantically unrelated to the cause-effect relationship described.</div>
+</div>
+</div>
+<!-- Q2 answer: D -->
+<div class="question-card" id="qcard-2">
+  <div class="q-header">
+    <div class="q-number">2</div>
+    <div class="q-text">The report's conclusion that gig economy workers are routinely denied basic labour protections was both <b>- - - -</b> and widely anticipated by employment law specialists.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(2)" id="flag-2" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(2,'A')" id="q2-A"><span class="option-letter">A</span> ambiguous</button>
+  <button class="option-btn" onclick="selectAnswer(2,'B')" id="q2-B"><span class="option-letter">B</span> contested</button>
+  <button class="option-btn" onclick="selectAnswer(2,'C')" id="q2-C"><span class="option-letter">C</span> damaging</button>
+  <button class="option-btn" onclick="selectAnswer(2,'D')" id="q2-D"><span class="option-letter">D</span> unsurprising</button>
+  <button class="option-btn" onclick="selectAnswer(2,'E')" id="q2-E"><span class="option-letter">E</span> premature</button>
+  </div>
+<div class="explanation-box" id="expl-2">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> muğlak / belirsiz</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> tartışmalı / itiraz edilen</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> zarar verici / yıkıcı</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> şaşırtıcı olmayan / beklenen</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> erken / vakitsiz</div>
+</div>
+<div class="expl-why">'Both [blank] and widely anticipated' means the two halves must be near-synonymous — something already expected. 'Unsurprising' (D) = not causing surprise, which parallels 'widely anticipated' perfectly. 'Ambiguous' (A) = unclear, which contradicts a clear conclusion. 'Contested' (B) = disputed, but 'widely anticipated' means expected, not disputed. 'Damaging' (C) could fit logically but does not parallel 'anticipated'. 'Premature' (E) = too early, which contradicts 'anticipated'.</div>
+</div>
+</div>
+<!-- Q3 answer: D -->
+<div class="question-card" id="qcard-3">
+  <div class="q-header">
+    <div class="q-number">3</div>
+    <div class="q-text">Space debris orbiting Earth at high velocity poses a <b>- - - -</b> risk to functioning satellites and crewed spacecraft, a threat that space agencies are treating with growing urgency.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(3)" id="flag-3" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(3,'A')" id="q3-A"><span class="option-letter">A</span> negligible</button>
+  <button class="option-btn" onclick="selectAnswer(3,'B')" id="q3-B"><span class="option-letter">B</span> theoretical</button>
+  <button class="option-btn" onclick="selectAnswer(3,'C')" id="q3-C"><span class="option-letter">C</span> temporary</button>
+  <button class="option-btn" onclick="selectAnswer(3,'D')" id="q3-D"><span class="option-letter">D</span> substantial</button>
+  <button class="option-btn" onclick="selectAnswer(3,'E')" id="q3-E"><span class="option-letter">E</span> predictable</button>
+  </div>
+<div class="explanation-box" id="expl-3">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> ihmal edilebilir / önemsiz</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> teorik / varsayımsal</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> geçici / kısa süreli</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> önemli / kayda değer</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> öngörülebilir / tahmin edilebilir</div>
+</div>
+<div class="expl-why">'Treating with growing urgency' signals the risk is significant and real. 'Substantial' (D) = considerable in size or importance, which justifies urgent attention. 'Negligible' (A) = too small to matter — contradicts 'growing urgency'. 'Theoretical' (B) = not yet real — also contradicts urgency about actual satellites. 'Temporary' (C) relates to duration, not magnitude of risk. 'Predictable' (E) describes the nature, not the level, of risk.</div>
+</div>
+</div>
+<!-- Q4 answer: A -->
+<div class="question-card" id="qcard-4">
+  <div class="q-header">
+    <div class="q-number">4</div>
+    <div class="q-text">The <b>- - - -</b> of nanoparticles into targeted tumour cells without damaging surrounding healthy tissue represents one of the most promising frontiers of cancer treatment.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(4)" id="flag-4" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(4,'A')" id="q4-A"><span class="option-letter">A</span> delivery</button>
+  <button class="option-btn" onclick="selectAnswer(4,'B')" id="q4-B"><span class="option-letter">B</span> disposal</button>
+  <button class="option-btn" onclick="selectAnswer(4,'C')" id="q4-C"><span class="option-letter">C</span> removal</button>
+  <button class="option-btn" onclick="selectAnswer(4,'D')" id="q4-D"><span class="option-letter">D</span> absorption</button>
+  <button class="option-btn" onclick="selectAnswer(4,'E')" id="q4-E"><span class="option-letter">E</span> rejection</button>
+  </div>
+<div class="explanation-box" id="expl-4">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> ulaştırma / iletme</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> bertaraf etme / imha etme</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> uzaklaştırma / giderme</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> emme / özümseme</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> reddetme / dışlama</div>
+</div>
+<div class="expl-why">Nanotechnology in cancer treatment works by carrying therapeutic agents to tumour cells — this is described as 'delivery'. 'Delivery' (A) = the act of transporting and depositing therapeutic agents at the target site, the standard medical term. 'Disposal' (B) implies getting rid of something unwanted. 'Removal' (C) means taking something away from a place. 'Absorption' (D) describes a passive biological process from the tumour's perspective. 'Rejection' (E) is what happens when the body resists something.</div>
+</div>
+</div>
+<!-- Q5 answer: D -->
+<div class="question-card" id="qcard-5">
+  <div class="q-header">
+    <div class="q-number">5</div>
+    <div class="q-text">Demographic ageing is likely to <b>- - - -</b> existing healthcare systems in many countries, as a growing proportion of the population will require sustained medical support.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(5)" id="flag-5" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(5,'A')" id="q5-A"><span class="option-letter">A</span> strengthen</button>
+  <button class="option-btn" onclick="selectAnswer(5,'B')" id="q5-B"><span class="option-letter">B</span> modernise</button>
+  <button class="option-btn" onclick="selectAnswer(5,'C')" id="q5-C"><span class="option-letter">C</span> replace</button>
+  <button class="option-btn" onclick="selectAnswer(5,'D')" id="q5-D"><span class="option-letter">D</span> strain</button>
+  <button class="option-btn" onclick="selectAnswer(5,'E')" id="q5-E"><span class="option-letter">E</span> bypass</button>
+  </div>
+<div class="explanation-box" id="expl-5">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> güçlendirmek / pekiştirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> modernize etmek / yenilemek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> değiştirmek / yerine geçmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> zorlamak / baskı altına almak</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> atlamak / devre dışı bırakmak</div>
+</div>
+<div class="expl-why">A larger elderly population requiring medical support creates pressure on healthcare systems — it puts them under stress. 'Strain' (D) = to make severe demands on a system, causing difficulty, which is the precise word for this kind of structural pressure. 'Strengthen' (A) is the opposite — more demand weakens, not strengthens. 'Modernise' (B) refers to updating, not to pressure. 'Replace' (C) and 'bypass' (E) are semantically unrelated to the idea of a system being put under pressure.</div>
+</div>
+</div>
+<!-- Q6 answer: D -->
+<div class="question-card" id="qcard-6">
+  <div class="q-header">
+    <div class="q-number">6</div>
+    <div class="q-text">The research team published its findings only after <b>- - - -</b> every alternative explanation for the observed correlation between light exposure and melatonin suppression.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(6)" id="flag-6" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(6,'A')" id="q6-A"><span class="option-letter">A</span> discovering</button>
+  <button class="option-btn" onclick="selectAnswer(6,'B')" id="q6-B"><span class="option-letter">B</span> rejecting</button>
+  <button class="option-btn" onclick="selectAnswer(6,'C')" id="q6-C"><span class="option-letter">C</span> proposing</button>
+  <button class="option-btn" onclick="selectAnswer(6,'D')" id="q6-D"><span class="option-letter">D</span> ruling out</button>
+  <button class="option-btn" onclick="selectAnswer(6,'E')" id="q6-E"><span class="option-letter">E</span> relying on</button>
+  </div>
+<div class="explanation-box" id="expl-6">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> keşfetmek / bulmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> reddetmek / kabul etmemek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> önermek / ileri sürmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> dışlamak / elemek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> güvenmek / dayanmak</div>
+</div>
+<div class="expl-why">Before publishing, good science requires eliminating alternative explanations. 'Ruling out' (D) = to eliminate a possibility after careful consideration — the standard scientific expression. 'Rejecting' (B) is close but typically refers to actively opposing something already proposed, rather than the systematic elimination process. 'Discovering' (A) = finding, not eliminating. 'Proposing' (C) = suggesting new explanations, the opposite of what is needed. 'Relying on' (E) = depending on, semantically opposite to eliminating.</div>
+</div>
+</div>
+<!-- Q7 answer: B -->
+<div class="question-card" id="qcard-7">
+  <div class="q-header">
+    <div class="q-number">7</div>
+    <div class="q-text">The gig economy's rapid expansion has <b>- - - -</b> traditional employment models, forcing regulators to reconsider frameworks that were designed for a very different labour market.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(7)" id="flag-7" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(7,'A')" id="q7-A"><span class="option-letter">A</span> reinforced</button>
+  <button class="option-btn" onclick="selectAnswer(7,'B')" id="q7-B"><span class="option-letter">B</span> disrupted</button>
+  <button class="option-btn" onclick="selectAnswer(7,'C')" id="q7-C"><span class="option-letter">C</span> simplified</button>
+  <button class="option-btn" onclick="selectAnswer(7,'D')" id="q7-D"><span class="option-letter">D</span> restored</button>
+  <button class="option-btn" onclick="selectAnswer(7,'E')" id="q7-E"><span class="option-letter">E</span> predicted</button>
+  </div>
+<div class="explanation-box" id="expl-7">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> pekiştirmek / güçlendirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> bozmak / sekteye uğratmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> basitleştirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> restore etmek / eski haline getirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> öngörmek / tahmin etmek</div>
+</div>
+<div class="expl-why">The gig economy has changed employment so fundamentally that old regulations no longer fit — this is a classic disruption pattern. 'Disrupted' (B) = to radically change or interrupt the way something works, exactly what forcing regulators to redesign frameworks implies. 'Reinforced' (A) = made stronger — the opposite. 'Simplified' (C) = made less complex — not what's described. 'Restored' (D) = returned to a previous state — opposite direction. 'Predicted' (E) is unrelated.</div>
+</div>
+</div>
+
+<!-- SECTION 2: GRAMMAR -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 2 — Dil Bilgisi</div><div class="section-info">GRAMMAR</div></div>
+  <div class="section-pill">7 Soru</div>
+</div>
+<div class="section-instruction">For questions 8–14, choose the answer that best completes each sentence grammatically.</div>
+
+<!-- Q8 answer: A -->
+<div class="question-card" id="qcard-8">
+  <div class="q-header">
+    <div class="q-number">8</div>
+    <div class="q-text">The extent to which bilingualism protects against cognitive decline <b>- - - -</b> more fully understood if researchers could control for socioeconomic and lifestyle differences between groups.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(8)" id="flag-8" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(8,'A')" id="q8-A"><span class="option-letter">A</span> could be</button>
+  <button class="option-btn" onclick="selectAnswer(8,'B')" id="q8-B"><span class="option-letter">B</span> has been</button>
+  <button class="option-btn" onclick="selectAnswer(8,'C')" id="q8-C"><span class="option-letter">C</span> will have been</button>
+  <button class="option-btn" onclick="selectAnswer(8,'D')" id="q8-D"><span class="option-letter">D</span> is</button>
+  <button class="option-btn" onclick="selectAnswer(8,'E')" id="q8-E"><span class="option-letter">E</span> had been</button>
+  </div>
+<div class="explanation-box" id="expl-8">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> anlaşılabilirdi (2. Koşullu — şimdiki hipotez) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> anlaşılmıştır (Present Perfect — gerçek)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> anlaşılmış olacak (Future Perfect)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> anlaşılmaktadır (Present Simple — gerçek)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> anlaşılmıştı (Past Perfect — yanlış zaman)</div>
+</div>
+<div class="expl-why">'If researchers COULD control' (past simple in the if-clause) establishes a hypothetical present condition that is not currently met — a Second Conditional. The main clause requires 'would/could + base verb'. 'Could be' (A) correctly completes this: a hypothetical present outcome that is not currently the case. 'Has been' (B) and 'is' (D) describe real, current states — incompatible with an unmet condition. 'Will have been' (C) is future perfect. 'Had been' (E) belongs to Third Conditional for unreal past.</div>
+</div>
+</div>
+<!-- Q9 answer: B -->
+<div class="question-card" id="qcard-9">
+  <div class="q-header">
+    <div class="q-number">9</div>
+    <div class="q-text">Light pollution's effects on nocturnal wildlife <b>- - - -</b> in the scientific literature for over two decades before policymakers began to take the issue seriously.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(9)" id="flag-9" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(9,'A')" id="q9-A"><span class="option-letter">A</span> have been documented</button>
+  <button class="option-btn" onclick="selectAnswer(9,'B')" id="q9-B"><span class="option-letter">B</span> had been documented</button>
+  <button class="option-btn" onclick="selectAnswer(9,'C')" id="q9-C"><span class="option-letter">C</span> are documented</button>
+  <button class="option-btn" onclick="selectAnswer(9,'D')" id="q9-D"><span class="option-letter">D</span> were being documented</button>
+  <button class="option-btn" onclick="selectAnswer(9,'E')" id="q9-E"><span class="option-letter">E</span> will be documented</button>
+  </div>
+<div class="explanation-box" id="expl-9">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> belgelenmiştir (Present Perfect — günümüzle bağ)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> belgelenmişti (Past Perfect — geçmişteki daha önceki eylem) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> belgelenmektedir (Present Simple — şimdiki gerçek)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> belgeleniyordu (Past Continuous — süreç vurgusu, ama sıra göstermez)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> belgelenecektir (Future Passive)</div>
+</div>
+<div class="expl-why">Two past events with a clear sequence: documentation happened FIRST, then policymakers began to act. 'Before policymakers began' = policymaker action is the later past event (Past Simple). The earlier event — documentation spanning two decades — requires Past Perfect: 'had been documented' (B). 'Have been documented' (A) connects to the present, not to a past reference point. 'Are documented' (C) is present. 'Were being documented' (D) could imply concurrent action rather than prior completion. 'Will be documented' (E) is future.</div>
+</div>
+</div>
+<!-- Q10 answer: A -->
+<div class="question-card" id="qcard-10">
+  <div class="q-header">
+    <div class="q-number">10</div>
+    <div class="q-text"><b>- - - -</b> the clinical trials yield consistently positive results, the new nanotechnology treatment is unlikely to receive regulatory approval within the next three years.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(10)" id="flag-10" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(10,'A')" id="q10-A"><span class="option-letter">A</span> Unless</button>
+  <button class="option-btn" onclick="selectAnswer(10,'B')" id="q10-B"><span class="option-letter">B</span> Although</button>
+  <button class="option-btn" onclick="selectAnswer(10,'C')" id="q10-C"><span class="option-letter">C</span> Given that</button>
+  <button class="option-btn" onclick="selectAnswer(10,'D')" id="q10-D"><span class="option-letter">D</span> Even if</button>
+  <button class="option-btn" onclick="selectAnswer(10,'E')" id="q10-E"><span class="option-letter">E</span> Provided that</button>
+  </div>
+<div class="explanation-box" id="expl-10">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> olmadıkça / eğer...değilse ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> her ne kadar (zıtlık — tam cümle)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> göz önüne alındığında (neden)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> olsa bile (tavizli koşul)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> koşuluyla (olumlu koşul)</div>
+</div>
+<div class="expl-why">The sentence says the treatment is 'unlikely to receive approval' — this is the negative outcome if something does NOT happen. 'Unless' (A) = 'if...not' — 'Unless the trials yield positive results' = 'If the trials do NOT yield positive results, approval is unlikely'. 'Although' (B) signals contrast, not a negative condition. 'Given that' (C) introduces a reason/premise. 'Even if' (D) means approval is unlikely regardless — but the sentence implies positive results WOULD lead to approval. 'Provided that' (E) introduces a positive condition for a positive outcome.</div>
+</div>
+</div>
+<!-- Q11 answer: C -->
+<div class="question-card" id="qcard-11">
+  <div class="q-header">
+    <div class="q-number">11</div>
+    <div class="q-text">The conference delegates, <b>- - - -</b> views on space debris regulation varied considerably, nonetheless agreed on the urgency of establishing a binding international framework.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(11)" id="flag-11" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(11,'A')" id="q11-A"><span class="option-letter">A</span> who</button>
+  <button class="option-btn" onclick="selectAnswer(11,'B')" id="q11-B"><span class="option-letter">B</span> that</button>
+  <button class="option-btn" onclick="selectAnswer(11,'C')" id="q11-C"><span class="option-letter">C</span> whose</button>
+  <button class="option-btn" onclick="selectAnswer(11,'D')" id="q11-D"><span class="option-letter">D</span> whom</button>
+  <button class="option-btn" onclick="selectAnswer(11,'E')" id="q11-E"><span class="option-letter">E</span> which</button>
+  </div>
+<div class="explanation-box" id="expl-11">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> ki onlar (özne ilgi zamiri)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> o ki (tanımlayan yan cümlelerde, virgülsüz)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> kimin / -nın (iyelik ilgi zamiri) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> kimi (nesne ilgi zamiri)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> ki o / -ki (nesneler için)</div>
+</div>
+<div class="expl-why">'Views' belong to the delegates — a possessive relationship requires 'whose' (C). 'Whose views varied' = 'the delegates' views varied'. 'Who' (A) would need to be the subject of a verb: 'delegates who [verb]' — but 'views' is a noun, not a verb. 'Which' (E) refers to things, not people. 'That' (B) cannot be used in non-defining clauses set off by commas. 'Whom' (D) is the object form and cannot introduce a possessive clause.</div>
+</div>
+</div>
+<!-- Q12 answer: E -->
+<div class="question-card" id="qcard-12">
+  <div class="q-header">
+    <div class="q-number">12</div>
+    <div class="q-text">The discovery that the ageing brain retains far greater plasticity than previously assumed <b>- - - -</b> established assumptions about neurological decline and opened new avenues for therapeutic intervention.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(12)" id="flag-12" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(12,'A')" id="q12-A"><span class="option-letter">A</span> challenges</button>
+  <button class="option-btn" onclick="selectAnswer(12,'B')" id="q12-B"><span class="option-letter">B</span> had challenged</button>
+  <button class="option-btn" onclick="selectAnswer(12,'C')" id="q12-C"><span class="option-letter">C</span> was challenging</button>
+  <button class="option-btn" onclick="selectAnswer(12,'D')" id="q12-D"><span class="option-letter">D</span> will challenge</button>
+  <button class="option-btn" onclick="selectAnswer(12,'E')" id="q12-E"><span class="option-letter">E</span> has challenged</button>
+  </div>
+<div class="explanation-box" id="expl-12">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> sorguluyor (Present Simple — genel gerçek odaklı)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> sorgulamıştı (Past Perfect — geçmişteki daha önceki eylem)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> sorguluyordu (Past Continuous — geçmiş süreç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> sorgulayacaktır (Future)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> sorgulamıştır (Present Perfect — geçmişte başlayıp günümüzü etkileyen) ✓</div>
+</div>
+<div class="expl-why">The discovery has already changed the field — and continues to be relevant to the present. 'Has challenged' (E) = Present Perfect, used for a past event with a lasting effect on the present ('has changed assumptions' and 'has opened avenues'). The parallel structure 'has challenged...and opened' confirms Present Perfect. 'Challenges' (A) = present simple, used for timeless truths, less precise here. 'Had challenged' (B) would require a later past reference point. 'Was challenging' (C) suggests an action in progress at a past moment.</div>
+</div>
+</div>
+<!-- Q13 answer: D -->
+<div class="question-card" id="qcard-13">
+  <div class="q-header">
+    <div class="q-number">13</div>
+    <div class="q-text">Researchers strongly recommend <b>- - - -</b> LED streetlights with warmer-toned alternatives in areas near protected nature reserves to reduce the impact of light pollution on nocturnal species.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(13)" id="flag-13" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(13,'A')" id="q13-A"><span class="option-letter">A</span> to replace</button>
+  <button class="option-btn" onclick="selectAnswer(13,'B')" id="q13-B"><span class="option-letter">B</span> replace</button>
+  <button class="option-btn" onclick="selectAnswer(13,'C')" id="q13-C"><span class="option-letter">C</span> replaced</button>
+  <button class="option-btn" onclick="selectAnswer(13,'D')" id="q13-D"><span class="option-letter">D</span> replacing</button>
+  <button class="option-btn" onclick="selectAnswer(13,'E')" id="q13-E"><span class="option-letter">E</span> to have replaced</button>
+  </div>
+<div class="explanation-box" id="expl-13">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> değiştirmeyi (to-inf. — 'recommend' sonrası yanlış)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> değiştirmek (base form — 'recommend' sonrası yanlış)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> değiştirilmiş (past participle — yanlış yapı)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> değiştirmeyi (-ing gerund — 'recommend' sonrası doğru) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> değiştirmiş olmayı (tamamlanmış eylem — yanlış anlam)</div>
+</div>
+<div class="expl-why">'Recommend' is always followed by the -ing (gerund) form when the same subject is implied: 'recommend + doing something'. 'Replacing' (D) is the correct gerund. 'To replace' (A) is the infinitive — 'recommend' does not take the bare or full infinitive in this construction. 'Replace' (B) is the bare infinitive, also incorrect after 'recommend'. 'Replaced' (C) is a past participle, ungrammatical here. 'To have replaced' (E) implies a completed past action, which contradicts the forward-looking recommendation.</div>
+</div>
+</div>
+<!-- Q14 answer: C -->
+<div class="question-card" id="qcard-14">
+  <div class="q-header">
+    <div class="q-number">14</div>
+    <div class="q-text"><b>- - - -</b> the full economic costs of demographic ageing been factored into long-term fiscal planning, many governments would now be in a considerably stronger budgetary position.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(14)" id="flag-14" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(14,'A')" id="q14-A"><span class="option-letter">A</span> Although</button>
+  <button class="option-btn" onclick="selectAnswer(14,'B')" id="q14-B"><span class="option-letter">B</span> Since</button>
+  <button class="option-btn" onclick="selectAnswer(14,'C')" id="q14-C"><span class="option-letter">C</span> Had</button>
+  <button class="option-btn" onclick="selectAnswer(14,'D')" id="q14-D"><span class="option-letter">D</span> Even though</button>
+  <button class="option-btn" onclick="selectAnswer(14,'E')" id="q14-E"><span class="option-letter">E</span> Because</button>
+  </div>
+<div class="explanation-box" id="expl-14">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> her ne kadar (zıtlık bağlacı — tam cümle gerektirir)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> çünkü / -den beri (neden/zaman)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> olsaydı (inverted Third Conditional — 'if' düşürülmüş) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> her ne kadar (zıtlık — tam cümle gerektirir)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> çünkü (neden bağlacı)</div>
+</div>
+<div class="expl-why">This is an inverted Third Conditional — 'if' is omitted and 'had' moves to the front: 'Had the costs been factored in...' = 'If the costs had been factored in, governments would now be stronger'. 'Had' (C) is the only word that correctly creates this formal inversion. The main clause ('would now be') uses Mixed Conditional logic (past condition → present result). 'Although/Even though' (A, D) introduce contrast clauses and cannot create conditional meaning. 'Since/Because' (B, E) introduce causal clauses.</div>
+</div>
+</div>
+
+<!-- SECTION 3: CLOZE TEST -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 3 — Boşluk Doldurma</div><div class="section-info">CLOZE TEST</div></div>
+  <div class="section-pill">10 Soru</div>
+</div>
+<div class="section-instruction">For questions 15–24, choose the word or expression that best fits each blank.</div>
+
+<!-- Q15 answer: D -->
+<div class="question-card" id="qcard-15">
+  <div class="q-header">
+    <div class="q-number">15</div>
+    <div class="q-text">For decades, scientists assumed that the adult brain was largely fixed in structure. <b>- - - -</b>, research over the past thirty years has demonstrated that the brain retains the capacity to reorganise itself in response to learning and experience throughout a person's lifetime.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(15)" id="flag-15" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(15,'A')" id="q15-A"><span class="option-letter">A</span> Consequently</button>
+  <button class="option-btn" onclick="selectAnswer(15,'B')" id="q15-B"><span class="option-letter">B</span> Similarly</button>
+  <button class="option-btn" onclick="selectAnswer(15,'C')" id="q15-C"><span class="option-letter">C</span> In contrast</button>
+  <button class="option-btn" onclick="selectAnswer(15,'D')" id="q15-D"><span class="option-letter">D</span> However</button>
+  <button class="option-btn" onclick="selectAnswer(15,'E')" id="q15-E"><span class="option-letter">E</span> Therefore</button>
+  </div>
+<div class="explanation-box" id="expl-15">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Dolayısıyla (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Benzer şekilde (benzerlik)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Bunun aksine (doğrudan zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Ancak / Bununla birlikte (zıtlık) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Bu nedenle (neden-sonuç)</div>
+</div>
+<div class="expl-why">The first sentence states a past assumption (brain is fixed). The second presents the contrasting reality revealed by recent research. 'However' (D) signals a contrast between what was believed and what was later discovered. 'In contrast' (C) is close, but 'however' is more natural as a bridge between a past belief and its correction. 'Consequently/Therefore' (A, E) would imply the new research is a consequence of the old assumption — illogical. 'Similarly' (B) would imply the new research confirms the assumption.</div>
+</div>
+</div>
+<!-- Q16 answer: E -->
+<div class="question-card" id="qcard-16">
+  <div class="q-header">
+    <div class="q-number">16</div>
+    <div class="q-text">Ocean acidification threatens not only coral reefs but also the broader marine food chain. <b>- - - -</b>, it affects the ability of shellfish, sea urchins, and other organisms to form the calcium carbonate shells they depend on for protection.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(16)" id="flag-16" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(16,'A')" id="q16-A"><span class="option-letter">A</span> By contrast</button>
+  <button class="option-btn" onclick="selectAnswer(16,'B')" id="q16-B"><span class="option-letter">B</span> However</button>
+  <button class="option-btn" onclick="selectAnswer(16,'C')" id="q16-C"><span class="option-letter">C</span> Instead</button>
+  <button class="option-btn" onclick="selectAnswer(16,'D')" id="q16-D"><span class="option-letter">D</span> Otherwise</button>
+  <button class="option-btn" onclick="selectAnswer(16,'E')" id="q16-E"><span class="option-letter">E</span> Specifically</button>
+  </div>
+<div class="explanation-box" id="expl-16">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Bunun aksine (zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Ancak (zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Bunun yerine (alternatif)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Aksi takdirde (koşullu sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Daha spesifik olarak / Özellikle ✓</div>
+</div>
+<div class="expl-why">The first sentence makes a broad claim (threatens the food chain broadly). The second gives a specific mechanism of how that harm works (calcium carbonate shell formation). 'Specifically' (E) signals that what follows provides a more precise, concrete example of the general claim just made. 'By contrast' (A) and 'However' (B) signal opposition — but the two sentences agree. 'Instead' (C) introduces an alternative. 'Otherwise' (D) introduces a conditional consequence.</div>
+</div>
+</div>
+<!-- Q17 answer: B -->
+<div class="question-card" id="qcard-17">
+  <div class="q-header">
+    <div class="q-number">17</div>
+    <div class="q-text">The evidence linking artificial light at night to human health disorders is growing; <b>- - - -</b>, it remains difficult to establish conclusive causal relationships because individuals differ in ways beyond their light exposure alone.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(17)" id="flag-17" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(17,'A')" id="q17-A"><span class="option-letter">A</span> furthermore</button>
+  <button class="option-btn" onclick="selectAnswer(17,'B')" id="q17-B"><span class="option-letter">B</span> nevertheless</button>
+  <button class="option-btn" onclick="selectAnswer(17,'C')" id="q17-C"><span class="option-letter">C</span> that is</button>
+  <button class="option-btn" onclick="selectAnswer(17,'D')" id="q17-D"><span class="option-letter">D</span> accordingly</button>
+  <button class="option-btn" onclick="selectAnswer(17,'E')" id="q17-E"><span class="option-letter">E</span> as a consequence</button>
+  </div>
+<div class="explanation-box" id="expl-17">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> üstelik / bunun yanı sıra (ekleme)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> buna rağmen / yine de (zıtlık) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> yani / başka bir deyişle (yeniden ifade)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> buna göre / bu doğrultuda (uyum)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> sonuç olarak (neden-sonuç)</div>
+</div>
+<div class="expl-why">The evidence is growing (positive for the field) but causation is hard to prove (limitation). 'Nevertheless' (B) = despite the growing evidence, this difficulty persists — a concessive contrast. 'Furthermore' (A) = adds more supporting evidence, which is not what the second clause does. 'That is' (C) = restates or clarifies. 'Accordingly' (D) = in a way consistent with what was said. 'As a consequence' (E) would imply the difficulty is caused by the growing evidence — illogical.</div>
+</div>
+</div>
+<!-- Q18 answer: A -->
+<div class="question-card" id="qcard-18">
+  <div class="q-header">
+    <div class="q-number">18</div>
+    <div class="q-text">Nanotechnology offers unprecedented precision in drug delivery. <b>- - - -</b>, nanoparticles can be engineered to release their therapeutic payload only when they detect the specific biochemical conditions present in tumour tissue.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(18)" id="flag-18" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(18,'A')" id="q18-A"><span class="option-letter">A</span> For instance</button>
+  <button class="option-btn" onclick="selectAnswer(18,'B')" id="q18-B"><span class="option-letter">B</span> In contrast</button>
+  <button class="option-btn" onclick="selectAnswer(18,'C')" id="q18-C"><span class="option-letter">C</span> Regardless</button>
+  <button class="option-btn" onclick="selectAnswer(18,'D')" id="q18-D"><span class="option-letter">D</span> Even so</button>
+  <button class="option-btn" onclick="selectAnswer(18,'E')" id="q18-E"><span class="option-letter">E</span> Alternatively</button>
+  </div>
+<div class="explanation-box" id="expl-18">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Örneğin ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Bunun aksine (zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Ne olursa olsun (koşulsuz)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Yine de / Buna rağmen (zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Alternatif olarak (seçenek)</div>
+</div>
+<div class="expl-why">The first sentence makes a general claim about precision. The second gives a concrete example of what that precision looks like. 'For instance' (A) introduces a specific illustration of the preceding general statement. 'In contrast' (B) signals opposition — the second sentence supports, not contradicts. 'Even so' (D) signals concession. 'Alternatively' (E) would offer a different option. 'Regardless' (C) introduces a condition-free conclusion, inappropriate here.</div>
+</div>
+</div>
+<!-- Q19 answer: D -->
+<div class="question-card" id="qcard-19">
+  <div class="q-header">
+    <div class="q-number">19</div>
+    <div class="q-text">The gig economy has created flexible earning opportunities for millions of workers. <b>- - - -</b>, it has also eliminated many of the legal protections and financial predictability that traditional employment provides.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(19)" id="flag-19" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(19,'A')" id="q19-A"><span class="option-letter">A</span> In addition</button>
+  <button class="option-btn" onclick="selectAnswer(19,'B')" id="q19-B"><span class="option-letter">B</span> As a result</button>
+  <button class="option-btn" onclick="selectAnswer(19,'C')" id="q19-C"><span class="option-letter">C</span> That is</button>
+  <button class="option-btn" onclick="selectAnswer(19,'D')" id="q19-D"><span class="option-letter">D</span> At the same time</button>
+  <button class="option-btn" onclick="selectAnswer(19,'E')" id="q19-E"><span class="option-letter">E</span> For this reason</button>
+  </div>
+<div class="explanation-box" id="expl-19">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Buna ek olarak (ekleme — zıtlık değil)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Sonuç olarak (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Yani (yeniden ifade)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Aynı zamanda / Öte yandan ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Bu nedenle (neden-sonuç)</div>
+</div>
+<div class="expl-why">The gig economy creates opportunities (positive) and simultaneously removes protections (negative). 'At the same time' (D) = both things are true simultaneously and in tension — the ideal connector for a statement that introduces a coexisting contradictory reality. 'In addition' (A) would continue the positive list rather than introducing a counterweight. 'As a result/For this reason' (B, E) would imply the loss of protections is caused by the opportunities. 'That is' (C) = restating the same idea.</div>
+</div>
+</div>
+<!-- Q20 answer: E -->
+<div class="question-card" id="qcard-20">
+  <div class="q-header">
+    <div class="q-number">20</div>
+    <div class="q-text">Bilingual children may initially develop their vocabulary in each language more slowly than their monolingual peers. <b>- - - -</b>, when their total vocabulary across both languages is counted together, the gap typically disappears.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(20)" id="flag-20" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(20,'A')" id="q20-A"><span class="option-letter">A</span> Consequently</button>
+  <button class="option-btn" onclick="selectAnswer(20,'B')" id="q20-B"><span class="option-letter">B</span> Similarly</button>
+  <button class="option-btn" onclick="selectAnswer(20,'C')" id="q20-C"><span class="option-letter">C</span> In other words</button>
+  <button class="option-btn" onclick="selectAnswer(20,'D')" id="q20-D"><span class="option-letter">D</span> In particular</button>
+  <button class="option-btn" onclick="selectAnswer(20,'E')" id="q20-E"><span class="option-letter">E</span> However</button>
+  </div>
+<div class="explanation-box" id="expl-20">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Dolayısıyla (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Benzer şekilde (benzerlik)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Yani / Başka bir deyişle (yeniden ifade)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Özellikle (belirginleştirme)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Ancak / Bununla birlikte ✓</div>
+</div>
+<div class="expl-why">The first sentence describes a potential disadvantage (slower single-language vocabulary). The second qualifies or overturns this with a clarifying counterpoint (combined vocabulary is equivalent). 'However' (E) introduces this corrective contrast — what seems like a disadvantage disappears under a different measurement. 'Consequently' (A) would make the disappearing gap a result of the slower development. 'Similarly' (B) implies both sentences say the same thing. 'In other words' (C) = restating, but the second sentence adds new information. 'In particular' (D) = narrowing focus.</div>
+</div>
+</div>
+<!-- Q21 answer: E -->
+<div class="question-card" id="qcard-21">
+  <div class="q-header">
+    <div class="q-number">21</div>
+    <div class="q-text">Space agencies have successfully tracked the majority of large debris objects in low Earth orbit. <b>- - - -</b>, millions of smaller fragments — too small to track individually but large enough to cause catastrophic damage — remain unmonitored.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(21)" id="flag-21" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(21,'A')" id="q21-A"><span class="option-letter">A</span> Therefore</button>
+  <button class="option-btn" onclick="selectAnswer(21,'B')" id="q21-B"><span class="option-letter">B</span> For example</button>
+  <button class="option-btn" onclick="selectAnswer(21,'C')" id="q21-C"><span class="option-letter">C</span> As a result</button>
+  <button class="option-btn" onclick="selectAnswer(21,'D')" id="q21-D"><span class="option-letter">D</span> Moreover</button>
+  <button class="option-btn" onclick="selectAnswer(21,'E')" id="q21-E"><span class="option-letter">E</span> Nevertheless</button>
+  </div>
+<div class="explanation-box" id="expl-21">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Bu nedenle (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Örneğin (örnek verme)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Sonuç olarak (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Üstelik / Bunun yanı sıra (ekleme)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Buna rağmen / Yine de (zıtlık) ✓</div>
+</div>
+<div class="expl-why">Large debris is tracked (positive, reassuring) but small fragments remain unmonitored (a remaining threat). 'Nevertheless' (E) = despite that tracking success, this significant problem persists. 'Therefore/As a result' (A, C) would make the unmonitored fragments a consequence of the successful tracking — illogical. 'For example' (B) would suggest the unmonitored fragments are an illustration of successful tracking. 'Moreover' (D) would add to the positive point, but the second sentence is a contrasting limitation.</div>
+</div>
+</div>
+<!-- Q22 answer: B -->
+<div class="question-card" id="qcard-22">
+  <div class="q-header">
+    <div class="q-number">22</div>
+    <div class="q-text">Cognitive reserve — the brain's accumulated capacity to tolerate neurological damage — is built up over a lifetime through education, social engagement, and intellectually stimulating activity. <b>- - - -</b>, there are good reasons to believe that lifelong learning may offer meaningful protection against age-related cognitive decline.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(22)" id="flag-22" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(22,'A')" id="q22-A"><span class="option-letter">A</span> By contrast</button>
+  <button class="option-btn" onclick="selectAnswer(22,'B')" id="q22-B"><span class="option-letter">B</span> Consequently</button>
+  <button class="option-btn" onclick="selectAnswer(22,'C')" id="q22-C"><span class="option-letter">C</span> Nonetheless</button>
+  <button class="option-btn" onclick="selectAnswer(22,'D')" id="q22-D"><span class="option-letter">D</span> On the other hand</button>
+  <button class="option-btn" onclick="selectAnswer(22,'E')" id="q22-E"><span class="option-letter">E</span> For instance</button>
+  </div>
+<div class="explanation-box" id="expl-22">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Bunun aksine (zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Dolayısıyla / Bunun sonucunda ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Buna rağmen (zıtlık)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Öte yandan (zıtlık/alternatif perspektif)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Örneğin (örnekleme)</div>
+</div>
+<div class="expl-why">The first sentence explains what builds cognitive reserve (education, social engagement, learning). The second draws a logical conclusion: since these activities build reserve, learning protects against decline. 'Consequently' (B) signals this direct causal logical inference. 'By contrast/Nonetheless/On the other hand' (A, B, D) all signal opposition — but the two sentences are in agreement. 'For instance' (E) would introduce an example rather than a logical conclusion.</div>
+</div>
+</div>
+<!-- Q23 answer: D -->
+<div class="question-card" id="qcard-23">
+  <div class="q-header">
+    <div class="q-number">23</div>
+    <div class="q-text">The assumption that gig workers are self-employed entrepreneurs who freely choose their working conditions has been challenged by multiple court rulings in different countries, <b>- - - -</b> legislators have been slow to update employment law to reflect this new legal reality.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(23)" id="flag-23" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(23,'A')" id="q23-A"><span class="option-letter">A</span> so that</button>
+  <button class="option-btn" onclick="selectAnswer(23,'B')" id="q23-B"><span class="option-letter">B</span> whereas</button>
+  <button class="option-btn" onclick="selectAnswer(23,'C')" id="q23-C"><span class="option-letter">C</span> which is why</button>
+  <button class="option-btn" onclick="selectAnswer(23,'D')" id="q23-D"><span class="option-letter">D</span> even though</button>
+  <button class="option-btn" onclick="selectAnswer(23,'E')" id="q23-E"><span class="option-letter">E</span> now that</button>
+  </div>
+<div class="explanation-box" id="expl-23">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> o kadar ki (sonuç yapısı — o kadar...ki)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> oysa / -a karşın (zıtlık iki konu arasında)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> bu yüzden (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> her ne kadar / -e rağmen ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> artık / -diğine göre (zaman/neden)</div>
+</div>
+<div class="expl-why">The assumption has been challenged by courts (progress in legal interpretation) but legislators have been slow to update laws (failure to follow through). 'Even though' (D) = despite the court rulings challenging the assumption, legislators haven't updated the law — a concessive contrast between legal developments and legislative inaction. 'Whereas' (B) typically contrasts two parallel things about different subjects. 'So that' (A) introduces purpose or result. 'Which is why' (C) introduces a consequence — but slow legislation would be the opposite of the expected consequence of court challenges. 'Now that' (E) introduces a reason based on a new situation.</div>
+</div>
+</div>
+<!-- Q24 answer: E -->
+<div class="question-card" id="qcard-24">
+  <div class="q-header">
+    <div class="q-number">24</div>
+    <div class="q-text">Light-emitting diodes have dramatically reduced energy consumption in street lighting, <b>- - - -</b> they have also introduced a new problem: the blue-wavelength light they emit is particularly effective at suppressing melatonin production.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(24)" id="flag-24" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(24,'A')" id="q24-A"><span class="option-letter">A</span> as long as</button>
+  <button class="option-btn" onclick="selectAnswer(24,'B')" id="q24-B"><span class="option-letter">B</span> because</button>
+  <button class="option-btn" onclick="selectAnswer(24,'C')" id="q24-C"><span class="option-letter">C</span> given that</button>
+  <button class="option-btn" onclick="selectAnswer(24,'D')" id="q24-D"><span class="option-letter">D</span> provided that</button>
+  <button class="option-btn" onclick="selectAnswer(24,'E')" id="q24-E"><span class="option-letter">E</span> but</button>
+  </div>
+<div class="explanation-box" id="expl-24">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> olduğu sürece (koşul)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> çünkü (neden)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> göz önüne alındığında (neden/koşul)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> koşuluyla (koşul)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> ancak / fakat (zıtlık bağlacı) ✓</div>
+</div>
+<div class="expl-why">LEDs reduce energy consumption (benefit) but the blue light suppresses melatonin (new problem). 'But' (E) = a simple coordinating conjunction that introduces a contrasting clause — the most natural choice here, where a positive development is immediately followed by an unintended negative consequence. 'As long as/Provided that' (A, D) introduce conditions. 'Because/Given that' (B, C) introduce reasons — but the melatonin suppression is not the reason for the energy saving.</div>
+</div>
+</div>
+
+<!-- SECTION 4: ENG→TUR -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 4 — İng→Türkçe Çeviri</div><div class="section-info">ENG→TUR</div></div>
+  <div class="section-pill">2 Soru</div>
+</div>
+<div class="section-instruction">For questions 25–26, choose the Turkish translation that best reflects the meaning of the English sentence.</div>
+
+<!-- Q25 answer: A -->
+<div class="question-card" id="qcard-25">
+  <div class="q-header">
+    <div class="q-number">25</div>
+    <div class="q-text">Although the evidence for a cognitive advantage in bilingual speakers has been contested, few researchers now dispute that managing two language systems simultaneously constitutes a genuine and demanding form of mental exercise.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(25)" id="flag-25" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(25,'A')" id="q25-A"><span class="option-letter">A</span> İki dilli konuşucularda bilişsel bir avantajın varlığına ilişkin kanıtlar tartışmalı olmaya devam etse de artık pek az araştırmacı, iki dil sistemini aynı anda yönetmenin gerçek ve zorlu bir zihinsel egzersiz oluşturduğunu inkâr etmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'B')" id="q25-B"><span class="option-letter">B</span> İki dilli konuşucularda bilişsel avantajın varlığı kesin olarak kanıtlanmış olup araştırmacılar bu sonucu iki dil sistemini aynı anda yönetmenin sağladığı zihinsel egzersize bağlamaktadır.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'C')" id="q25-C"><span class="option-letter">C</span> Araştırmacılar, iki dilli konuşucularda bilişsel avantajın bulunmadığı konusunda hemfikir olmakla birlikte iki dil sistemini aynı anda yönetmenin belirli faydalar sağlayabileceğini kabul etmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'D')" id="q25-D"><span class="option-letter">D</span> Her ne kadar iki dilli konuşucuların bilişsel avantaja sahip olduğu artık kesin biçimde kanıtlanmış olsa da bazı araştırmacılar bu durumun yalnızca belirli dil çiftleri için geçerli olduğunu öne sürmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'E')" id="q25-E"><span class="option-letter">E</span> Pek çok araştırmacı, iki dil sistemini aynı anda yönetmenin bilişsel bir avantaj yaratıp yaratmadığını hâlâ araştırmaktadır; bu nedenle konu kesinlikle çözüme kavuşturulamamıştır.</button>
+  </div>
+<div class="explanation-box" id="expl-25">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">A correctly preserves all three key elements: (1) 'although...contested' = 'tartışmalı olmaya devam etse de' (concession maintained), (2) 'few researchers now dispute' = 'artık pek az araştırmacı...inkâr etmektedir' (near-universal agreement on the exercise point), (3) 'genuine and demanding form of mental exercise' = 'gerçek ve zorlu bir zihinsel egzersiz'. B states the evidence is conclusively proven — contradicts 'contested'. C says researchers agree there is NO advantage — contradicts the original. D says it has now been proven conclusively — contradicts 'contested'. E says the issue is still completely unresolved — contradicts 'few dispute'.</div>
+</div>
+</div>
+<!-- Q26 answer: E -->
+<div class="question-card" id="qcard-26">
+  <div class="q-header">
+    <div class="q-number">26</div>
+    <div class="q-text">Were the international community to agree on a binding framework for space debris removal, the long-term risk of collision cascades that could render entire orbital zones unusable would be substantially reduced.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(26)" id="flag-26" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(26,'A')" id="q26-A"><span class="option-letter">A</span> Uluslararası toplum, uzay enkazının kaldırılmasına yönelik bağlayıcı bir çerçeve üzerinde anlaşmış olsaydı, tüm yörünge bölgelerini kullanılamaz hale getirebilecek çarpışma zincirinin uzun vadeli riski önemli ölçüde azalmış olurdu.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'B')" id="q26-B"><span class="option-letter">B</span> Uluslararası toplumun uzay enkazının kaldırılması konusunda bağlayıcı bir çerçeve üzerinde mutabık kalmasıyla, tüm yörünge bölgelerini kullanılamaz kılabilecek çarpışma zincirleri riski büyük ölçüde ortadan kalkmıştır.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'C')" id="q26-C"><span class="option-letter">C</span> Uluslararası toplum, uzay enkazının kaldırılmasına ilişkin bağlayıcı bir çerçeve üzerinde anlaşmaya varırsa, tüm yörünge bölgelerini kullanılamaz hale getirebilecek çarpışma zincirlerinin uzun vadeli riski önemli ölçüde azalacaktır.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'D')" id="q26-D"><span class="option-letter">D</span> Uluslararası toplum, uzay enkazının kaldırılması için bağlayıcı bir çerçeve oluşturmayı reddettiği takdirde, tüm yörünge bölgelerinin kullanılamaz hale gelmesi kaçınılmaz olacaktır.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'E')" id="q26-E"><span class="option-letter">E</span> Uluslararası toplumun uzay enkazına yönelik bağlayıcı bir çerçeve üzerinde anlaşması halinde, tüm yörünge bölgelerini kullanılamaz kılabilecek çarpışma zincirlerinin uzun vadeli riski önemli ölçüde azalabilir.</button>
+  </div>
+<div class="explanation-box" id="expl-26">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">'Were...to agree' is an inverted Second Conditional — hypothetical present/future (the agreement hasn't happened yet but is possible). The main clause uses 'would be substantially reduced'. E correctly translates this as a present hypothetical using 'anlaşması halinde...azalabilir' — maintaining possibility without certainty. A uses past conditional ('anlaşmış olsaydı...azalmış olurdu') — this is Third Conditional (unreal past), not Second (hypothetical present). B states the risk has already been eliminated — treats as real. C uses 'anlaşmaya varırsa...azalacaktır' — First Conditional (likely future), stronger certainty than the original 'would be'. D introduces refusal to agree — not in original.</div>
+</div>
+</div>
+
+<!-- SECTION 5: TUR→ENG -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 5 — Türkçe→İng Çeviri</div><div class="section-info">TUR→ENG</div></div>
+  <div class="section-pill">2 Soru</div>
+</div>
+<div class="section-instruction">For questions 27–28, choose the English translation that best reflects the meaning of the Turkish sentence.</div>
+
+<!-- Q27 answer: A -->
+<div class="question-card" id="qcard-27">
+  <div class="q-header">
+    <div class="q-number">27</div>
+    <div class="q-text">Demografik yaşlanmanın sağlık sistemlerine getireceği mali yükün tam olarak hesaplanabilmesi için, araştırmacıların hem mevcut bakım maliyetlerini hem de uzun vadeli altyapı yatırımı gereksinimlerini kapsamlı biçimde modellemesi gerekmektedir.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(27)" id="flag-27" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(27,'A')" id="q27-A"><span class="option-letter">A</span> In order for the financial burden of demographic ageing on health systems to be fully calculated, researchers need to comprehensively model both current care costs and long-term infrastructure investment requirements.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'B')" id="q27-B"><span class="option-letter">B</span> Researchers have already calculated the financial burden of demographic ageing on healthcare systems, concluding that long-term infrastructure costs will far exceed current care expenditure.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'C')" id="q27-C"><span class="option-letter">C</span> Although the financial burden of demographic ageing has been thoroughly calculated, researchers continue to debate the relative importance of current care costs versus long-term infrastructure requirements.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'D')" id="q27-D"><span class="option-letter">D</span> Researchers have proposed that the best way to manage the financial burden of demographic ageing is to prioritise long-term infrastructure investment over current healthcare spending.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'E')" id="q27-E"><span class="option-letter">E</span> The financial burden that demographic ageing places on healthcare systems can only be reduced if researchers develop more accurate models of both current and future expenditure.</button>
+  </div>
+<div class="explanation-box" id="expl-27">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">B correctly preserves all elements: (1) 'hesaplanabilmesi için' = 'in order for...to be fully calculated', (2) 'araştırmacıların...modellemesi gerekmektedir' = 'researchers need to...model', (3) 'hem mevcut bakım maliyetlerini hem de uzun vadeli altyapı yatırımı gereksinimlerini' = 'both current care costs and long-term infrastructure investment requirements'. A says researchers have ALREADY calculated — the Turkish text says it hasn't been done yet. C says it has been thoroughly calculated — contradicts original. D introduces prioritisation advice — not in original. E says burden can only be REDUCED — the original is about calculating the burden, not reducing it.</div>
+</div>
+</div>
+<!-- Q28 answer: C -->
+<div class="question-card" id="qcard-28">
+  <div class="q-header">
+    <div class="q-number">28</div>
+    <div class="q-text">Işık kirliliğinin gece aktif olan hayvanlar üzerindeki biyolojik etkileri giderek daha iyi belgelenmekte olsa da kentsel aydınlatma altyapısının daha uygun alternatiflere dönüştürülmesinin önünde önemli ekonomik engeller bulunmaktadır.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(28)" id="flag-28" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(28,'A')" id="q28-A"><span class="option-letter">A</span> The biological effects of light pollution on nocturnal animals are now so well documented that most urban authorities have already begun transitioning to more suitable lighting infrastructure, despite the economic costs involved.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'B')" id="q28-B"><span class="option-letter">B</span> Since the biological effects of light pollution on nocturnal animals remain poorly understood, there has been little economic incentive for urban authorities to invest in alternative lighting infrastructure.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'C')" id="q28-C"><span class="option-letter">C</span> Although the biological effects of light pollution on nocturnal animals are becoming increasingly well documented, significant economic barriers remain to converting urban lighting infrastructure to more suitable alternatives.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'D')" id="q28-D"><span class="option-letter">D</span> The economic barriers to converting urban lighting infrastructure have now been overcome in many cities, allowing authorities to address the well-documented biological effects of light pollution on nocturnal animals.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'E')" id="q28-E"><span class="option-letter">E</span> Given that the biological effects of light pollution on nocturnal animals are well understood, governments should urgently prioritise the conversion of urban lighting infrastructure regardless of the economic barriers involved.</button>
+  </div>
+<div class="explanation-box" id="expl-28">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">C correctly preserves both elements: (1) 'giderek daha iyi belgelenmekte olsa da' = 'although...becoming increasingly well documented' (concession maintained), (2) 'önemli ekonomik engeller bulunmaktadır' = 'significant economic barriers remain'. A says most authorities have already begun transitioning — contradicts 'economic barriers remain'. B says effects remain poorly understood — contradicts 'giderek daha iyi belgelenmekte'. D says barriers have been overcome — directly contradicts original. E says governments should act regardless — an opinion not in the original.</div>
+</div>
+</div>
+
+<!-- SECTION 6: REPHRASING -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 6 — Yakın Anlamlı</div><div class="section-info">REPHRASING</div></div>
+  <div class="section-pill">5 Soru</div>
+</div>
+<div class="section-instruction">For questions 29–33, find the sentence closest in meaning to the given sentence.</div>
+
+<!-- Q29 answer: B -->
+<div class="question-card" id="qcard-29">
+  <div class="q-header">
+    <div class="q-number">29</div>
+    <div class="q-text">No sooner had the space agency published its debris risk assessment than governments began demanding an emergency session of the UN Space Committee.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(29)" id="flag-29" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(29,'A')" id="q29-A"><span class="option-letter">A</span> Governments had already begun demanding an emergency UN session before the space agency published its debris risk assessment.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'B')" id="q29-B"><span class="option-letter">B</span> Governments began demanding an emergency session of the UN Space Committee almost immediately after the space agency released its debris risk assessment.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'C')" id="q29-C"><span class="option-letter">C</span> The space agency's debris risk assessment was published in response to governments' demands for an emergency UN session.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'D')" id="q29-D"><span class="option-letter">D</span> The space agency postponed publishing its debris risk assessment until governments had agreed to convene an emergency UN session.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'E')" id="q29-E"><span class="option-letter">E</span> Governments agreed to hold an emergency UN session only after the space agency's debris risk assessment had been formally endorsed.</button>
+  </div>
+<div class="explanation-box" id="expl-29">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">'No sooner had X happened than Y' = Y happened immediately after X. B correctly captures the immediate sequence: 'almost immediately after the space agency released its assessment, governments began demanding'. A reverses the sequence. B says the assessment was published IN RESPONSE to demands — reverses the causal direction. D says the agency postponed until governments agreed — introduces conditions not in original. E says governments agreed to hold a session only after endorsement — introduces a different event entirely.</div>
+</div>
+</div>
+<!-- Q30 answer: A -->
+<div class="question-card" id="qcard-30">
+  <div class="q-header">
+    <div class="q-number">30</div>
+    <div class="q-text">The benefits of bilingualism for executive function are most pronounced in individuals who have used both languages actively across the full span of their lives.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(30)" id="flag-30" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(30,'A')" id="q30-A"><span class="option-letter">A</span> The cognitive advantages associated with bilingualism and executive function tend to be strongest among those who have maintained active use of both languages throughout their lifetime.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'B')" id="q30-B"><span class="option-letter">B</span> Only individuals who begin learning a second language in early childhood show measurable improvements in executive function.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'C')" id="q30-C"><span class="option-letter">C</span> Using both languages actively across a full lifetime has been shown to prevent all forms of cognitive decline associated with ageing.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'D')" id="q30-D"><span class="option-letter">D</span> Researchers have found that the benefits of bilingualism are equally distributed among all bilingual speakers, regardless of how actively they have used each language.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'E')" id="q30-E"><span class="option-letter">E</span> The executive function advantages of bilingualism gradually disappear in individuals who stop using one of their languages after the age of forty.</button>
+  </div>
+<div class="explanation-box" id="expl-30">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">B correctly preserves the core meaning: advantages are 'most pronounced' for those who 'used both languages actively across the full span of their lives'. 'Tend to be strongest among those who have maintained active use throughout their lifetime' is an accurate, parallel rephrasing. A limits the advantage to early childhood learners only — not in original. C says bilingualism prevents ALL cognitive decline — too absolute, not stated. D says equally distributed regardless of active use — directly contradicts 'most pronounced in active users'. E introduces a cut-off age and disappearing advantages — not in original.</div>
+</div>
+</div>
+<!-- Q31 answer: C -->
+<div class="question-card" id="qcard-31">
+  <div class="q-header">
+    <div class="q-number">31</div>
+    <div class="q-text">It was not until artificial light at night was recognised as a form of environmental pollution that ecologists began systematically studying its effects on wildlife populations.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(31)" id="flag-31" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(31,'A')" id="q31-A"><span class="option-letter">A</span> Ecologists had already been systematically studying the effects of artificial light on wildlife long before it was formally classified as environmental pollution.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'B')" id="q31-B"><span class="option-letter">B</span> The formal recognition of artificial night light as environmental pollution immediately prompted regulatory authorities to impose restrictions on outdoor lighting.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'C')" id="q31-C"><span class="option-letter">C</span> Ecologists only began systematically studying the effects of artificial night light on wildlife after it came to be recognised as a form of environmental pollution.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'D')" id="q31-D"><span class="option-letter">D</span> Artificial light at night was classified as environmental pollution as a direct consequence of the systematic studies conducted by ecologists on wildlife populations.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'E')" id="q31-E"><span class="option-letter">E</span> Although artificial light at night has been recognised as environmental pollution, few ecologists have so far undertaken systematic studies of its effects on wildlife.</button>
+  </div>
+<div class="explanation-box" id="expl-31">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">'It was not until X that Y' = Y happened only after X. C correctly uses 'only began systematically studying...after it came to be recognised' — preserving both the sequence and the restriction. A reverses the sequence — says study preceded recognition. B says regulatory authorities responded — introduces a different actor and outcome. D reverses cause and effect — says recognition resulted from studies (in original, recognition enabled studies). E says few ecologists have studied it — contradicts 'began systematically studying'.</div>
+</div>
+</div>
+<!-- Q32 answer: D -->
+<div class="question-card" id="qcard-32">
+  <div class="q-header">
+    <div class="q-number">32</div>
+    <div class="q-text">Hardly any of the proposed solutions to the space debris problem have been technically validated in real orbital conditions.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(32)" id="flag-32" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(32,'A')" id="q32-A"><span class="option-letter">A</span> All of the proposed solutions to the space debris problem have been successfully tested in real orbital conditions.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'B')" id="q32-B"><span class="option-letter">B</span> Most proposed solutions to the space debris problem are currently undergoing technical validation in orbital conditions.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'C')" id="q32-C"><span class="option-letter">C</span> The majority of proposed solutions to the space debris problem have been technically validated in real orbital conditions.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'D')" id="q32-D"><span class="option-letter">D</span> Very few of the proposed solutions to the space debris problem have been technically validated in real orbital conditions.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'E')" id="q32-E"><span class="option-letter">E</span> None of the proposed solutions to the space debris problem will ever be technically validated in real orbital conditions.</button>
+  </div>
+<div class="explanation-box" id="expl-32">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-why">'Hardly any' = almost none, very few. D correctly rephrases this with 'very few' — preserving the near-zero quantity. A says all have been tested — the opposite. B says most are undergoing testing — contradicts 'hardly any validated'. C says the majority have been validated — directly contradicts original. E says none will ever be validated — too extreme and adds a future impossibility not in original. The key distinction: 'hardly any' ≠ 'none', so E is too strong.</div>
+</div>
+</div>
+<!-- Q33 answer: E -->
+<div class="question-card" id="qcard-33">
+  <div class="q-header">
+    <div class="q-number">33</div>
+    <div class="q-text">The assumption that nanotechnology-based treatments are inherently more dangerous than conventional drugs overlooks the fact that precision targeting can actually reduce overall drug exposure in the body.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(33)" id="flag-33" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(33,'A')" id="q33-A"><span class="option-letter">A</span> Nanotechnology-based treatments have been proven to be considerably safer than conventional drugs in all clinical applications studied so far.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'B')" id="q33-B"><span class="option-letter">B</span> Conventional drugs are generally considered safer than nanotechnology-based treatments, despite the latter's capacity for more precise drug delivery.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'C')" id="q33-C"><span class="option-letter">C</span> Researchers have concluded that nanotechnology-based treatments and conventional drugs pose exactly the same level of risk to patients when administered correctly.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'D')" id="q33-D"><span class="option-letter">D</span> The danger of nanotechnology-based treatments has been definitively established, making it unlikely that they will replace conventional drugs in clinical settings.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'E')" id="q33-E"><span class="option-letter">E</span> The concern that nanotechnology treatments are more dangerous than conventional drugs fails to account for the fact that precise targeting may in fact lower a patient's total exposure to the drug.</button>
+  </div>
+<div class="explanation-box" id="expl-33">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">B correctly preserves both elements: (1) 'assumption...overlooks' = 'concern...fails to account for' (a mistaken belief ignoring a key fact), (2) 'precision targeting can reduce overall drug exposure' = 'precise targeting may lower total drug exposure'. A says nanotechnology is proven safer in all applications — too absolute, not in original. C says conventional drugs are generally considered safer — close, but this is an independent claim, not a correction of an incorrect assumption. D says both pose exactly the same risk — not what the original says. E says danger is definitively established — directly contradicts the original's argument.</div>
+</div>
+</div>
+
+<!-- SECTION 7: SENTENCE COMPLETION -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 7 — Cümle Tamamlama</div><div class="section-info">SENTENCE COMPLETION</div></div>
+  <div class="section-pill">5 Soru</div>
+</div>
+<div class="section-instruction">For questions 34–38, choose the option that best completes the sentence.</div>
+
+<!-- Q34 answer: A -->
+<div class="question-card" id="qcard-34">
+  <div class="q-header">
+    <div class="q-number">34</div>
+    <div class="q-text">Although bilingualism has long been associated with cognitive benefits in younger adults, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(34)" id="flag-34" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(34,'A')" id="q34-A"><span class="option-letter">A</span> it is the potential protective effect against late-life cognitive decline that has attracted the greatest scientific interest in recent years</button>
+  <button class="option-btn" onclick="selectAnswer(34,'B')" id="q34-B"><span class="option-letter">B</span> researchers have now confirmed that these advantages disappear entirely once a person reaches middle age</button>
+  <button class="option-btn" onclick="selectAnswer(34,'C')" id="q34-C"><span class="option-letter">C</span> scientists have concluded that learning a second language after the age of forty produces no measurable cognitive effects whatsoever</button>
+  <button class="option-btn" onclick="selectAnswer(34,'D')" id="q34-D"><span class="option-letter">D</span> the evidence for these benefits has been found to be so weak that most researchers have abandoned the field entirely</button>
+  <button class="option-btn" onclick="selectAnswer(34,'E')" id="q34-E"><span class="option-letter">E</span> monolinguals who engage in regular mental exercise have been found to outperform bilinguals on all standardised cognitive tests</button>
+  </div>
+<div class="explanation-box" id="expl-34">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">'Although X, [result/development]' — the blank must add new information that develops beyond the conceded point (benefits in younger adults). B extends the topic logically: the protective effect in late life has attracted more recent attention — a natural development of the bilingualism research story. A says advantages disappear entirely — contradicts the passage on cognitive reserve. C says no effects after forty — too extreme, contradicts passage. D says researchers abandoned the field — contradicts the passage's active research. E says monolinguals outperform bilinguals — contradicts the research direction described.</div>
+</div>
+</div>
+<!-- Q35 answer: C -->
+<div class="question-card" id="qcard-35">
+  <div class="q-header">
+    <div class="q-number">35</div>
+    <div class="q-text"><b>- - - -</b>; as a result, even a relatively modest increase in the amount of debris in low Earth orbit could set off a self-sustaining chain reaction that would make large portions of that orbit permanently inaccessible.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(35)" id="flag-35" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(35,'A')" id="q35-A"><span class="option-letter">A</span> Space agencies have successfully developed laser-based systems capable of removing debris objects of all sizes from low Earth orbit</button>
+  <button class="option-btn" onclick="selectAnswer(35,'B')" id="q35-B"><span class="option-letter">B</span> The risk posed by space debris has been systematically exaggerated by researchers seeking to attract funding for new removal technologies</button>
+  <button class="option-btn" onclick="selectAnswer(35,'C')" id="q35-C"><span class="option-letter">C</span> Each collision between debris objects generates thousands of additional fragments, dramatically increasing the probability of further collisions</button>
+  <button class="option-btn" onclick="selectAnswer(35,'D')" id="q35-D"><span class="option-letter">D</span> International agreements on space debris removal have now been signed by all major spacefaring nations</button>
+  <button class="option-btn" onclick="selectAnswer(35,'E')" id="q35-E"><span class="option-letter">E</span> The technology required to track space debris objects smaller than ten centimetres has not yet been developed</button>
+  </div>
+<div class="explanation-box" id="expl-35">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The second clause says 'a modest increase in debris could set off a self-sustaining chain reaction'. This consequence logically follows from C: each collision creates more fragments, raising the probability of further collisions — this is precisely the mechanism that enables a self-sustaining chain reaction (Kessler Syndrome). A says removal systems exist — would reduce, not cause, chain reactions. B says risk is exaggerated — contradicts 'as a result...chain reaction'. D says agreements signed — does not create chain reaction risk. E says small objects can't be tracked — related but doesn't directly explain the chain reaction mechanism described.</div>
+</div>
+</div>
+<!-- Q36 answer: A -->
+<div class="question-card" id="qcard-36">
+  <div class="q-header">
+    <div class="q-number">36</div>
+    <div class="q-text">Gig economy platforms argue that worker flexibility is a core feature of their model, not a loophole that exploits vulnerable people; <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(36)" id="flag-36" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(36,'A')" id="q36-A"><span class="option-letter">A</span> however, courts in several countries have found that these workers are entitled to the same protections as traditional employees</button>
+  <button class="option-btn" onclick="selectAnswer(36,'B')" id="q36-B"><span class="option-letter">B</span> and most labour economists now agree that the platforms are correct to prioritise flexibility over formal employment contracts</button>
+  <button class="option-btn" onclick="selectAnswer(36,'C')" id="q36-C"><span class="option-letter">C</span> and regulators have uniformly accepted this argument, choosing not to intervene in the sector's operations</button>
+  <button class="option-btn" onclick="selectAnswer(36,'D')" id="q36-D"><span class="option-letter">D</span> however, this view has been so convincingly defended that it is unlikely to face any further legal challenge</button>
+  <button class="option-btn" onclick="selectAnswer(36,'E')" id="q36-E"><span class="option-letter">E</span> and workers themselves have consistently reported high levels of satisfaction with the absence of formal employment protections</button>
+  </div>
+<div class="explanation-box" id="expl-36">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">The semicolon and the platform's argument set up a position. The blank must provide a realistic counterpoint or legal development. A introduces 'however' — courts have found workers deserve protections, directly contradicting the platform's argument and creating a credible tension. B says economists agree with platforms — continues the platform's position without contrast, which 'however' would normally introduce. C says regulators accepted the argument — contradicts the real legal reality and makes 'however' meaningless. D says the argument won't face legal challenge — contradicts A's scenario. E says workers are satisfied — an overly positive claim that ignores documented labour disputes.</div>
+</div>
+</div>
+<!-- Q37 answer: C -->
+<div class="question-card" id="qcard-37">
+  <div class="q-header">
+    <div class="q-number">37</div>
+    <div class="q-text">Researchers investigating the health effects of light pollution note that not all wavelengths of artificial light are equally harmful, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(37)" id="flag-37" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(37,'A')" id="q37-A"><span class="option-letter">A</span> and have therefore concluded that outdoor lighting should be eliminated entirely in all residential areas</button>
+  <button class="option-btn" onclick="selectAnswer(37,'B')" id="q37-B"><span class="option-letter">B</span> but the cost of replacing existing LED infrastructure makes any transition to warmer-toned lighting economically impractical</button>
+  <button class="option-btn" onclick="selectAnswer(37,'C')" id="q37-C"><span class="option-letter">C</span> with blue-wavelength light proving particularly disruptive to the production of melatonin and the regulation of circadian rhythms</button>
+  <button class="option-btn" onclick="selectAnswer(37,'D')" id="q37-D"><span class="option-letter">D</span> although the total amount of light produced by artificial sources has continued to increase despite growing public awareness of its effects</button>
+  <button class="option-btn" onclick="selectAnswer(37,'E')" id="q37-E"><span class="option-letter">E</span> and have therefore proposed that all outdoor lighting should be banned in areas within five kilometres of protected nature reserves</button>
+  </div>
+<div class="explanation-box" id="expl-37">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The sentence states not all wavelengths are equally harmful — this naturally calls for specification of WHICH wavelength is most harmful and WHY. C provides exactly this: blue-wavelength light is 'particularly disruptive' to melatonin and circadian rhythms — a direct, factual completion that specifies the most harmful type. A concludes all outdoor lighting should be eliminated — too extreme, not logically required by the premise. B introduces cost barriers as the main point — unrelated to the wavelength distinction just made. D introduces a trend in light production — does not complete the wavelength-harm contrast. E proposes a specific ban near reserves — too specific and unrelated to the wavelength point.</div>
+</div>
+</div>
+<!-- Q38 answer: C -->
+<div class="question-card" id="qcard-38">
+  <div class="q-header">
+    <div class="q-number">38</div>
+    <div class="q-text">Advances in nanotechnology have raised the possibility of delivering therapeutic agents directly to diseased cells, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(38)" id="flag-38" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(38,'A')" id="q38-A"><span class="option-letter">A</span> thereby eliminating the need for any form of conventional pharmaceutical treatment in cancer care</button>
+  <button class="option-btn" onclick="selectAnswer(38,'B')" id="q38-B"><span class="option-letter">B</span> which has led regulators to ban all clinical trials involving nanoparticles until safety concerns have been fully addressed</button>
+  <button class="option-btn" onclick="selectAnswer(38,'C')" id="q38-C"><span class="option-letter">C</span> potentially reducing the systemic side effects that arise when drugs circulate through the entire body rather than reaching only their intended target</button>
+  <button class="option-btn" onclick="selectAnswer(38,'D')" id="q38-D"><span class="option-letter">D</span> a development that has already made conventional chemotherapy entirely redundant in most major cancer treatment centres</button>
+  <button class="option-btn" onclick="selectAnswer(38,'E')" id="q38-E"><span class="option-letter">E</span> though scientists have concluded that this approach will never be viable for treating any condition other than cancer</button>
+  </div>
+<div class="explanation-box" id="expl-38">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The sentence establishes targeted delivery to diseased cells as the key advance. The blank must explain the primary benefit of this precision. C correctly identifies the logical consequence: if drugs reach only diseased cells, the systemic side effects from drugs circulating everywhere else are reduced. A says conventional treatment is entirely eliminated — too absolute. B says regulators have banned all trials — contradicts ongoing research. D says chemotherapy is already entirely redundant — too extreme and premature. E says approach will never work beyond cancer — too pessimistic and contrary to the passage's optimistic framing.</div>
+</div>
+</div>
+
+<!-- SECTION 8: READING COMPREHENSION -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 8 — Okuduğunu Anlama</div><div class="section-info">READING COMPREHENSION</div></div>
+  <div class="section-pill">6 Soru</div>
+</div>
+<div class="section-instruction">Answer questions 39–41 according to the first passage, and questions 42–44 according to the second passage.</div>
+
+<div class="passage-box">
+  <strong>Passage 1: The Science of Bilingualism</strong><br><br>
+For much of the twentieth century, bilingualism was regarded with suspicion in educational circles. Some researchers argued that growing up with two languages would overburden a child's developing mind, leading to confusion, slower vocabulary acquisition, and reduced academic performance. It is now understood that these concerns were largely unfounded, and that the cognitive reality of bilingualism is considerably more nuanced — and in many respects more beneficial — than earlier generations of researchers supposed.<br><br>
+Modern neuroscience has revealed that managing two language systems simultaneously exercises the brain's executive control network — the set of cognitive functions responsible for directing attention, switching between tasks, and suppressing irrelevant information. Because bilingual individuals must constantly monitor and regulate which language is appropriate in a given context, this network is engaged more intensively and more frequently than in monolinguals. Several longitudinal studies have found that this sustained engagement is associated with measurable advantages in tasks requiring divided attention and cognitive flexibility, even in domains that have nothing to do with language itself.<br><br>
+Perhaps the most discussed benefit concerns cognitive ageing. Studies tracking bilingual and monolingual individuals across their lifetimes have found that the onset of dementia symptoms in bilingual speakers occurs, on average, several years later than in monolingual counterparts with equivalent educational backgrounds and health profiles. Researchers caution that bilingualism is not a cure for dementia — the underlying disease progresses at the same rate — but it appears to contribute to what neurologists term "cognitive reserve": the brain's capacity to continue functioning effectively despite the accumulation of age-related damage.<br><br>
+Critics of this research point out that it is methodologically difficult to isolate bilingualism as a variable, since bilingual individuals often differ from monolingual comparison groups in ways that might independently affect cognitive outcomes — including social background, immigration experience, and the types of professional activities they engage in throughout their lives. This debate continues, and while the evidence for a "bilingual advantage" remains contested, few researchers now dispute that managing two languages represents a genuine and sustained form of cognitive exercise.
+</div>
+<!-- Q39 answer: E -->
+<div class="question-card" id="qcard-39">
+  <div class="q-header">
+    <div class="q-number">39</div>
+    <div class="q-text">According to the passage, what is the main reason researchers initially expected bilingualism to harm children's cognitive development?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(39)" id="flag-39" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(39,'A')" id="q39-A"><span class="option-letter">A</span> They believed that bilingual children would consistently underperform monolinguals on standardised intelligence tests.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'B')" id="q39-B"><span class="option-letter">B</span> They assumed that bilingual children would struggle to form meaningful friendships because they lacked a dominant social language.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'C')" id="q39-C"><span class="option-letter">C</span> They observed that bilingual children tended to mix languages in a way that reflected underlying grammatical confusion.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'D')" id="q39-D"><span class="option-letter">D</span> They found that bilingual children showed delayed emotional development compared to their monolingual peers.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'E')" id="q39-E"><span class="option-letter">E</span> They thought that the demands of managing two languages simultaneously would overburden the developing brain.</button>
+  </div>
+<div class="explanation-box" id="expl-39">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">The passage states: 'Some researchers argued that growing up with two languages would overburden a child's developing mind, leading to confusion, slower vocabulary acquisition, and reduced academic performance.' B directly captures this: the concern was that managing two languages would place too great a demand on the developing brain. A says underperformance on intelligence tests — the passage mentions vocabulary and academic performance, not intelligence tests specifically. C says social difficulties — not mentioned. D says grammatical confusion — the passage mentions 'confusion' generally, not grammatical mixing specifically. E says emotional development delays — not mentioned.</div>
+</div>
+</div>
+<!-- Q40 answer: C -->
+<div class="question-card" id="qcard-40">
+  <div class="q-header">
+    <div class="q-number">40</div>
+    <div class="q-text">The passage implies that the 'bilingual advantage' in tasks unrelated to language arises primarily from which of the following?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(40)" id="flag-40" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(40,'A')" id="q40-A"><span class="option-letter">A</span> The broader cultural knowledge that bilingual individuals typically acquire alongside their second language.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'B')" id="q40-B"><span class="option-letter">B</span> The greater number of social interactions that bilingual individuals tend to engage in due to their communication abilities.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'C')" id="q40-C"><span class="option-letter">C</span> The sustained and intensive engagement of the brain's executive control network required to manage two language systems.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'D')" id="q40-D"><span class="option-letter">D</span> The enhanced memory capacity that develops as a result of having to store vocabulary in two separate language systems.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'E')" id="q40-E"><span class="option-letter">E</span> The increased processing speed that bilingual individuals develop from switching rapidly between two languages during conversation.</button>
+  </div>
+<div class="explanation-box" id="expl-40">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The passage states: 'managing two language systems simultaneously exercises the brain's executive control network...this network is engaged more intensively and more frequently...Several longitudinal studies have found that this sustained engagement is associated with measurable advantages in tasks requiring divided attention and cognitive flexibility, even in domains that have nothing to do with language itself.' C directly captures this mechanism. A about cultural knowledge — not mentioned as the mechanism. B about social interactions — not stated as the mechanism. D about memory capacity for vocabulary — the passage mentions executive control, not vocabulary storage capacity. E about processing speed — the passage focuses on attention and flexibility, not speed specifically.</div>
+</div>
+</div>
+<!-- Q41 answer: C -->
+<div class="question-card" id="qcard-41">
+  <div class="q-header">
+    <div class="q-number">41</div>
+    <div class="q-text">Which of the following best describes the methodological concern raised by critics of bilingualism research?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(41)" id="flag-41" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(41,'A')" id="q41-A"><span class="option-letter">A</span> The studies were conducted over too short a period to draw reliable conclusions about long-term cognitive outcomes.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'B')" id="q41-B"><span class="option-letter">B</span> The cognitive tests used to measure executive function were not sufficiently standardised across different research groups.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'C')" id="q41-C"><span class="option-letter">C</span> Bilingual individuals may differ from monolingual comparison groups in multiple ways that could independently account for observed cognitive differences.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'D')" id="q41-D"><span class="option-letter">D</span> The researchers failed to control for the age at which participants had acquired their second language.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'E')" id="q41-E"><span class="option-letter">E</span> The studies included too few participants to produce statistically reliable findings about the bilingual population as a whole.</button>
+  </div>
+<div class="explanation-box" id="expl-41">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The passage states: 'it is methodologically difficult to isolate bilingualism as a variable, since bilingual individuals often differ from monolingual comparison groups in ways that might independently affect cognitive outcomes — including social background, immigration experience, and the types of professional activities they engage in.' C precisely captures this: confounding variables (differences beyond bilingualism) make it hard to attribute differences specifically to language use. A about study duration — not mentioned. B about test standardisation — not mentioned. D about age of acquisition — not mentioned as the specific criticism. E about sample size — not the concern raised.</div>
+</div>
+</div>
+<div class="passage-box">
+  <strong>Passage 2: Light Pollution and Its Consequences</strong><br><br>
+The proliferation of artificial lighting across the globe over the past century has been so pervasive that today, more than eighty percent of the world's population lives under skies so illuminated that the Milky Way is no longer visible to the naked eye. This phenomenon — known as light pollution — has long been treated primarily as an aesthetic concern, a regrettable side effect of progress that deprives urban dwellers of the natural spectacle of a dark sky. Increasingly, however, scientists are documenting its biological and ecological consequences, many of which are far more serious than the loss of a view.<br><br>
+Artificial light at night disrupts the circadian rhythms — the roughly twenty-four-hour biological cycles that regulate sleep, hormone production, metabolism, and immune function — of a vast range of species. For nocturnal animals, whose entire behavioural repertoire evolved in the context of natural cycles of darkness, the consequences can be particularly severe. Artificial lighting can disorient migrating birds, which navigate partly by starlight; attract and disorient insects that are essential pollinators; and alter the behaviour of marine turtles, which rely on the natural brightness of the ocean horizon to navigate from beach nesting sites to open water.<br><br>
+The consequences for human health have also attracted increasing scientific attention. Epidemiological studies have identified associations between chronic exposure to artificial light at night and elevated rates of sleep disorders, obesity, depression, and, in some studies, certain types of cancer. The proposed mechanism involves the suppression of melatonin — a hormone produced primarily during darkness — by exposure to light, particularly in the blue wavelengths emitted by many modern LED sources.<br><br>
+Researchers and urban planners have begun to identify practical responses. Using warmer-toned lighting, installing shields that prevent upward light scatter, and implementing timed switching systems that reduce light output during the hours when nocturnal activity is at its peak are all measures that have been shown to reduce light pollution's impact significantly without requiring wholesale abandonment of outdoor lighting.
+</div>
+<!-- Q42 answer: B -->
+<div class="question-card" id="qcard-42">
+  <div class="q-header">
+    <div class="q-number">42</div>
+    <div class="q-text">According to the passage, what is the proposed mechanism by which artificial light at night may increase the risk of health disorders in humans?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(42)" id="flag-42" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(42,'A')" id="q42-A"><span class="option-letter">A</span> Increased wakefulness caused by light exposure leads to an accumulation of stress hormones that damage cardiovascular tissue over time.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'B')" id="q42-B"><span class="option-letter">B</span> Artificial light disrupts circadian rhythms by suppressing the production of melatonin, particularly through the blue wavelengths emitted by LED sources.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'C')" id="q42-C"><span class="option-letter">C</span> Constant light exposure reduces the amount of time spent in deep sleep, preventing the brain from consolidating memories and repairing cellular damage.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'D')" id="q42-D"><span class="option-letter">D</span> The electromagnetic radiation produced by artificial light sources interferes with the body's natural immune response mechanisms.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'E')" id="q42-E"><span class="option-letter">E</span> Bright outdoor lighting causes elevated stress levels by preventing individuals from experiencing the psychological restoration associated with natural darkness.</button>
+  </div>
+<div class="explanation-box" id="expl-42">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The passage explicitly states: 'The proposed mechanism involves the suppression of melatonin — a hormone produced primarily during darkness — by exposure to light, particularly in the blue wavelengths emitted by many modern LED sources.' B directly and accurately reflects this stated mechanism. A about stress hormones and cardiovascular tissue — not stated as the mechanism. C about deep sleep and memory consolidation — related but not the specific mechanism described. D about electromagnetic radiation and immune response — not mentioned. E about psychological restoration — not the proposed mechanism.</div>
+</div>
+</div>
+<!-- Q43 answer: D -->
+<div class="question-card" id="qcard-43">
+  <div class="q-header">
+    <div class="q-number">43</div>
+    <div class="q-text">According to the passage, which group of animals is affected by light pollution through a mechanism involving navigation?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(43)" id="flag-43" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(43,'A')" id="q43-A"><span class="option-letter">A</span> Sea turtles, which are disoriented by the suppression of their melatonin production at coastal nesting sites.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'B')" id="q43-B"><span class="option-letter">B</span> Insects, which are attracted to and killed by artificial light sources near agricultural areas.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'C')" id="q43-C"><span class="option-letter">C</span> Nocturnal mammals, which lose the ability to locate food sources when the night sky is excessively illuminated.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'D')" id="q43-D"><span class="option-letter">D</span> Migrating birds, which rely partly on starlight for navigation and can be disoriented by artificial lighting.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'E')" id="q43-E"><span class="option-letter">E</span> Deep-sea fish, which are disrupted by the penetration of artificial light into their natural habitat.</button>
+  </div>
+<div class="explanation-box" id="expl-43">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-why">The passage states: 'Artificial lighting can disorient migrating birds, which navigate partly by starlight.' D correctly identifies birds and the navigation mechanism (starlight). A about sea turtles — the passage says they use 'the natural brightness of the ocean horizon to navigate from beach nesting sites to open water', not melatonin suppression. B about insects — the passage says they are 'attracted and disoriented', not specifically killed. C about nocturnal mammals losing food sources — not mentioned. E about deep-sea fish — not mentioned. The question specifically asks about navigation as the mechanism, which is explicitly birds and starlight.</div>
+</div>
+</div>
+<!-- Q44 answer: B -->
+<div class="question-card" id="qcard-44">
+  <div class="q-header">
+    <div class="q-number">44</div>
+    <div class="q-text">What can be inferred from the passage about the feasibility of reducing light pollution?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(44)" id="flag-44" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(44,'A')" id="q44-A"><span class="option-letter">A</span> Reducing light pollution would require the complete removal of all outdoor lighting from urban environments, which is widely considered unrealistic.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'B')" id="q44-B"><span class="option-letter">B</span> Meaningful reductions in light pollution are technically feasible and do not require the total elimination of outdoor lighting.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'C')" id="q44-C"><span class="option-letter">C</span> The economic costs of adapting existing street lighting infrastructure make any meaningful reduction in light pollution impossible in the near term.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'D')" id="q44-D"><span class="option-letter">D</span> Only governments with large environmental protection budgets will be in a position to introduce effective measures against light pollution.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'E')" id="q44-E"><span class="option-letter">E</span> Light pollution can be addressed only by reintroducing natural darkness to urban environments, which would require turning off all artificial lights between midnight and dawn.</button>
+  </div>
+<div class="explanation-box" id="expl-44">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The passage states: 'Using warmer-toned lighting, installing shields that prevent upward light scatter, and implementing timed switching systems...are all measures that have been shown to reduce light pollution's impact significantly without requiring wholesale abandonment of outdoor lighting.' B correctly infers that meaningful reductions are feasible without eliminating all lighting. A says complete removal is required — the passage explicitly says the opposite ('without requiring wholesale abandonment'). C says economic costs make reduction impossible — the passage presents practical, presumably implementable solutions. D says only large-budget governments can act — not stated. E says natural darkness requires turning off all lights — contradicts the passage's practical incremental solutions.</div>
+</div>
+</div>
+
+<!-- SECTION 9: DIALOGUE -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 9 — Diyalog Tamamlama</div><div class="section-info">DIALOGUE</div></div>
+  <div class="section-pill">3 Soru</div>
+</div>
+<div class="section-instruction">For questions 45–47, select the most appropriate response for the blank in the dialogue.</div>
+
+<!-- Q45 answer: B -->
+<div class="question-card" id="qcard-45">
+  <div class="q-header">
+    <div class="q-number">45</div>
+    <div class="q-text"><strong>Reporter:</strong> Your new report suggests that space debris poses a more immediate threat than previously understood. Can you summarise the core finding?<br><strong>Scientist:</strong> <b>- - - -</b><br><strong>Reporter:</strong> That is alarming. Does the report call for any specific international measures?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(45)" id="flag-45" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(45,'A')" id="q45-A"><span class="option-letter">A</span> Well, the report actually concludes that current debris levels are well within safe parameters and that no immediate action is required.</button>
+  <button class="option-btn" onclick="selectAnswer(45,'B')" id="q45-B"><span class="option-letter">B</span> Essentially, we have found that the density of debris in certain orbital zones has now crossed a threshold above which collision cascades may become self-sustaining — even if no new objects are launched.</button>
+  <button class="option-btn" onclick="selectAnswer(45,'C')" id="q45-C"><span class="option-letter">C</span> The report focuses mainly on the long-term economic implications of debris for the commercial space sector, rather than on immediate safety risks.</button>
+  <button class="option-btn" onclick="selectAnswer(45,'D')" id="q45-D"><span class="option-letter">D</span> Our principal finding is that existing international frameworks are already sufficient to manage the debris problem without any further regulatory intervention.</button>
+  <button class="option-btn" onclick="selectAnswer(45,'E')" id="q45-E"><span class="option-letter">E</span> To be honest, the data we have collected is still too preliminary for us to draw any firm conclusions at this stage.</button>
+  </div>
+<div class="explanation-box" id="expl-45">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The reporter says the threat is 'more immediate than previously understood' and then asks 'Does the report call for specific international measures?' — implying something alarming was just said. B delivers a genuinely alarming finding (self-sustaining collision cascades even without new launches) that logically prompts 'That is alarming' and the follow-up about international measures. A says no immediate action required — contradicts 'That is alarming'. C says the report focuses on economics, not safety — contradicts 'more immediate threat'. D says existing frameworks are sufficient — 'That is alarming' would be illogical in response. E says data is preliminary — 'That is alarming' would not follow.</div>
+</div>
+</div>
+<!-- Q46 answer: C -->
+<div class="question-card" id="qcard-46">
+  <div class="q-header">
+    <div class="q-number">46</div>
+    <div class="q-text"><strong>Patient:</strong> I've been reading that blue light from my phone screen might be affecting my sleep. Should I be worried?<br><strong>Doctor:</strong> It's a legitimate concern. The evidence that blue-wavelength light suppresses melatonin production is fairly robust.<br><strong>Patient:</strong> <b>- - - -</b><br><strong>Doctor:</strong> Yes, exactly — switching your phone to a warmer-toned display mode in the evenings and avoiding screens for an hour before bed can make a meaningful difference.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(46)" id="flag-46" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(46,'A')" id="q46-A"><span class="option-letter">A</span> So would you recommend I stop using electronic devices entirely from now on?</button>
+  <button class="option-btn" onclick="selectAnswer(46,'B')" id="q46-B"><span class="option-letter">B</span> Does that mean I should take melatonin supplements to compensate for the suppression?</button>
+  <button class="option-btn" onclick="selectAnswer(46,'C')" id="q46-C"><span class="option-letter">C</span> So are you saying that adjusting the settings on my devices and limiting screen use before bed could help?</button>
+  <button class="option-btn" onclick="selectAnswer(46,'D')" id="q46-D"><span class="option-letter">D</span> In that case, should I consult a sleep specialist before making any changes to my routine?</button>
+  <button class="option-btn" onclick="selectAnswer(46,'E')" id="q46-E"><span class="option-letter">E</span> Is this something that only affects people who already have pre-existing sleep disorders?</button>
+  </div>
+<div class="explanation-box" id="expl-46">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The doctor's follow-up reply says: 'Yes, exactly — switching to warmer-toned display mode in evenings and avoiding screens before bed can help.' This confirms the patient's suggestion with 'Yes, exactly'. C asks whether adjusting device settings and limiting screens before bed could help — precisely what the doctor confirms. A asks about stopping devices entirely — the doctor's reply about 'adjusting settings' contradicts a total ban. B asks about supplements — the doctor's reply is about device settings, not supplements. D asks about seeing a specialist — the doctor gives direct practical advice, not a referral. E asks about pre-existing disorders — the doctor's reply is about general practical steps.</div>
+</div>
+</div>
+<!-- Q47 answer: E -->
+<div class="question-card" id="qcard-47">
+  <div class="q-header">
+    <div class="q-number">47</div>
+    <div class="q-text"><strong>Student A:</strong> I'm considering whether to do a master's degree now or work for a few years first. What do you think?<br><strong>Student B:</strong> <b>- - - -</b><br><strong>Student A:</strong> That's a good point — I hadn't really thought about how much easier the application process would be if I had some relevant work experience behind me.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(47)" id="flag-47" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(47,'A')" id="q47-A"><span class="option-letter">A</span> You should definitely do the master's immediately — waiting too long might mean you lose the academic mindset you've built up during your studies.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'B')" id="q47-B"><span class="option-letter">B</span> Working first is almost always a mistake — employers will always prefer candidates with postgraduate qualifications over those with work experience.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'C')" id="q47-C"><span class="option-letter">C</span> I honestly wouldn't bother with a master's at all — the return on investment is rarely worth the time and financial cost involved.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'D')" id="q47-D"><span class="option-letter">D</span> If I were you, I'd do the master's now — the longer you wait, the harder it will be to get back into an academic environment.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'E')" id="q47-E"><span class="option-letter">E</span> I'd say it depends on what field you're going into — for some careers, the practical experience you gain from working first can actually strengthen your application and help you get more out of the programme when you do go.</button>
+  </div>
+<div class="explanation-box" id="expl-47">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">Student A then says: 'I hadn't really thought about how much easier the application process would be if I had some relevant work experience.' This reveals they were introduced to the idea that work experience helps the application process. B is the only option that raises both the application benefit ('strengthen your application') and the benefit of the programme itself ('get more out of the programme') as reasons to work first — this directly prompts A's new realisation about applications. A recommends going immediately — 'hadn't thought about how work experience helps applications' wouldn't follow. C says working is almost always a mistake — contradicts A's positive new perspective. D dismisses master's entirely — doesn't match. E also recommends going immediately — same issue as A.</div>
+</div>
+</div>
+
+<!-- SECTION 10: SITUATION -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 10 — Duruma Uygun</div><div class="section-info">SITUATION</div></div>
+  <div class="section-pill">3 Soru</div>
+</div>
+<div class="section-instruction">For questions 48–50, select the most appropriate sentence for the situation described.</div>
+
+<!-- Q48 answer: B -->
+<div class="question-card" id="qcard-48">
+  <div class="q-header">
+    <div class="q-number">48</div>
+    <div class="q-text">You are a department head. An employee has submitted a project proposal that shows genuine creativity, but the timeline they have suggested is unrealistic given the team's current workload. You want to encourage them while clearly communicating the need for a more achievable schedule.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(48)" id="flag-48" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(48,'A')" id="q48-A"><span class="option-letter">A</span> This proposal has some interesting ideas, but the timeline is completely unworkable — you'll need to start again from scratch.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'B')" id="q48-B"><span class="option-letter">B</span> I appreciate the creative thinking in this proposal. The concept is strong, but I'd like us to work together on revising the timeline to make it more realistic given what the team is currently managing.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'C')" id="q48-C"><span class="option-letter">C</span> The timeline seems fine to me — let's proceed with the proposal as submitted.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'D')" id="q48-D"><span class="option-letter">D</span> I'd suggest you discuss this proposal with your colleagues first, as I don't have time to give it a thorough evaluation right now.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'E')" id="q48-E"><span class="option-letter">E</span> The proposal is interesting, but I'm afraid no new projects can be approved until further notice due to the team's workload.</button>
+  </div>
+<div class="explanation-box" id="expl-48">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The situation requires: (1) genuine encouragement of the creativity shown, (2) a clear but constructive message about the unrealistic timeline, (3) a collaborative approach to fixing it. B provides all three: 'I appreciate the creative thinking' (encouragement), 'the timeline' needs revising to be 'more realistic' (clear message), 'I'd like us to work together on revising' (collaborative). A criticises bluntly and asks to start again — not encouraging. C says the timeline is fine — ignores the core problem. D defers evaluation — avoids giving feedback. E refuses all new projects — doesn't engage with the specific proposal's strengths.</div>
+</div>
+</div>
+<!-- Q49 answer: B -->
+<div class="question-card" id="qcard-49">
+  <div class="q-header">
+    <div class="q-number">49</div>
+    <div class="q-text">You are a conference organiser. A keynote speaker has just informed you, two days before the event, that they are unable to attend due to a family emergency. You need to notify the other conference participants in a way that is professional, empathetic towards the speaker, and reassuring about the programme.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(49)" id="flag-49" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(49,'A')" id="q49-A"><span class="option-letter">A</span> We regret to inform you that our keynote speaker has cancelled without adequate notice. We are currently considering our options and will update you when a decision has been reached.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'B')" id="q49-B"><span class="option-letter">B</span> We are writing to let you know that, due to an unforeseen family emergency, our keynote speaker will unfortunately be unable to join us as planned. We fully understand the circumstances and are already working to ensure the programme remains as strong as possible — we will share an updated schedule shortly.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'C')" id="q49-C"><span class="option-letter">C</span> Our keynote speaker has withdrawn from the conference. As a result, we are offering all registered participants a partial refund to compensate for this change to the advertised programme.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'D')" id="q49-D"><span class="option-letter">D</span> We are sorry to announce that the keynote address has been cancelled. The remainder of the programme will proceed as planned, and we hope this does not inconvenience you too greatly.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'E')" id="q49-E"><span class="option-letter">E</span> We wanted to let you know as early as possible that our keynote speaker will not be attending. We apologise for any disappointment this may cause and look forward to seeing you at the event.</button>
+  </div>
+<div class="explanation-box" id="expl-49">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The situation requires: (1) professional communication of the cancellation, (2) empathy towards the speaker (family emergency), (3) reassurance about the programme. B meets all three: it acknowledges the 'unforeseen family emergency' empathetically ('we fully understand the circumstances'), states proactive steps ('already working to ensure the programme remains strong'), and commits to communication ('will share an updated schedule shortly'). A says 'without adequate notice' — inappropriate, blaming the speaker for a family emergency. C offers refunds — not requested, and premature. D says it hopes it won't 'inconvenience you too greatly' — dismissive of participants' legitimate disappointment. E apologises but does not reassure about the programme continuing strongly.</div>
+</div>
+</div>
+<!-- Q50 answer: A -->
+<div class="question-card" id="qcard-50">
+  <div class="q-header">
+    <div class="q-number">50</div>
+    <div class="q-text">A colleague has asked for your opinion on a report they have written, and you genuinely think the analysis is thorough and well-argued. However, you noticed one section where the data is presented in a graph that is quite difficult to read. You want to give honest, balanced feedback.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(50)" id="flag-50" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(50,'A')" id="q50-A"><span class="option-letter">A</span> I really enjoyed reading this — the analysis is excellent throughout. I noticed the graph in section three could be simplified to make the data easier to follow, but overall this is very strong work.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'B')" id="q50-B"><span class="option-letter">B</span> The report is fine, but honestly the graph in section three makes the entire analysis very difficult to follow — I'd recommend addressing that before submitting it.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'C')" id="q50-C"><span class="option-letter">C</span> I think the report is good, but I wouldn't submit it yet — there are probably several issues that a more careful revision would reveal.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'D')" id="q50-D"><span class="option-letter">D</span> The analysis is strong, but given that one graph is hard to read, I think the overall presentation needs significant improvement before this is ready to share.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'E')" id="q50-E"><span class="option-letter">E</span> It's a solid report. I don't think you need to change anything before submitting it.</button>
+  </div>
+<div class="explanation-box" id="expl-50">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">The situation requires: (1) honest acknowledgement of what is genuinely good (thorough, well-argued analysis), (2) balanced, constructive mention of the specific issue (difficult graph), without overstating it. A provides both: genuine praise ('analysis is excellent throughout', 'very strong work') and a specific, proportionate suggestion ('the graph in section three could be simplified'). B overweights the graph issue ('makes the entire analysis very difficult') — not balanced given the analysis is described as thorough. C vaguely suggests there are probably other issues — not honest since you only noticed the one graph. D says the 'overall presentation needs significant improvement' — overstates the impact of one difficult graph. E says no changes needed — ignores the known issue.</div>
+</div>
+</div>
+
+
+<!-- SUBMIT -->
+<div class="warn-msg" id="warnMsg">⚠️ Bazı sorular henüz cevaplanmadı. Tüm soruları cevaplayın ya da tekrar "Teslim Et"e basın.</div>
+<div class="submit-zone">
+  <button class="btn-submit" onclick="submitExam()" id="submitBtn">Sınavı Teslim Et →</button>
+</div>
+
+<!-- RESULTS -->
+<div class="results-panel" id="resultsPanel">
+  <div class="result-score" id="finalScore">—</div>
+  <div class="result-sub" id="finalSub">—</div>
+  <div class="result-grid">
+    <div class="result-cell"><div class="label">Doğru</div><div class="value green" id="resCorrect">—</div></div>
+    <div class="result-cell"><div class="label">Yanlış</div><div class="value red" id="resWrong">—</div></div>
+    <div class="result-cell"><div class="label">Boş</div><div class="value" id="resBlank">—</div></div>
+    <div class="result-cell"><div class="label">Başarı</div><div class="value" id="resNet">—</div></div>
+  </div>
+  <table class="breakdown-table" id="breakdownTable">
+    <thead><tr><th>Bölüm</th><th>Doğru</th><th>Yanlış</th><th>Boş</th></tr></thead>
+    <tbody id="breakdownBody"></tbody>
+  </table>
+  <div class="saving-msg" id="savingMsg" style="display:none;"></div>
+</div>
+
+</div><!-- /exam-body -->
+</div><!-- /exam-layout -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxvPQj78xcKfCz8zyuXgXBXtNY-qkBXq5_A9GHyuPRv75o5eFOHQTcN0VSM_qionqv3Cg/exec";
+
+const STUDENT_DATA = {
+  "HZ A": { teacher:"Ödül Bıkmaz", students:["Ali Kaan Kılıççöte","Ant Yarkın Canbay","Arya Ayvazoğlu","Batuhan Eren Özeren","Batuhan Batur","Beren Naz Atabaş","Burak Kısacık","Ceren Tokatlı","Çınar Ekşi","Defne Nas Sevinç","Derin Yaz Uçar","Ecrin Ada Öztroprak","Elif Berra Korucu","Elif Naz Kantemir","Enes Bernas Kavak","Irmak Üstün","Kıvanç Topaç","Kuzey Tekin","Kuzey Volkan Muşlu","Mehmet Mirza Koçak","Meryem Azra Eser","Oleksandra Yazenok","Selin Gümüş","Turan Efe Orman"] },
+  "HZ B": { teacher:"Ali Ahmadzadeh", students:["Alya Çörekçioğlu","Ayşe Kutanaoğlu","Bade Artıstak","Bedirhan Arda Alma","Beren Karslı","Bora Yelboğa","Çınar Akkaya","Damla Yurga","Duru Mina Öksüz","Duru Mumcu","Eda Nur Ordu","Ege İbrahim Bacacı","Göktuğ Hakan Kaynakoğlu","Kaan Özveren","Koray Akıncı","Serdar Güçmen","Tuna Aslan","Yunus Tanık","Yusuf Taha Öztürk","Yekta Aras Kangl"] },
+  "HZ C": { teacher:"Yıldırım Kocakaya", students:["Ayşe Beliz Morgül","Azra Özkan","Dinç Demir","Doğa Özçelik","Ecem İlhan","Frida Lorin Alabaş","Furkan Özgürdal","Gamze Oral","Irmak Dora Yılmaz","Kadir Dağhan Aksoy","Mehmet Emir Gürsoy","Metin Mert Varol","Mehmet Aras Ünal","Nurten Tosun","Orçun Murat","Sude Naz Yücel","Verdal Işık","Zeynep Hacıbebekoğlu","Zeynep Su Basmacı","Zeynep Su Yüksel","Tanem Acar","Alperen Aydın"] },
+  "HZ D": { teacher:"Emrecan Boz", students:["Ada Balkır","Asrın Deniz Akman","Ecrin Ela Yavuz","Elif Beren Can","Eylül Kale","Eymen Tercan","Ezmira Çallı","Hazal Helin Fidan","İdil Güven","İpek Eken","İris Atasü","Kaan Kavak","Karan Şatana","Kemal Onurlu","Kerem Ata Kökşen","Kuzey Sezer","Mehmet Barış Akkaş","Mehmet Mirza Aktaş","Mehmet Yiğit Ercan","Ozan Aytuğ İğde","Ömür Aktürk","Sahra Nil Üstev","Talha Gül","Yağmur Gökmen"] },
+  "HZ E": { teacher:"Katherine Martin", students:["Ahmet Sarp Keleş","Alya Temel","Ayşe Duru Aras","Ayşe Sinem Kılıç","Batu Çelikadam","Beren Bağdatlı","Bora Ünlü","Çağla Şarman","Demir Heperler","Duru Gülsever","Ece Barak","Efe Veli Çelik","Elif Beril Yıldız","Eylül Özkan","Mehmet Artun Duru","Meriç Ata Ceyhan","Mila Ceyhan","Ömer Salih Önen","Sabri Berke Aytemiz","Poyraz Durmuş","Sarp Deniz Selçuk","Sarp Gürbüz","Tuğsem Erzurum","Ümmiye Arslan"] },
+  "HZ F": { teacher:"Yeşim Başer", students:["Ada Gürmeriç","Alp Aden Ortakaya","Ayşe Nira Keser","Ayten Ercan","Batuhan Kök","Beren Çağlı","Berra Divarcı","Burak Onur Ayhan","Deniz Eray","Devran Paksoy","Doğa Baysal","Duru Turanoğuz","Efe Çınar Önay","Efe Kaplan","Ege Bozkurt","Ege Ünver","Eva Naz Türkoğlu","Güney Ali Özgürsoy","Hanzade Ada Akın","Hasan Adar Filimci","Haydar Yusuf Fidan","İdil Petek","Kuzey Atlas Sunay","Naz Ecemiş"] },
+  "Grade 8": { teacher:"İzver Saçkan", students:["Ahmet Can Çelik","Alp Tarakçıoğlu","Arman Kaltalı","Bennu Uçar","Çınar Doğu","Defne Mine Özünlü","Elif Arya Karaca","Enes Sözen","Erdem Tolga Şengezer","Harun Çağan Top","Hüseyin Ervahan Gülen","Kaan Tekin","Tahir Can Zengin","Ufuk Işık Akkurt"] }
+};
+
+// Answers encoded for security
+const _EK = "ZABhFAF0Bnd3AWUQchJ9FH0RYQJxAwcBdGERdGMBZHAQYQd0AwAHdGQWdGgEZH0XYgJ1AAcHd2EWd2MBZ3AWYgdxAAAHd2QVd2gGZ30RYwJxAQcBdmEQdmMAZnASYwdzAQADdmQXdmgGZn0WZAJzBgcBcWEWcWMBYXARZAdyBgABcWQRcWgHYX0RZQJx";
+function _da(e){
+  const k="UDSP2026BESTEPE";
+  const b=atob(e);
+  let d='';
+  for(let i=0;i<b.length;i++) d+=String.fromCharCode(b.charCodeAt(i)^k.charCodeAt(i%k.length));
+  const r={};
+  const m=d.matchAll(/(\d+)([A-E])/g);
+  for(const x of m) r[parseInt(x[1])]=x[2];
+  return r;
+}
+const ANSWERS = _da(_EK);
+
+const SECTIONS = [
+  {name:'Kelime Bilgisi',qs:[1,2,3,4,5,6,7]},
+  {name:'Dil Bilgisi',qs:[8,9,10,11,12,13,14]},
+  {name:'Boşluk Doldurma',qs:[15,16,17,18,19,20,21,22,23,24]},
+  {name:'İng→Türkçe',qs:[25,26]},
+  {name:'Türkçe→İng',qs:[27,28]},
+  {name:'Yakın Anlamlı',qs:[29,30,31,32,33]},
+  {name:'Cümle Tamamlama',qs:[34,35,36,37,38]},
+  {name:'Okuduğunu Anlama',qs:[39,40,41,42,43,44]},
+  {name:'Diyalog Tamamlama',qs:[45,46,47]},
+  {name:'Duruma Uygun',qs:[48,49,50]}
+];
+
+let userAnswers={},submitted=false,timerInterval,totalSeconds=110*60,warnShown=false;
+let currentStudent='',currentTeacher='',currentClass='',currentStorageKey='',startTime;
+
+function onClassChange(){
+  const cls=document.getElementById('classSelect').value;
+  if(!cls)return;
+  const data=STUDENT_DATA[cls];
+  document.getElementById('teacherDisplay').value=data.teacher;
+  const dl=document.getElementById('studentList');
+  dl.innerHTML=data.students.map(s=>`<option value="${s}">`).join('');
+  document.getElementById('studentName').value='';
+  document.getElementById('studentName').placeholder='Adınızı seçin veya yazın...';
+}
+
+function startExam(){
+  const cls=document.getElementById('classSelect').value;
+  const name=document.getElementById('studentName').value.trim();
+  const err=document.getElementById('loginErr');
+  if(!cls){err.textContent='⚠️ Lütfen sınıfınızı seçin.';err.style.display='block';return;}
+  if(!name){err.textContent='⚠️ Lütfen adınızı ve soyadınızı girin.';err.style.display='block';return;}
+  const classData=STUDENT_DATA[cls];
+  const normalize=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
+  const isValid=classData.students.some(s=>normalize(s)===normalize(name));
+  if(!isValid){err.textContent='⚠️ Bu isim '+cls+' listesinde bulunamadı. Tam adınızı kontrol edin.';err.style.display='block';return;}
+
+  // Always check Google Sheet first (this is the source of truth)
+  const storageKey='udsp_Gun6_'+normalize(name)+'_'+cls;
+  const hasLocalBlock = !!localStorage.getItem(storageKey);
+
+  err.textContent='🔍 Kontrol ediliyor, lütfen bekleyin...';
+  err.style.display='block';
+  err.style.color='#6b7a99';
+  err.style.background='#f5f6fa';
+  err.style.padding='12px';
+  err.style.borderRadius='8px';
+  err.style.border='1px solid #dde1ed';
+
+  fetch(SHEET_URL+'?action=check&name='+encodeURIComponent(name)+'&exam='+encodeURIComponent('Gün 6'))
+  .then(r=>r.json())
+  .then(json=>{
+    if(json.reentry===true){
+      // Teacher granted re-entry permission — clear local block and proceed
+      localStorage.removeItem(storageKey);
+      _beginExam(name, classData, cls, storageKey, err);
+    } else if(json.found===true || hasLocalBlock){
+      err.innerHTML='⛔ Bu sınavı daha önce tamamladınız. Tekrar giriş yapamazsınız.<br><small style="display:block;margin-top:6px;font-weight:400;">Öğretmeniniz size yeniden giriş izni verdiyse, lütfen sayfayı <strong>Ctrl + Shift + R</strong> (Mac: <strong>Cmd + Shift + R</strong>) tuşlarıyla yenileyip tekrar deneyin.</small>';
+      err.style.color='#c0392b';
+      err.style.background='#fdf0ef';
+      err.style.border='1px solid #c0392b';
+    } else {
+      _beginExam(name, classData, cls, storageKey, err);
+    }
+  })
+  .catch(()=>{
+    // Network error — fall back to localStorage check only
+    if(hasLocalBlock){
+      err.innerHTML='⛔ Bu sınavı daha önce tamamladınız. Tekrar giriş yapamazsınız.<br><small style="display:block;margin-top:6px;font-weight:400;">Öğretmeniniz size yeniden giriş izni verdiyse, lütfen sayfayı <strong>Ctrl + Shift + R</strong> (Mac: <strong>Cmd + Shift + R</strong>) tuşlarıyla yenileyip tekrar deneyin.</small>';
+      err.style.color='#c0392b';
+      err.style.background='#fdf0ef';
+      err.style.border='1px solid #c0392b';
+    } else {
+      _beginExam(name, classData, cls, storageKey, err);
+    }
+  });
+}
+
+function _beginExam(name, classData, cls, storageKey, err){
+  err.style.display='none';
+  currentStudent=name;currentTeacher=classData.teacher;currentClass=cls;
+  currentStorageKey=storageKey;
+  startTime=new Date();
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('examHeaderEl').style.display='block';
+  document.getElementById('examLayout').style.display='flex';
+  buildNavGrid();
+  startTimer();window.scrollTo(0,0);
+}
+
+let warned15=false, warned5=false;
+
+function showTimeWarning(msg){
+  const warn=document.getElementById('tabWarning');
+  const overlay=document.getElementById('tabOverlay');
+  warn.textContent=msg;
+  warn.classList.add('show');
+  overlay.classList.add('show');
+  setTimeout(()=>{warn.classList.remove('show');overlay.classList.remove('show');}, 7000);
+}
+
+function startTimer(){
+  timerInterval=setInterval(()=>{
+    totalSeconds--;
+    if(totalSeconds<=0){
+      clearInterval(timerInterval);
+      document.getElementById('tabWarning').textContent='⏰ Süre doldu! Cevaplarınız otomatik olarak teslim ediliyor...';
+      document.getElementById('tabWarning').classList.add('show');
+      document.getElementById('tabOverlay').classList.add('show');
+      setTimeout(()=>doSubmit(), 2000);
+      return;
+    }
+    const h=Math.floor(totalSeconds/3600),m=Math.floor((totalSeconds%3600)/60),s=totalSeconds%60;
+    const tv=document.getElementById('timer');
+    tv.textContent=`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(totalSeconds<=600)tv.className='timer-value danger';
+    else if(totalSeconds<=1800)tv.className='timer-value warning';
+
+    // Time warnings
+    if(totalSeconds===900 && !warned15){
+      warned15=true;
+      showTimeWarning('⏰ 15 dakikanız kaldı! Lütfen kalan sorularınızı tamamlayın.');
+    }
+    if(totalSeconds===300 && !warned5){
+      warned5=true;
+      showTimeWarning('⏰ Sadece 5 dakikanız kaldı! Sınav otomatik olarak teslim edilecek.');
+    }
+  },1000);
+}
+
+function selectAnswer(q,opt){
+  if(submitted)return;
+  userAnswers[q]=opt;
+  document.querySelectorAll(`[id^="q${q}-"]`).forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`q${q}-${opt}`).classList.add('selected');
+  const a=Object.keys(userAnswers).length;
+  document.getElementById('answeredCount').textContent=a;
+  document.getElementById('remainingCount').textContent=50-a;
+  document.getElementById('progressBar').style.width=(a/50*100)+'%';
+}
+
+function submitExam(){
+  if(Object.keys(userAnswers).length<50&&!warnShown){
+    document.getElementById('warnMsg').classList.add('show');warnShown=true;return;
+  }
+  doSubmit();
+}
+
+function doSubmit(){
+  if(submitted) return;   // double-guard
+  submitted=true;clearInterval(timerInterval);
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('warnMsg').classList.remove('show');
+  let correct=0,wrong=0,blank=0;const sectionScores={};
+  for(let q=1;q<=50;q++){
+    const ua=userAnswers[q],ca=ANSWERS[q];
+    if(!ua)blank++;else if(ua===ca)correct++;else wrong++;
+    ['A','B','C','D','E'].forEach(l=>{
+      const btn=document.getElementById(`q${q}-${l}`);if(!btn)return;
+      btn.disabled=true;
+      if(l===ca)btn.classList.add(ua===ca?'correct':'revealed-correct');
+      else if(l===ua&&ua!==ca)btn.classList.add('wrong');
+    });
+    const expl=document.getElementById(`expl-${q}`);if(expl)expl.classList.add('show');
+  }
+  const pct=Math.round(correct/50*100);
+  document.getElementById('finalScore').textContent=pct+'%';
+  document.getElementById('finalSub').textContent=`${currentStudent} — ${correct} Doğru / 50 Soru`;
+  document.getElementById('resCorrect').textContent=correct;
+  document.getElementById('resWrong').textContent=wrong;
+  document.getElementById('resBlank').textContent=blank;
+  document.getElementById('resNet').textContent=correct;
+  const tbody=document.getElementById('breakdownBody');tbody.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    let sc=0,sw=0,sb=0;
+    sec.qs.forEach(q=>{const ua=userAnswers[q];if(!ua)sb++;else if(ua===ANSWERS[q])sc++;else sw++;});
+    sectionScores[sec.name]=`${sc}/${sec.qs.length}`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${sec.name}</td><td style="color:var(--correct);font-weight:600">${sc}</td><td style="color:var(--wrong);font-weight:600">${sw}</td><td>${sb}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  const diffSec=Math.round((new Date()-startTime)/1000);
+  // Save to localStorage to prevent re-entry
+  const normalize_l = s => s.toLowerCase().replace(/\s+/g,' ').trim();
+  if(currentStorageKey) localStorage.setItem(currentStorageKey, '1');
+
+  sendToSheet({studentName:currentStudent,teacherName:currentTeacher,className:currentClass,examDay:'Gün 6',score:pct,correct,wrong,blank,sectionScores:JSON.stringify(sectionScores),timeTaken:`${Math.floor(diffSec/60)}dk ${diffSec%60}sn`});
+}
+
+function sendToSheet(data){
+  const msg=document.getElementById('savingMsg');msg.style.display='block';
+  msg.textContent='📡 Sonuçlar kaydediliyor...';msg.className='saving-msg';
+  fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(()=>{msg.textContent='✅ Sonuçlarınız başarıyla kaydedildi!';msg.className='saving-msg success';})
+  .catch(()=>{msg.textContent='⚠️ Kayıt sırasında sorun oluştu.';msg.className='saving-msg error';});
+}
+
+
+// ── QUESTION NAVIGATOR ──
+const NAV_SECTIONS = [
+  {name:'Kelime',qs:[1,2,3,4,5,6,7]},
+  {name:'Dil Bilgisi',qs:[8,9,10,11,12,13,14]},
+  {name:'Boşluk',qs:[15,16,17,18,19,20,21,22,23,24]},
+  {name:'Çeviri',qs:[25,26,27,28]},
+  {name:'Yakın',qs:[29,30,31,32,33]},
+  {name:'Cümle',qs:[34,35,36,37,38]},
+  {name:'Okuma',qs:[39,40,41,42,43,44]},
+  {name:'Diyalog',qs:[45,46,47]},
+  {name:'Durum',qs:[48,49,50]}
+];
+
+let flagged = new Set();
+
+function buildNavGrid(){
+  const grid = document.getElementById('navGrid');
+  grid.innerHTML = '';
+  let firstSection = true;
+  NAV_SECTIONS.forEach(sec => {
+    if(!firstSection){
+      const sep = document.createElement('div');
+      sep.className = 'nav-section-sep';
+      grid.appendChild(sep);
+    }
+    firstSection = false;
+    sec.qs.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-btn';
+      btn.id = `nav-${q}`;
+      btn.textContent = q;
+      btn.title = `Soru ${q}`;
+      btn.onclick = () => scrollToQ(q);
+      btn.oncontextmenu = (e) => { e.preventDefault(); toggleFlag(q); };
+      // Long press for mobile
+      let pressTimer;
+      btn.addEventListener('touchstart', () => { pressTimer = setTimeout(()=>toggleFlag(q), 500); });
+      btn.addEventListener('touchend', () => clearTimeout(pressTimer));
+      grid.appendChild(btn);
+    });
+  });
+
+  // Inject a flag button into each question card's header
+  for(let q=1;q<=50;q++){
+    const card = document.getElementById(`qcard-${q}`);
+    if(!card) continue;
+    const header = card.querySelector('.q-header');
+    if(!header || header.querySelector('.q-flag-btn')) continue;
+    const flagBtn = document.createElement('button');
+    flagBtn.className = 'q-flag-btn';
+    flagBtn.id = `qflag-${q}`;
+    flagBtn.innerHTML = '🚩';
+    flagBtn.title = 'Bu soruyu işaretle (sonra geri dönmek için)';
+    flagBtn.onclick = (e) => { e.stopPropagation(); toggleFlag(q); };
+    header.appendChild(flagBtn);
+  }
+
+  updateNav();
+}
+
+function scrollToQ(q){
+  const el = document.getElementById(`qcard-${q}`);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function toggleFlag(q){
+  if(submitted) return;
+  if(flagged.has(q)) flagged.delete(q);
+  else flagged.add(q);
+  updateNav();
+}
+
+function updateNav(){
+  const answered = Object.keys(userAnswers).length;
+  document.getElementById('ns-answered').textContent = answered;
+  document.getElementById('ns-flagged').textContent = flagged.size;
+  document.getElementById('ns-empty').textContent = 50 - answered;
+  document.getElementById('answeredCount').textContent = answered;
+  document.getElementById('remainingCount').textContent = 50 - answered;
+  document.getElementById('progressBar').style.width = (answered/50*100)+'%';
+
+  for(let q=1;q<=50;q++){
+    const btn = document.getElementById(`nav-${q}`);
+    if(btn){
+      btn.className = 'nav-btn';
+      if(flagged.has(q)) btn.classList.add('nav-flagged');
+      else if(userAnswers[q]) btn.classList.add('nav-answered');
+    }
+    const flagBtn = document.getElementById(`qflag-${q}`);
+    if(flagBtn){
+      flagBtn.classList.toggle('flagged', flagged.has(q));
+    }
+  }
+}
+
+// ── TAB/WINDOW VISIBILITY ──
+let tabViolations = 0;
+const MAX_VIOLATIONS = 3;
+
+document.addEventListener('visibilitychange', () => {
+  if(submitted || !startTime) return;
+  if(document.hidden){
+    tabViolations++;
+    const remaining = MAX_VIOLATIONS - tabViolations;
+    const warn = document.getElementById('tabWarning');
+    if(tabViolations >= MAX_VIOLATIONS){
+      warn.textContent = '⚠️ Sınav otomatik teslim edildi! (Sekme değiştirildi)';
+      warn.classList.add('show');
+      setTimeout(()=>doSubmit(), 1500);
+    } else {
+      warn.textContent = `⚠️ Uyarı ${tabViolations}/${MAX_VIOLATIONS}: Sekme değiştirmeyin! ${remaining} hakkınız kaldı.`;
+      warn.classList.add('show');
+      document.getElementById('tabOverlay').classList.add('show');
+      setTimeout(()=>{warn.classList.remove('show');document.getElementById('tabOverlay').classList.remove('show');}, 7000);
+    }
+  }
+});
+
+window.addEventListener('blur', () => {
+  if(submitted || !startTime) return;
+  // Only count if exam is active
+});
+
+// ── OVERRIDE selectAnswer TO UPDATE NAV ──
+const _origSelect = selectAnswer;
+// Patch selectAnswer to also update nav
+function selectAnswer(q, opt){
+  if(submitted) return;
+  userAnswers[q] = opt;
+  document.querySelectorAll(`[id^="q${q}-"]`).forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`q${q}-${opt}`).classList.add('selected');
+  updateNav();
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400);
+});
+</script>
+</body>
+</html>
