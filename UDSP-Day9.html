@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDSP İngilizce Yeterlilik Sınavı — Gün 9</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+  :root{
+    --navy:#1a2744;--red:#c0392b;--red-light:#e74c3c;--gold:#f0a500;
+    --bg:#f5f6fa;--white:#fff;--text:#1a2744;--muted:#6b7a99;--border:#dde1ed;
+    --correct:#1a7f4b;--correct-bg:#eafaf1;--wrong:#c0392b;--wrong-bg:#fdf0ef;
+    --option-hover:#eef1fb;--option-selected:#dde4f7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg);}
+  .login-card{background:white;border-radius:16px;padding:48px 40px;box-shadow:0 8px 40px rgba(26,39,68,.15);width:100%;max-width:440px;text-align:center;}
+  .login-logo{background:var(--navy);color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:6px;display:inline-block;margin-bottom:20px;}
+  .login-title{font-family:'Merriweather',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .login-sub{font-size:13px;color:var(--muted);margin-bottom:32px;}
+  .login-field{margin-bottom:16px;text-align:left;}
+  .login-field label{display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+  .login-field input,.login-field select{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);background:white;transition:border-color .2s;}
+  .login-field input:focus,.login-field select:focus{outline:none;border-color:var(--navy);}
+  .btn-start{width:100%;padding:14px;background:var(--navy);color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-top:8px;transition:background .2s;}
+  .btn-start:hover{background:#243258;}
+  .study-link-box{margin-top:18px;padding-top:18px;border-top:1px dashed var(--border);text-align:center;}
+  .exam-warning-banner{background:#fff4e8;border:2px solid #e67e22;border-radius:12px;padding:16px 18px;margin-bottom:18px;text-align:left;}
+  .exam-warning-banner .ewb-title{display:flex;align-items:center;gap:8px;font-weight:800;color:#b3540a;font-size:14.5px;margin-bottom:8px;}
+  .exam-warning-banner ul{margin:0;padding-left:20px;color:#6b4a1f;font-size:13px;line-height:1.6;}
+  .exam-warning-banner li{margin-bottom:4px;}
+  .exam-warning-banner li:last-child{margin-bottom:0;}
+  .exam-warning-banner strong{color:#b3540a;}
+  .study-link-box a{display:inline-flex;align-items:center;gap:6px;color:var(--navy);font-size:13.5px;font-weight:600;text-decoration:none;padding:9px 16px;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;}
+  .study-link-box a:hover{border-color:#b8860b;background:#fff8e8;}
+  .study-link-note{font-size:11.5px;color:#9aa3b8;margin-top:7px;}
+  .login-err{color:var(--red);font-size:13px;margin-top:10px;}
+  .saving-msg{margin-top:20px;font-size:13px;color:var(--muted);padding:12px;background:var(--bg);border-radius:8px;}
+  .saving-msg.success{color:var(--correct);background:var(--correct-bg);}
+  .saving-msg.error{color:var(--wrong);background:var(--wrong-bg);}
+  .exam-header{background:var(--navy);color:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+  .header-top{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .header-brand{display:flex;align-items:center;gap:14px;}
+  .meb-badge{background:var(--red);color:white;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 8px;border-radius:4px;}
+  .header-title{font-family:'Merriweather',serif;font-size:14px;font-weight:700;}
+  .header-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+  .timer-block{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);padding:10px 20px;border-radius:8px;}
+  .timer-label{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;}
+  .timer-value{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:2px;}
+  .timer-value.warning{color:var(--gold);}
+  .timer-value.danger{color:#ff6b6b;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  .progress-bar-wrap{height:4px;background:rgba(255,255,255,.1);}
+  .progress-bar{height:4px;background:var(--gold);transition:width .3s;}
+  .header-stats{display:flex;gap:24px;padding:10px 32px;background:rgba(0,0,0,.15);}
+  .stat{font-size:12px;color:rgba(255,255,255,.7);}
+  .stat span{font-weight:700;color:white;}
+  .exam-body{max-width:900px;margin:0 auto;padding:32px 20px 80px;}
+  .section-banner{background:var(--navy);color:white;padding:14px 24px;border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:space-between;margin-top:36px;}
+  .section-name{font-family:'Merriweather',serif;font-size:14px;font-weight:700;}
+  .section-info{font-size:12px;color:rgba(255,255,255,.65);}
+  .section-pill{background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+  .section-instruction{background:#fffbf0;border-left:4px solid var(--gold);padding:12px 20px;font-size:13px;font-style:italic;color:#5a4a00;}
+  .question-card{background:white;border:1px solid var(--border);border-radius:10px;margin-top:16px;overflow:hidden;transition:box-shadow .2s;}
+  .question-card:hover{box-shadow:0 4px 16px rgba(26,39,68,.08);}
+  .q-header{display:flex;align-items:flex-start;gap:14px;padding:18px 22px 14px;}
+  .q-number{min-width:34px;height:34px;background:var(--navy);color:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+  .q-flag-btn{background:none;border:1.5px solid var(--border);border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:14px;flex-shrink:0;margin-left:auto;transition:all .15s;opacity:.5;}
+  .q-flag-btn:hover{opacity:1;border-color:#e67e22;}
+  .q-flag-btn.flagged{background:#fff4e8;border-color:#e67e22;opacity:1;}
+  .q-text{font-size:15px;line-height:1.65;font-weight:500;padding-top:4px;}
+  .passage-box{background:#f8f9fd;border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:0 22px 14px;font-size:14px;line-height:1.75;color:#2c3a5a;}
+  .blank{font-weight:700;color:var(--red);letter-spacing:1px;}
+  .options-list{padding:4px 22px 18px;display:flex;flex-direction:column;gap:8px;}
+  .option-btn{display:flex;align-items:center;gap:12px;padding:11px 16px;border:1.5px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:14px;text-align:left;transition:all .15s;width:100%;font-family:'Inter',sans-serif;}
+  .option-btn:hover:not(:disabled){border-color:var(--navy);background:var(--option-hover);}
+  .option-btn.selected{border-color:var(--navy);background:var(--option-selected);}
+  .option-btn.correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);}
+  .option-btn.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);}
+  .option-btn.revealed-correct{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);}
+  .option-letter{min-width:26px;height:26px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+  .option-btn.correct .option-letter,.option-btn.revealed-correct .option-letter{background:var(--correct);color:white;}
+  .option-btn.wrong .option-letter{background:var(--wrong);color:white;}
+  .explanation-box{display:none;margin:0 22px 18px;background:#f0f4ff;border-left:4px solid var(--navy);border-radius:0 8px 8px 0;padding:14px 18px;font-size:13.5px;line-height:1.7;}
+  .explanation-box.show{display:block;}
+  .expl-title{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;}
+  .expl-answer{margin-bottom:8px;}
+  .expl-why{color:#3a4a6a;margin-bottom:8px;}
+  .expl-options{font-size:12.5px;color:#5a6a8a;}
+  .expl-options div{margin-bottom:3px;}
+  .opt-label{font-weight:700;color:var(--navy);}
+  .submit-zone{margin-top:40px;text-align:center;}
+  .btn-submit{background:var(--red);color:white;border:none;padding:16px 48px;font-size:16px;font-weight:700;border-radius:10px;cursor:pointer;transition:background .2s,transform .1s;font-family:'Inter',sans-serif;}
+  .btn-submit:hover{background:var(--red-light);transform:translateY(-1px);}
+  .btn-submit:disabled{background:var(--muted);cursor:not-allowed;transform:none;}
+  .warn-msg{background:#fff8e1;border:1px solid var(--gold);color:#7a5900;padding:12px 20px;border-radius:8px;margin-top:16px;font-size:13px;display:none;}
+  .warn-msg.show{display:block;}
+  .results-panel{display:none;background:white;border-radius:16px;padding:36px;margin-top:32px;box-shadow:0 8px 32px rgba(26,39,68,.12);text-align:center;}
+  .results-panel.show{display:block;}
+  .result-score{font-size:64px;font-weight:700;color:var(--navy);font-family:'Merriweather',serif;}
+  .result-sub{font-size:18px;color:var(--muted);margin-top:4px;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-top:28px;}
+  .result-cell{background:var(--bg);border-radius:10px;padding:16px;}
+  .result-cell .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+  .result-cell .value{font-size:22px;font-weight:700;}
+  .value.green{color:var(--correct);}
+  .value.red{color:var(--wrong);}
+  .breakdown-table{width:100%;border-collapse:collapse;margin-top:24px;text-align:left;}
+  .breakdown-table th{background:var(--navy);color:white;padding:10px 14px;font-size:12px;}
+  .breakdown-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+  .scroll-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;background:var(--navy);color:white;border-radius:50%;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;}
+  .scroll-top.visible{opacity:1;}
+  @media(max-width:600px){.header-top{padding:12px 16px;flex-wrap:wrap;gap:12px;}.q-text{font-size:14px;}}
+  /* ── QUESTION NAVIGATOR ── */
+  .exam-layout{display:flex;gap:20px;max-width:1180px;margin:0 auto;padding:32px 20px 80px;}
+  .nav-panel{width:220px;flex-shrink:0;}
+  .nav-sticky{position:sticky;top:100px;}
+  .nav-card{background:white;border-radius:12px;border:1px solid var(--border);padding:16px;box-shadow:0 2px 8px rgba(26,39,68,.06);}
+  .nav-title{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+  .nav-legend{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;font-size:11px;color:var(--muted);}
+  .nav-legend div{display:flex;align-items:center;gap:6px;}
+  .legend-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+  .leg-answered{background:var(--navy);}
+  .leg-flagged{background:#e67e22;}
+  .leg-empty{background:#e0e4f0;border:1px solid var(--border);}
+  .nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+  .nav-btn{
+    width:100%;aspect-ratio:1;border:1.5px solid var(--border);
+    border-radius:5px;background:#f0f2f8;
+    font-size:10px;font-weight:700;color:var(--muted);
+    cursor:pointer;transition:all .15s;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .nav-btn:hover{border-color:var(--navy);background:var(--option-hover);}
+  .nav-btn.nav-answered{background:var(--navy);color:white;border-color:var(--navy);}
+  .nav-btn.nav-flagged{background:#e67e22;color:white;border-color:#e67e22;}
+  .nav-btn.nav-flagged::after{content:'🚩';position:absolute;top:-4px;right:-4px;font-size:8px;}
+  .nav-section-sep{grid-column:1/-1;height:1px;background:var(--border);margin:4px 0;}
+  .nav-flag-hint{font-size:10px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.4;}
+  .nav-stats{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);}
+  .nav-stat{text-align:center;}
+  .nav-stat .ns-val{font-size:16px;font-weight:700;color:var(--navy);}
+  .nav-stat .ns-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;}
+
+  /* Adjust main exam body for layout */
+  .exam-body{max-width:none;margin:0;padding:0;flex:1;min-width:0;}
+
+  /* Tab warning banner */
+  .tab-warning{
+    display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:#e74c3c;color:white;padding:28px 48px;border-radius:14px;
+    font-weight:700;font-size:20px;z-index:9999;text-align:center;
+    box-shadow:0 8px 40px rgba(0,0,0,.45);line-height:1.6;
+    max-width:500px;width:90%;
+    animation:popIn .3s ease;
+  }
+  @keyframes popIn{from{transform:translate(-50%,-50%) scale(.8);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+  .tab-warning.show{display:block;}
+  .tab-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;}
+  .tab-overlay.show{display:block;}
+
+  @media(max-width:900px){
+    .exam-layout{flex-direction:column;}
+    .nav-panel{width:100%;}
+    .nav-sticky{position:static;}
+    .nav-grid{grid-template-columns:repeat(10,1fr);}
+  }
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">MEB · UDSP 2026</div>
+    <div class="login-title">Yabancı Dil Yeterlilik Sınavı</div>
+    <div class="login-sub">İngilizce — Gün 9 &nbsp;|&nbsp; 50 Soru &nbsp;|&nbsp; 110 Dakika</div>
+
+    <div class="exam-warning-banner">
+      <div class="ewb-title">⚠️ Sınava Başlamadan Önce Lütfen Okuyun</div>
+      <ul>
+        <li><strong>Telefon ile girmeyin:</strong> Sınava cep telefonundan girmeniz önerilmez. Bilgisayar veya tablet kullanın.</li>
+        <li><strong>Sekme/uygulama değiştirmeyin:</strong> Sınav sırasında başka bir sekmeye, uygulamaya veya ekrana geçerseniz bu durum sistem tarafından algılanır.</li>
+        <li><strong>3 kez tekrarlarsa sınavdan atılırsınız:</strong> Sekme değişikliği 3 kez tekrarlanırsa sınavınız otomatik olarak sonlandırılır ve tekrar giremezsiniz.</li>
+      </ul>
+    </div>
+
+    <div id="loginForm">
+      <div class="login-field">
+        <label>Sınıfınızı Seçin</label>
+        <select id="classSelect" onchange="onClassChange()">
+          <option value="">— Sınıf Seçin —</option>
+          <option>HZ A</option><option>HZ B</option><option>HZ C</option>
+          <option>HZ D</option><option>HZ E</option><option>HZ F</option><option>Grade 8</option>
+        </select>
+      </div>
+      <div class="login-field">
+        <label>Adınız ve Soyadınız</label>
+        <input type="text" id="studentName" placeholder="Önce sınıfınızı seçin..." autocomplete="off" list="studentList"/>
+        <datalist id="studentList"></datalist>
+      </div>
+      <div class="login-field">
+        <label>Öğretmeniniz</label>
+        <input type="text" id="teacherDisplay" readonly style="background:#f5f6fa;color:#6b7a99;cursor:not-allowed;" placeholder="Sınıf seçilince otomatik gelir"/>
+      </div>
+      <button class="btn-start" onclick="startExam()">Sınava Başla →</button>
+      <div class="login-err" id="loginErr" style="display:none;"></div>
+
+      <div class="study-link-box">
+        <a href="UDSP-Study-Guide.html" target="_blank">📖 Sınavdan Önce Çalışma Rehberine Göz At</a>
+        <div class="study-link-note">İsteğe bağlıdır, notla ilgisi yoktur — yeni sekmede açılır.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="exam-header" id="examHeaderEl" style="display:none;">
+  <div class="header-top">
+    <div class="header-brand">
+      <div class="meb-badge">MEB</div>
+      <div>
+        <div class="header-title">UDSP Yabancı Dil Yeterlilik Sınavı</div>
+        <div class="header-sub">İngilizce — Gün 9</div>
+      </div>
+    </div>
+    <div class="timer-block">
+      <div><div class="timer-label">Süre</div><div class="timer-value" id="timer">1:50:00</div></div>
+    </div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+  <div class="header-stats">
+    <div class="stat">Toplam: <span>50</span></div>
+    <div class="stat">Cevaplanan: <span id="answeredCount">0</span></div>
+    <div class="stat">Kalan: <span id="remainingCount">50</span></div>
+  </div>
+</header>
+
+<!-- EXAM BODY -->
+<div class="tab-overlay" id="tabOverlay"></div>
+<div class="tab-warning" id="tabWarning"></div>
+
+<div class="exam-layout" id="examLayout" style="display:none;">
+
+<!-- QUESTION NAVIGATOR -->
+<div class="nav-panel">
+  <div class="nav-sticky">
+    <div class="nav-card">
+      <div class="nav-title">Soru Gezgini</div>
+      <div class="nav-legend">
+        <div><span class="legend-dot leg-answered"></span> Cevaplandı</div>
+        <div><span class="legend-dot leg-flagged"></span> İşaretlendi</div>
+        <div><span class="legend-dot leg-empty"></span> Boş</div>
+      </div>
+      <div class="nav-grid" id="navGrid"></div>
+      <div class="nav-flag-hint">🚩 simgesine veya sağ tık ile işaretle</div>
+      <div class="nav-stats">
+        <div class="nav-stat"><div class="ns-val" id="ns-answered">0</div><div class="ns-lbl">Cevaplı</div></div>
+        <div class="nav-stat"><div class="ns-val" id="ns-flagged">0</div><div class="ns-lbl">İşaretli</div></div>
+        <div class="nav-stat"><div class="ns-val" id="ns-empty">50</div><div class="ns-lbl">Boş</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN EXAM CONTENT -->
+<div class="exam-body" id="examBody">
+
+
+
+
+
+
+
+
+<!-- SECTION 1: VOCABULARY -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 1 — Kelime Bilgisi</div><div class="section-info">VOCABULARY</div></div>
+  <div class="section-pill">7 Soru</div>
+</div>
+<div class="section-instruction">For questions 1–7, choose the option that best completes the sentence.</div>
+
+<!-- Q1 answer: B -->
+<div class="question-card" id="qcard-1">
+  <div class="q-header">
+    <div class="q-number">1</div>
+    <div class="q-text">Travelling by public transport is much more <b>- - - -</b> than driving your own car, especially in large cities where parking is expensive and traffic is heavy.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(1)" id="flag-1" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(1,'A')" id="q1-A"><span class="option-letter">A</span> comfortable</button>
+  <button class="option-btn" onclick="selectAnswer(1,'B')" id="q1-B"><span class="option-letter">B</span> affordable</button>
+  <button class="option-btn" onclick="selectAnswer(1,'C')" id="q1-C"><span class="option-letter">C</span> dangerous</button>
+  <button class="option-btn" onclick="selectAnswer(1,'D')" id="q1-D"><span class="option-letter">D</span> complicated</button>
+  <button class="option-btn" onclick="selectAnswer(1,'E')" id="q1-E"><span class="option-letter">E</span> popular</button>
+  </div>
+<div class="explanation-box" id="expl-1">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> rahat / konforlu</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> uygun fiyatlı / ucuz</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> tehlikeli</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> karmaşık</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> popüler</div>
+</div>
+<div class="expl-why">The sentence compares public transport to driving and gives reasons (expensive parking, heavy traffic) that are about cost and inconvenience. 'Affordable' (B) = not expensive, good value for money — the most logical advantage in a context where 'parking is expensive'. 'Comfortable' (A) could be true in some cases but the given reasons don't support a comfort argument. 'Dangerous' (C) would be a disadvantage, not a reason to prefer it. 'Complicated' (D) is also a disadvantage. 'Popular' (E) doesn't logically follow from the reasons given.</div>
+</div>
+</div>
+<!-- Q2 answer: A -->
+<div class="question-card" id="qcard-2">
+  <div class="q-header">
+    <div class="q-number">2</div>
+    <div class="q-text">The local tourism board decided to <b>- - - -</b> the number of visitors to the old town in order to protect its historic buildings and streets.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(2)" id="flag-2" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(2,'A')" id="q2-A"><span class="option-letter">A</span> limit</button>
+  <button class="option-btn" onclick="selectAnswer(2,'B')" id="q2-B"><span class="option-letter">B</span> ignore</button>
+  <button class="option-btn" onclick="selectAnswer(2,'C')" id="q2-C"><span class="option-letter">C</span> increase</button>
+  <button class="option-btn" onclick="selectAnswer(2,'D')" id="q2-D"><span class="option-letter">D</span> copy</button>
+  <button class="option-btn" onclick="selectAnswer(2,'E')" id="q2-E"><span class="option-letter">E</span> advertise</button>
+  </div>
+<div class="explanation-box" id="expl-2">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> sınırlamak / kısıtlamak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> görmezden gelmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> artırmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> kopyalamak</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> reklam yapmak</div>
+</div>
+<div class="expl-why">The reason given is 'to protect historic buildings' — this requires reducing, not increasing, visitor numbers. 'Limit' (A) = restrict, set a maximum — the logical action taken to protect a site from over-tourism. 'Increase' (C) would make the problem worse. 'Ignore' (B) = pay no attention, which would also cause harm. 'Copy' (D) = reproduce, unrelated. 'Advertise' (E) = promote, which would attract more visitors — the opposite of protection.</div>
+</div>
+</div>
+<!-- Q3 answer: D -->
+<div class="question-card" id="qcard-3">
+  <div class="q-header">
+    <div class="q-number">3</div>
+    <div class="q-text">Volunteers play a very <b>- - - -</b> role in keeping community centres running, as they give their time freely without any payment.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(3)" id="flag-3" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(3,'A')" id="q3-A"><span class="option-letter">A</span> minor</button>
+  <button class="option-btn" onclick="selectAnswer(3,'B')" id="q3-B"><span class="option-letter">B</span> harmful</button>
+  <button class="option-btn" onclick="selectAnswer(3,'C')" id="q3-C"><span class="option-letter">C</span> unusual</button>
+  <button class="option-btn" onclick="selectAnswer(3,'D')" id="q3-D"><span class="option-letter">D</span> valuable</button>
+  <button class="option-btn" onclick="selectAnswer(3,'E')" id="q3-E"><span class="option-letter">E</span> temporary</button>
+  </div>
+<div class="explanation-box" id="expl-3">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> küçük / önemsiz</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> zararlı</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> alışılmadık / nadir</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> değerli / önemli</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> geçici</div>
+</div>
+<div class="expl-why">Volunteers give their time freely — this is positive and important. 'Valuable' (D) = very useful and important, the natural description of someone who contributes without payment. 'Minor' (A) = small, unimportant — the opposite of what the sentence implies. 'Harmful' (B) = causing damage, a negative description. 'Unusual' (C) = not common — volunteering is widespread and the sentence doesn't suggest it's rare. 'Temporary' (E) = lasting a short time — unrelated to the value described.</div>
+</div>
+</div>
+<!-- Q4 answer: B -->
+<div class="question-card" id="qcard-4">
+  <div class="q-header">
+    <div class="q-number">4</div>
+    <div class="q-text">Many people find it difficult to <b>- - - -</b> a healthy diet when they are busy with work, as fast food is often quicker and more convenient.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(4)" id="flag-4" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(4,'A')" id="q4-A"><span class="option-letter">A</span> create</button>
+  <button class="option-btn" onclick="selectAnswer(4,'B')" id="q4-B"><span class="option-letter">B</span> maintain</button>
+  <button class="option-btn" onclick="selectAnswer(4,'C')" id="q4-C"><span class="option-letter">C</span> reject</button>
+  <button class="option-btn" onclick="selectAnswer(4,'D')" id="q4-D"><span class="option-letter">D</span> forget</button>
+  <button class="option-btn" onclick="selectAnswer(4,'E')" id="q4-E"><span class="option-letter">E</span> receive</button>
+  </div>
+<div class="explanation-box" id="expl-4">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> oluşturmak / yaratmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> sürdürmek / devam ettirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> reddetmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> unutmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> almak</div>
+</div>
+<div class="expl-why">The context describes the difficulty of continuing to eat healthily when work is busy. 'Maintain' (B) = to keep something at the same level over time — 'maintain a healthy diet' is a common, natural expression. 'Create' (A) = invent or design a diet, not the challenge described. 'Reject' (C) = refuse it — the opposite of the problem. 'Forget' (D) = stop thinking about it — possible but not the standard expression. 'Receive' (E) = be given a diet by someone — doesn't fit.</div>
+</div>
+</div>
+<!-- Q5 answer: E -->
+<div class="question-card" id="qcard-5">
+  <div class="q-header">
+    <div class="q-number">5</div>
+    <div class="q-text">Online shopping has become very <b>- - - -</b> in recent years because customers can buy products from home without having to visit a physical store.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(5)" id="flag-5" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(5,'A')" id="q5-A"><span class="option-letter">A</span> difficult</button>
+  <button class="option-btn" onclick="selectAnswer(5,'B')" id="q5-B"><span class="option-letter">B</span> harmful</button>
+  <button class="option-btn" onclick="selectAnswer(5,'C')" id="q5-C"><span class="option-letter">C</span> formal</button>
+  <button class="option-btn" onclick="selectAnswer(5,'D')" id="q5-D"><span class="option-letter">D</span> local</button>
+  <button class="option-btn" onclick="selectAnswer(5,'E')" id="q5-E"><span class="option-letter">E</span> widespread</button>
+  </div>
+<div class="explanation-box" id="expl-5">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> zor</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> zararlı</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> resmi</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> yerel</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> yaygın / geniş çaplı</div>
+</div>
+<div class="expl-why">The reason given — buying from home without visiting stores — explains why online shopping has grown to be common everywhere. 'Widespread' (E) = existing or happening in many places — the natural description of something that has grown in popularity and usage. 'Difficult' (A) = hard — the sentence describes convenience, not difficulty. 'Harmful' (B) = dangerous or damaging, a negative description. 'Formal' (C) = official — unrelated to popularity or convenience. 'Local' (D) = nearby — online shopping is the opposite of local.</div>
+</div>
+</div>
+<!-- Q6 answer: C -->
+<div class="question-card" id="qcard-6">
+  <div class="q-header">
+    <div class="q-number">6</div>
+    <div class="q-text">The new bus route was introduced specifically to <b>- - - -</b> residents who live far from the city centre and have difficulty accessing public services.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(6)" id="flag-6" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(6,'A')" id="q6-A"><span class="option-letter">A</span> entertain</button>
+  <button class="option-btn" onclick="selectAnswer(6,'B')" id="q6-B"><span class="option-letter">B</span> replace</button>
+  <button class="option-btn" onclick="selectAnswer(6,'C')" id="q6-C"><span class="option-letter">C</span> serve</button>
+  <button class="option-btn" onclick="selectAnswer(6,'D')" id="q6-D"><span class="option-letter">D</span> ignore</button>
+  <button class="option-btn" onclick="selectAnswer(6,'E')" id="q6-E"><span class="option-letter">E</span> transport</button>
+  </div>
+<div class="explanation-box" id="expl-6">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> eğlendirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> yerine geçmek / değiştirmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> hizmet etmek / yardımcı olmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> görmezden gelmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> taşımak</div>
+</div>
+<div class="expl-why">A bus route introduced for people who have difficulty accessing services is designed to help those people. 'Serve' (C) = to provide what is needed for someone, to meet someone's needs — 'serve residents' is the standard expression. 'Entertain' (A) = amuse, unrelated to transport access. 'Replace' (B) = substitute for something — the route doesn't replace the residents. 'Ignore' (D) = pay no attention to — the opposite. 'Transport' (E) is close, but 'transport residents' describes the function, not the purpose of introduction; 'serve' better captures the intent.</div>
+</div>
+</div>
+<!-- Q7 answer: E -->
+<div class="question-card" id="qcard-7">
+  <div class="q-header">
+    <div class="q-number">7</div>
+    <div class="q-text">Working from home gives employees more <b>- - - -</b> over their schedule, allowing them to start and finish at times that suit their personal needs.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(7)" id="flag-7" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(7,'A')" id="q7-A"><span class="option-letter">A</span> pressure</button>
+  <button class="option-btn" onclick="selectAnswer(7,'B')" id="q7-B"><span class="option-letter">B</span> difficulty</button>
+  <button class="option-btn" onclick="selectAnswer(7,'C')" id="q7-C"><span class="option-letter">C</span> absence</button>
+  <button class="option-btn" onclick="selectAnswer(7,'D')" id="q7-D"><span class="option-letter">D</span> confusion</button>
+  <button class="option-btn" onclick="selectAnswer(7,'E')" id="q7-E"><span class="option-letter">E</span> control</button>
+  </div>
+<div class="explanation-box" id="expl-7">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> baskı / stres</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> zorluk</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> yokluk / devamsızlık</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> karışıklık / kafa karışıklığı</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> kontrol / denetim</div>
+</div>
+<div class="expl-why">Being able to choose your own start and finish times means having the power to decide your schedule. 'Control' (E) = the power to make decisions about how something is done — 'control over your schedule' is a standard expression. 'Pressure' (A) = stress or force — the opposite of flexibility. 'Difficulty' (B) = a problem — the sentence describes a benefit. 'Absence' (C) = not being present, unrelated. 'Confusion' (D) = lack of understanding, also unrelated.</div>
+</div>
+</div>
+
+<!-- SECTION 2: GRAMMAR -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 2 — Dil Bilgisi</div><div class="section-info">GRAMMAR</div></div>
+  <div class="section-pill">7 Soru</div>
+</div>
+<div class="section-instruction">For questions 8–14, choose the answer that best completes each sentence grammatically.</div>
+
+<!-- Q8 answer: D -->
+<div class="question-card" id="qcard-8">
+  <div class="q-header">
+    <div class="q-number">8</div>
+    <div class="q-text">By the time the new community garden <b>- - - -</b>, more than two hundred local residents had already signed up to take part.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(8)" id="flag-8" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(8,'A')" id="q8-A"><span class="option-letter">A</span> opens</button>
+  <button class="option-btn" onclick="selectAnswer(8,'B')" id="q8-B"><span class="option-letter">B</span> will open</button>
+  <button class="option-btn" onclick="selectAnswer(8,'C')" id="q8-C"><span class="option-letter">C</span> has opened</button>
+  <button class="option-btn" onclick="selectAnswer(8,'D')" id="q8-D"><span class="option-letter">D</span> opened</button>
+  <button class="option-btn" onclick="selectAnswer(8,'E')" id="q8-E"><span class="option-letter">E</span> was opening</button>
+  </div>
+<div class="explanation-box" id="expl-8">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> açılıyor (Present Simple)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> açılacak (Future)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> açılmıştır (Present Perfect)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> açıldığında (Past Simple — zaman zarfı ile) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> açılıyordu (Past Continuous)</div>
+</div>
+<div class="expl-why">'By the time' refers to a point in the past ('had already signed up' = Past Perfect). In past time clauses with 'by the time', we use Past Simple for the reference point. 'Opened' (C) correctly forms this: 'By the time it opened, residents had already signed up'. 'Opens' (A) is Present Simple — wrong for a past sequence. 'Will open' (B) is future. 'Was opening' (E) is Past Continuous — 'by the time' requires Past Simple for the clause that sets the reference point. 'Has opened' (C) is Present Perfect.</div>
+</div>
+</div>
+<!-- Q9 answer: E -->
+<div class="question-card" id="qcard-9">
+  <div class="q-header">
+    <div class="q-number">9</div>
+    <div class="q-text">The local council <b>- - - -</b> a new park next year, which will replace the unused car park near the town centre.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(9)" id="flag-9" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(9,'A')" id="q9-A"><span class="option-letter">A</span> builds</button>
+  <button class="option-btn" onclick="selectAnswer(9,'B')" id="q9-B"><span class="option-letter">B</span> built</button>
+  <button class="option-btn" onclick="selectAnswer(9,'C')" id="q9-C"><span class="option-letter">C</span> has built</button>
+  <button class="option-btn" onclick="selectAnswer(9,'D')" id="q9-D"><span class="option-letter">D</span> was building</button>
+  <button class="option-btn" onclick="selectAnswer(9,'E')" id="q9-E"><span class="option-letter">E</span> is going to build</button>
+  </div>
+<div class="explanation-box" id="expl-9">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> inşa ediyor (Present Simple)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> inşa etti (Past Simple)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> inşa etmiştir (Present Perfect)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> inşa ediyordu (Past Continuous)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> inşa edecek (going to — önceden planlanmış niyet) ✓</div>
+</div>
+<div class="expl-why">'Next year' signals a future plan. 'Is going to build' (E) = a pre-arranged intention or plan decided before this moment — councils make official plans, so 'going to' (prior decision) fits better than 'will' (spontaneous decision). 'Builds' (A) = Present Simple, used for timetable facts, not announced plans. 'Built' (B) = past, contradicts 'next year'. 'Has built' (C) = Present Perfect, for recently completed past actions. 'Was building' (D) = Past Continuous.</div>
+</div>
+</div>
+<!-- Q10 answer: C -->
+<div class="question-card" id="qcard-10">
+  <div class="q-header">
+    <div class="q-number">10</div>
+    <div class="q-text">If the weather <b>- - - -</b> better this weekend, we will hold the volunteer clean-up event in the park.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(10)" id="flag-10" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(10,'A')" id="q10-A"><span class="option-letter">A</span> will be</button>
+  <button class="option-btn" onclick="selectAnswer(10,'B')" id="q10-B"><span class="option-letter">B</span> would be</button>
+  <button class="option-btn" onclick="selectAnswer(10,'C')" id="q10-C"><span class="option-letter">C</span> is</button>
+  <button class="option-btn" onclick="selectAnswer(10,'D')" id="q10-D"><span class="option-letter">D</span> was</button>
+  <button class="option-btn" onclick="selectAnswer(10,'E')" id="q10-E"><span class="option-letter">E</span> has been</button>
+  </div>
+<div class="explanation-box" id="expl-10">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> olacak (Future — if cümlesinde kullanılmaz)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> olurdu (would — 2. Koşullu için)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> olursa (Present Simple — 1. Koşullu) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> olsaydı (Past Simple — 2. Koşullu için)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> olmuştur (Present Perfect)</div>
+</div>
+<div class="expl-why">'We WILL hold the event' = First Conditional (real, possible future situation). In First Conditional if-clauses, Present Simple is used to refer to future events — NOT 'will'. 'Is' (C) correctly forms the First Conditional: 'If the weather is better, we will hold the event'. 'Will be' (A) = 'will' cannot appear in an if-clause. 'Would be' (B) = Second Conditional (unreal present). 'Was' (D) = Second Conditional. 'Has been' (E) = Present Perfect.</div>
+</div>
+</div>
+<!-- Q11 answer: A -->
+<div class="question-card" id="qcard-11">
+  <div class="q-header">
+    <div class="q-number">11</div>
+    <div class="q-text">The children were excited about <b>- - - -</b> to the science museum for their end-of-year school trip.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(11)" id="flag-11" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(11,'A')" id="q11-A"><span class="option-letter">A</span> going</button>
+  <button class="option-btn" onclick="selectAnswer(11,'B')" id="q11-B"><span class="option-letter">B</span> to go</button>
+  <button class="option-btn" onclick="selectAnswer(11,'C')" id="q11-C"><span class="option-letter">C</span> went</button>
+  <button class="option-btn" onclick="selectAnswer(11,'D')" id="q11-D"><span class="option-letter">D</span> gone</button>
+  <button class="option-btn" onclick="selectAnswer(11,'E')" id="q11-E"><span class="option-letter">E</span> go</button>
+  </div>
+<div class="explanation-box" id="expl-11">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> gitmeye (-ing gerund — preposition 'about' sonrası) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> gitmek (to-infinitive — preposition sonrası yanlış)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> gitti (Past Simple — yanlış yapı)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> gitmiş (past participle — yanlış yapı)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> gitmek (base form — preposition sonrası yanlış)</div>
+</div>
+<div class="expl-why">After a preposition ('about'), the gerund (-ing form) is always used. 'Going' (A) is the correct gerund form after 'excited about'. 'Go' (E) is the bare infinitive — not used after a preposition. 'To go' (B) is the full infinitive — also not used after a preposition. 'Went' (C) is Past Simple. 'Gone' (D) is past participle — cannot follow 'about' in this structure.</div>
+</div>
+</div>
+<!-- Q12 answer: C -->
+<div class="question-card" id="qcard-12">
+  <div class="q-header">
+    <div class="q-number">12</div>
+    <div class="q-text">This is the first time she <b>- - - -</b> a speech in front of such a large audience.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(12)" id="flag-12" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(12,'A')" id="q12-A"><span class="option-letter">A</span> gives</button>
+  <button class="option-btn" onclick="selectAnswer(12,'B')" id="q12-B"><span class="option-letter">B</span> gave</button>
+  <button class="option-btn" onclick="selectAnswer(12,'C')" id="q12-C"><span class="option-letter">C</span> has given</button>
+  <button class="option-btn" onclick="selectAnswer(12,'D')" id="q12-D"><span class="option-letter">D</span> will give</button>
+  <button class="option-btn" onclick="selectAnswer(12,'E')" id="q12-E"><span class="option-letter">E</span> was giving</button>
+  </div>
+<div class="explanation-box" id="expl-12">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> veriyor (Present Simple)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> verdi (Past Simple)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> vermiştir (Present Perfect — 'this is the first time' yapısı) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> verecek (Future)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> veriyordu (Past Continuous)</div>
+</div>
+<div class="expl-why">'This is the first time...' is a fixed structure that requires Present Perfect: 'This is the first time + subject + has/have + past participle'. 'Has given' (C) is correct — it means she has not done this before up to now. 'Gives' (A) = Present Simple, used for habits. 'Gave' (B) = Past Simple — 'this is the first time she gave' is non-standard. 'Will give' (D) = future. 'Was giving' (E) = Past Continuous.</div>
+</div>
+</div>
+<!-- Q13 answer: D -->
+<div class="question-card" id="qcard-13">
+  <div class="q-header">
+    <div class="q-number">13</div>
+    <div class="q-text">The train journey <b>- - - -</b> much longer than usual yesterday because there were engineering works on the main line.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(13)" id="flag-13" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(13,'A')" id="q13-A"><span class="option-letter">A</span> takes</button>
+  <button class="option-btn" onclick="selectAnswer(13,'B')" id="q13-B"><span class="option-letter">B</span> has taken</button>
+  <button class="option-btn" onclick="selectAnswer(13,'C')" id="q13-C"><span class="option-letter">C</span> is taking</button>
+  <button class="option-btn" onclick="selectAnswer(13,'D')" id="q13-D"><span class="option-letter">D</span> took</button>
+  <button class="option-btn" onclick="selectAnswer(13,'E')" id="q13-E"><span class="option-letter">E</span> will take</button>
+  </div>
+<div class="explanation-box" id="expl-13">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> sürüyor (Present Simple)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> sürmüştür (Present Perfect)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> sürmektedir (Present Continuous)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> sürdü (Past Simple) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> sürecek (Future)</div>
+</div>
+<div class="expl-why">'Yesterday' is a specific past time marker that requires Past Simple. 'Took' (D) = Past Simple, the only correct tense with 'yesterday'. 'Takes' (A) = Present Simple, for habitual facts. 'Has taken' (B) = Present Perfect, cannot be used with 'yesterday'. 'Is taking' (C) = Present Continuous, for now. 'Will take' (E) = future.</div>
+</div>
+</div>
+<!-- Q14 answer: C -->
+<div class="question-card" id="qcard-14">
+  <div class="q-header">
+    <div class="q-number">14</div>
+    <div class="q-text">The manager asked the team <b>- - - -</b> their reports before the end of the week.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(14)" id="flag-14" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(14,'A')" id="q14-A"><span class="option-letter">A</span> submit</button>
+  <button class="option-btn" onclick="selectAnswer(14,'B')" id="q14-B"><span class="option-letter">B</span> submitted</button>
+  <button class="option-btn" onclick="selectAnswer(14,'C')" id="q14-C"><span class="option-letter">C</span> to submit</button>
+  <button class="option-btn" onclick="selectAnswer(14,'D')" id="q14-D"><span class="option-letter">D</span> submitting</button>
+  <button class="option-btn" onclick="selectAnswer(14,'E')" id="q14-E"><span class="option-letter">E</span> that submit</button>
+  </div>
+<div class="explanation-box" id="expl-14">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> teslim etmek (base form — dolaylı anlatımda yanlış)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> teslim etti (Past Simple — yanlış yapı)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> teslim etmelerini (to-infinitive — ask + object + to-inf.) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> teslim etmeyi (gerund — yanlış yapı)</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> teslim eden (relative — yanlış yapı)</div>
+</div>
+<div class="expl-why">'Ask someone to do something' = ask + object + to-infinitive. 'To submit' (C) is the correct form: 'asked the team to submit'. 'Submit' (A) = bare infinitive — 'asked to submit' without object is different. 'Submitted' (B) = Past Simple — wrong structure. 'Submitting' (D) = gerund — 'asked submitting' is ungrammatical. 'That submit' (E) = not a standard clause structure.</div>
+</div>
+</div>
+
+<!-- SECTION 3: CLOZE TEST -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 3 — Boşluk Doldurma</div><div class="section-info">CLOZE TEST</div></div>
+  <div class="section-pill">10 Soru</div>
+</div>
+<div class="section-instruction">Read each passage and choose the best option for each numbered gap.</div>
+
+<div class="passage-box">
+  <strong>Metin 1 — The Benefits of Learning a Musical Instrument</strong><br><br>Learning to play a musical instrument has many benefits beyond simply making music. Numerous studies have shown that children who learn an instrument tend to <b>(15) - - - -</b> better in school, particularly in subjects that require concentration and memory. This is because playing music regularly trains the brain to <b>(16) - - - -</b> on more than one task at a time — reading notes, controlling finger movements, and listening to the sound all happen simultaneously.<br><br>
+Music lessons also help young people develop important life skills. Learning an instrument <b>(17) - - - -</b> patience and discipline, since progress is slow at first and requires daily practice. Performing in front of others — whether in a school concert or a small family gathering — helps children <b>(18) - - - -</b> their confidence and overcome the fear of making mistakes in public. Many adults who played an instrument as children say that the experience <b>(19) - - - -</b> a lasting positive effect on their personality and their approach to challenges in later life.
+</div>
+<!-- Q15 answer: D -->
+<div class="question-card" id="qcard-15">
+  <div class="q-header">
+    <div class="q-number">15</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(15) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">...children who learn an instrument tend to <b>- - - -</b> better in school...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(15)" id="flag-15" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(15,'A')" id="q15-A"><span class="option-letter">A</span> speak</button>
+  <button class="option-btn" onclick="selectAnswer(15,'B')" id="q15-B"><span class="option-letter">B</span> behave</button>
+  <button class="option-btn" onclick="selectAnswer(15,'C')" id="q15-C"><span class="option-letter">C</span> compete</button>
+  <button class="option-btn" onclick="selectAnswer(15,'D')" id="q15-D"><span class="option-letter">D</span> perform</button>
+  <button class="option-btn" onclick="selectAnswer(15,'E')" id="q15-E"><span class="option-letter">E</span> sleep</button>
+  </div>
+<div class="explanation-box" id="expl-15">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> konuşmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> davranmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> rekabet etmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> performans göstermek / başarmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> uyumak</div>
+</div>
+<div class="expl-why">The sentence is about children doing better in school subjects. 'Perform' (D) = to achieve or do something, the natural verb when describing academic results ('perform well in school'). 'Speak' (A) relates to language, not general academic achievement. 'Behave' (B) = act in a certain way — 'behave better in school' implies disciplinary improvement, not academic. 'Sleep' (E) is unrelated. 'Compete' (C) means to take part in a contest, not to achieve academically.</div>
+</div>
+</div>
+<!-- Q16 answer: B -->
+<div class="question-card" id="qcard-16">
+  <div class="q-header">
+    <div class="q-number">16</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(16) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">...trains the brain to <b>- - - -</b> on more than one task at a time...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(16)" id="flag-16" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(16,'A')" id="q16-A"><span class="option-letter">A</span> decide</button>
+  <button class="option-btn" onclick="selectAnswer(16,'B')" id="q16-B"><span class="option-letter">B</span> focus</button>
+  <button class="option-btn" onclick="selectAnswer(16,'C')" id="q16-C"><span class="option-letter">C</span> rely</button>
+  <button class="option-btn" onclick="selectAnswer(16,'D')" id="q16-D"><span class="option-letter">D</span> insist</button>
+  <button class="option-btn" onclick="selectAnswer(16,'E')" id="q16-E"><span class="option-letter">E</span> comment</button>
+  </div>
+<div class="explanation-box" id="expl-16">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> karar vermek</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> odaklanmak / yoğunlaşmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> güvenmek / dayanmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> ısrar etmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> yorum yapmak</div>
+</div>
+<div class="expl-why">The sentence describes training the brain to handle multiple tasks simultaneously — this requires the ability to concentrate. 'Focus' (B) = to concentrate attention on something — the standard verb with 'on': 'focus on a task'. 'Decide' (A) = to make a choice, not multitask. 'Rely' (C) = to depend on something. 'Insist' (D) = to demand. 'Comment' (E) = to give an opinion.</div>
+</div>
+</div>
+<!-- Q17 answer: C -->
+<div class="question-card" id="qcard-17">
+  <div class="q-header">
+    <div class="q-number">17</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(17) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">Learning an instrument <b>- - - -</b> patience and discipline, since progress is slow...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(17)" id="flag-17" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(17,'A')" id="q17-A"><span class="option-letter">A</span> avoids</button>
+  <button class="option-btn" onclick="selectAnswer(17,'B')" id="q17-B"><span class="option-letter">B</span> prevents</button>
+  <button class="option-btn" onclick="selectAnswer(17,'C')" id="q17-C"><span class="option-letter">C</span> requires</button>
+  <button class="option-btn" onclick="selectAnswer(17,'D')" id="q17-D"><span class="option-letter">D</span> removes</button>
+  <button class="option-btn" onclick="selectAnswer(17,'E')" id="q17-E"><span class="option-letter">E</span> describes</button>
+  </div>
+<div class="explanation-box" id="expl-17">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> kaçınmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> engellemek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> gerektirmek ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> ortadan kaldırmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> tanımlamak</div>
+</div>
+<div class="expl-why">Learning an instrument is slow and needs daily practice — the verb must express that patience and discipline are needed. 'Requires' (C) = needs, demands — 'learning requires patience' is the standard expression. 'Avoids' (A) would mean the learning process bypasses these qualities. 'Prevents' (B) would mean it stops patience from developing — opposite. 'Removes' (D) = eliminates, the opposite of what's described. 'Describes' (E) = talks about, unrelated.</div>
+</div>
+</div>
+<!-- Q18 answer: A -->
+<div class="question-card" id="qcard-18">
+  <div class="q-header">
+    <div class="q-number">18</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(18) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">...helps children <b>- - - -</b> their confidence and overcome the fear of making mistakes...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(18)" id="flag-18" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(18,'A')" id="q18-A"><span class="option-letter">A</span> build</button>
+  <button class="option-btn" onclick="selectAnswer(18,'B')" id="q18-B"><span class="option-letter">B</span> hide</button>
+  <button class="option-btn" onclick="selectAnswer(18,'C')" id="q18-C"><span class="option-letter">C</span> lose</button>
+  <button class="option-btn" onclick="selectAnswer(18,'D')" id="q18-D"><span class="option-letter">D</span> test</button>
+  <button class="option-btn" onclick="selectAnswer(18,'E')" id="q18-E"><span class="option-letter">E</span> question</button>
+  </div>
+<div class="explanation-box" id="expl-18">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> geliştirmek / inşa etmek ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> saklamak / gizlemek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> kaybetmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> test etmek / denemek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> sorgulamak</div>
+</div>
+<div class="expl-why">Performing in front of others helps children develop more confidence — the gap is about gaining, not losing, confidence. 'Build' (A) = to develop or increase gradually — 'build confidence' is the most natural and common expression. 'Hide' (B) = keep it secret — doesn't make sense in this context. 'Lose' (C) = to have less — the opposite of what is described. 'Test' (D) = evaluate confidence, not develop it. 'Question' (E) = to doubt confidence — the opposite.</div>
+</div>
+</div>
+<!-- Q19 answer: B -->
+<div class="question-card" id="qcard-19">
+  <div class="q-header">
+    <div class="q-number">19</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(19) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">...the experience <b>- - - -</b> a lasting positive effect on their personality...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(19)" id="flag-19" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(19,'A')" id="q19-A"><span class="option-letter">A</span> made</button>
+  <button class="option-btn" onclick="selectAnswer(19,'B')" id="q19-B"><span class="option-letter">B</span> had</button>
+  <button class="option-btn" onclick="selectAnswer(19,'C')" id="q19-C"><span class="option-letter">C</span> kept</button>
+  <button class="option-btn" onclick="selectAnswer(19,'D')" id="q19-D"><span class="option-letter">D</span> gave</button>
+  <button class="option-btn" onclick="selectAnswer(19,'E')" id="q19-E"><span class="option-letter">E</span> stopped</button>
+  </div>
+<div class="explanation-box" id="expl-19">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> yapmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> sahip olmak / etki bırakmak (had a lasting effect)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> tutmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> vermek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> durdurmak</div>
+</div>
+<div class="expl-why">'The experience had a lasting positive effect' (B) is the most natural and standard English expression for describing how an event impacted someone over time. 'Have an effect on' is the fixed collocation — 'had' (B) is correct here. 'Made' (A) is non-standard with 'effect' — 'made a difference' is standard, not 'made an effect'. 'Kept' (C) = to retain — 'kept an effect' is ungrammatical. 'Gave' (D) = to present something to someone — non-standard with 'effect'. 'Stopped' (E) = ended, which changes the meaning entirely.</div>
+</div>
+</div>
+<div class="passage-box">
+  <strong>Metin 2 — Why People Move to Cities</strong><br><br>Every year, millions of people leave the countryside and move to cities in search of better opportunities. One of the main reasons for this is employment — cities generally <b>(20) - - - -</b> a wider range of jobs than rural areas, particularly in industries such as technology, finance, and services. People who move often hope to earn higher wages and improve their standard of living.<br><br>
+Education is another important factor. Cities are home to universities, vocational colleges, and training centres that are not <b>(21) - - - -</b> in smaller towns. Young people in particular are attracted to cities because of the opportunities to study and develop new skills. <b>(22) - - - -</b>, not everyone who moves to a city finds the life they expected. Housing can be extremely expensive, and competition for jobs is often intense. Many newcomers <b>(23) - - - -</b> that adjusting to city life takes time and can be lonely at first. <b>(24) - - - -</b> these difficulties, urbanisation continues to grow, suggesting that for most people, the advantages of city life outweigh the disadvantages.
+</div>
+<!-- Q20 answer: D -->
+<div class="question-card" id="qcard-20">
+  <div class="q-header">
+    <div class="q-number">20</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(20) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">...cities generally <b>- - - -</b> a wider range of jobs than rural areas...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(20)" id="flag-20" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(20,'A')" id="q20-A"><span class="option-letter">A</span> remove</button>
+  <button class="option-btn" onclick="selectAnswer(20,'B')" id="q20-B"><span class="option-letter">B</span> request</button>
+  <button class="option-btn" onclick="selectAnswer(20,'C')" id="q20-C"><span class="option-letter">C</span> limit</button>
+  <button class="option-btn" onclick="selectAnswer(20,'D')" id="q20-D"><span class="option-letter">D</span> offer</button>
+  <button class="option-btn" onclick="selectAnswer(20,'E')" id="q20-E"><span class="option-letter">E</span> avoid</button>
+  </div>
+<div class="explanation-box" id="expl-20">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> kaldırmak / ortadan kaldırmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> istemek / talep etmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> sınırlamak</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> sunmak / sağlamak ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> kaçınmak</div>
+</div>
+<div class="expl-why">The sentence explains why people move to cities — cities have more job options. 'Offer' (D) = provide, make available — 'cities offer a wider range of jobs' is natural and standard. 'Remove' (A) = take away, the opposite. 'Request' (B) = ask for — cities don't ask for jobs, they provide them. 'Avoid' (E) = stay away from — the opposite of providing. 'Limit' (C) = restrict — the opposite of 'wider range'.</div>
+</div>
+</div>
+<!-- Q21 answer: B -->
+<div class="question-card" id="qcard-21">
+  <div class="q-header">
+    <div class="q-number">21</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(21) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">...universities and colleges that are not <b>- - - -</b> in smaller towns.</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(21)" id="flag-21" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(21,'A')" id="q21-A"><span class="option-letter">A</span> necessary</button>
+  <button class="option-btn" onclick="selectAnswer(21,'B')" id="q21-B"><span class="option-letter">B</span> available</button>
+  <button class="option-btn" onclick="selectAnswer(21,'C')" id="q21-C"><span class="option-letter">C</span> expensive</button>
+  <button class="option-btn" onclick="selectAnswer(21,'D')" id="q21-D"><span class="option-letter">D</span> popular</button>
+  <button class="option-btn" onclick="selectAnswer(21,'E')" id="q21-E"><span class="option-letter">E</span> useful</button>
+  </div>
+<div class="explanation-box" id="expl-21">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> gerekli / zorunlu</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> mevcut / erişilebilir ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> pahalı</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> popüler</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> faydalı</div>
+</div>
+<div class="expl-why">The sentence explains that cities have universities and colleges that smaller towns do not have — these institutions simply don't exist in rural areas. 'Available' (B) = existing and able to be used, the correct word for something that exists in one place but not another. 'Necessary' (A) would mean the institutions are not needed in small towns — different meaning. 'Expensive' (C) = costly — doesn't explain why they aren't there. 'Popular' (D) = liked by many — unrelated to presence or absence. 'Useful' (E) = beneficial — again, unrelated to whether they exist.</div>
+</div>
+</div>
+<!-- Q22 answer: D -->
+<div class="question-card" id="qcard-22">
+  <div class="q-header">
+    <div class="q-number">22</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(22) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;"><b>- - - -</b>, not everyone who moves to a city finds the life they expected.</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(22)" id="flag-22" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(22,'A')" id="q22-A"><span class="option-letter">A</span> Therefore</button>
+  <button class="option-btn" onclick="selectAnswer(22,'B')" id="q22-B"><span class="option-letter">B</span> Similarly</button>
+  <button class="option-btn" onclick="selectAnswer(22,'C')" id="q22-C"><span class="option-letter">C</span> For instance</button>
+  <button class="option-btn" onclick="selectAnswer(22,'D')" id="q22-D"><span class="option-letter">D</span> However</button>
+  <button class="option-btn" onclick="selectAnswer(22,'E')" id="q22-E"><span class="option-letter">E</span> As a result</button>
+  </div>
+<div class="explanation-box" id="expl-22">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> Bu nedenle (neden-sonuç)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> Benzer şekilde (benzerlik)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> Örneğin (örnekleme)</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> Ancak / Bununla birlikte (zıtlık) ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> Sonuç olarak (neden-sonuç)</div>
+</div>
+<div class="expl-why">The previous sentences describe positive reasons for moving to cities (jobs, education). The next sentence says not everyone finds the life they expected — this is a contrast. 'However' (D) signals the contrast between the positive picture described and the harder reality that follows. 'Therefore/As a result' (A, D) would imply the disappointment is caused by the positive factors — illogical. 'Similarly' (B) would suggest both sentences make the same kind of point. 'For instance' (C) would introduce an example, but the next sentence is a general contrasting statement.</div>
+</div>
+</div>
+<!-- Q23 answer: C -->
+<div class="question-card" id="qcard-23">
+  <div class="q-header">
+    <div class="q-number">23</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(23) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;">Many newcomers <b>- - - -</b> that adjusting to city life takes time and can be lonely...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(23)" id="flag-23" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(23,'A')" id="q23-A"><span class="option-letter">A</span> deny</button>
+  <button class="option-btn" onclick="selectAnswer(23,'B')" id="q23-B"><span class="option-letter">B</span> forget</button>
+  <button class="option-btn" onclick="selectAnswer(23,'C')" id="q23-C"><span class="option-letter">C</span> discover</button>
+  <button class="option-btn" onclick="selectAnswer(23,'D')" id="q23-D"><span class="option-letter">D</span> promise</button>
+  <button class="option-btn" onclick="selectAnswer(23,'E')" id="q23-E"><span class="option-letter">E</span> celebrate</button>
+  </div>
+<div class="explanation-box" id="expl-23">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> inkâr etmek / reddetmek</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> unutmak</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> keşfetmek / fark etmek ✓</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> söz vermek</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> kutlamak</div>
+</div>
+<div class="expl-why">Newcomers arrive with expectations and then find out the reality is different — they learn through experience that adjusting is hard. 'Discover' (C) = find out something, often unexpectedly — 'discover that something is true' is natural for learning through experience. 'Deny' (A) = refuse to accept — newcomers who are struggling wouldn't deny it. 'Forget' (B) = implies they once knew it — but it's new information they find out. 'Promise' (D) = make a commitment, unrelated. 'Celebrate' (E) = rejoice, the opposite of the negative context.</div>
+</div>
+</div>
+<!-- Q24 answer: E -->
+<div class="question-card" id="qcard-24">
+  <div class="q-header">
+    <div class="q-number">24</div>
+    <div class="q-text"><em style="color:#6b7a99;font-size:13px;">(24) numaralı boşluğa gelmesi gereken en uygun seçenek hangisidir?</em><br><span style="font-size:14.5px;color:#2c3a5a;"><b>- - - -</b> these difficulties, urbanisation continues to grow...</span></div>
+    <button class="q-flag-btn" onclick="toggleFlag(24)" id="flag-24" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(24,'A')" id="q24-A"><span class="option-letter">A</span> Because of</button>
+  <button class="option-btn" onclick="selectAnswer(24,'B')" id="q24-B"><span class="option-letter">B</span> Thanks to</button>
+  <button class="option-btn" onclick="selectAnswer(24,'C')" id="q24-C"><span class="option-letter">C</span> Instead of</button>
+  <button class="option-btn" onclick="selectAnswer(24,'D')" id="q24-D"><span class="option-letter">D</span> Along with</button>
+  <button class="option-btn" onclick="selectAnswer(24,'E')" id="q24-E"><span class="option-letter">E</span> Despite</button>
+  </div>
+<div class="explanation-box" id="expl-24">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-options">
+<div class="expl-opt"><span class="expl-opt-letter">A)</span> nedeniyle (neden-sonuç — zıtlık değil)</div>
+<div class="expl-opt"><span class="expl-opt-letter">B)</span> sayesinde (olumlu neden — yanlış)</div>
+<div class="expl-opt"><span class="expl-opt-letter">C)</span> yerine</div>
+<div class="expl-opt"><span class="expl-opt-letter">D)</span> ile birlikte</div>
+<div class="expl-opt"><span class="expl-opt-letter">E)</span> rağmen (zıtlık + isim grubu) ✓</div>
+</div>
+<div class="expl-why">The sentence says urbanisation keeps growing even though there are difficulties — this is a concessive contrast: 'despite these difficulties, cities keep growing'. 'Despite' (E) = in spite of, used with a noun phrase to signal a concessive contrast. 'Because of' (A) would mean the difficulties cause urbanisation to grow — illogical. 'Thanks to' (B) = because of (positive), even less appropriate here. 'Instead of' (C) = in place of, unrelated. 'Along with' (D) = together with, implies difficulties accompany growth but doesn't signal the concessive contrast.</div>
+</div>
+</div>
+
+<!-- SECTION 4: ENG→TUR -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 4 — İng→Türkçe Çeviri</div><div class="section-info">ENG→TUR</div></div>
+  <div class="section-pill">2 Soru</div>
+</div>
+<div class="section-instruction">For questions 25–26, choose the Turkish translation that best reflects the meaning of the English sentence.</div>
+
+<!-- Q25 answer: A -->
+<div class="question-card" id="qcard-25">
+  <div class="q-header">
+    <div class="q-number">25</div>
+    <div class="q-text">Although online shopping is very convenient, many people still prefer to visit physical shops because they enjoy the experience of seeing and touching products before buying them.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(25)" id="flag-25" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(25,'A')" id="q25-A"><span class="option-letter">A</span> Çevrimiçi alışveriş çok pratik olmasına rağmen, pek çok kişi ürünleri satın almadan önce görme ve dokunma deneyiminin tadını çıkardıkları için fiziksel mağazaları ziyaret etmeyi tercih etmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'B')" id="q25-B"><span class="option-letter">B</span> Çevrimiçi alışveriş giderek daha uygun hale geldikçe, fiziksel mağazalara olan ilgi azalmakta ve pek çok satıcı yalnızca internet üzerinden satış yapmaya yönelmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'C')" id="q25-C"><span class="option-letter">C</span> Her ne kadar fiziksel mağazalar ürünleri görme ve dokunma imkânı sunsa da çevrimiçi alışveriş insanların büyük çoğunluğu tarafından daha avantajlı bulunmaktadır.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'D')" id="q25-D"><span class="option-letter">D</span> Çevrimiçi alışveriş hem rahat hem de uygun fiyatlı olduğundan, fiziksel mağazalar müşteri çekmekte giderek daha fazla güçlük çekmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(25,'E')" id="q25-E"><span class="option-letter">E</span> Pek çok kişi çevrimiçi alışverişe alışmış olsa da fiziksel mağazalar ürün kalitesi ve müşteri hizmetleri bakımından daha güvenilir seçenekler sunmaktadır.</button>
+  </div>
+<div class="explanation-box" id="expl-25">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">A correctly preserves all elements: (1) 'although...very convenient' = 'çok pratik olmasına rağmen' (concession), (2) 'many people still prefer physical shops' = 'pek çok kişi fiziksel mağazaları ziyaret etmeyi tercih etmektedir', (3) 'enjoy seeing and touching products before buying' = 'ürünleri satın almadan önce görme ve dokunma deneyiminin tadını çıkardıkları için'. B says interest in physical shops is decreasing — contradicts 'still prefer'. C reverses: says physical shops offer the experience but online shopping is preferred by most — opposite. D says shops struggle to attract customers — adds a claim not in original. E says physical shops are more reliable — adds a different comparison not in original.</div>
+</div>
+</div>
+<!-- Q26 answer: A -->
+<div class="question-card" id="qcard-26">
+  <div class="q-header">
+    <div class="q-number">26</div>
+    <div class="q-text">If children spent less time on their phones and more time playing outside, they would probably be healthier and have more opportunities to develop social skills.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(26)" id="flag-26" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(26,'A')" id="q26-A"><span class="option-letter">A</span> Çocuklar telefonlarında daha az, dışarıda oynamaya daha fazla zaman ayırsaydı, muhtemelen daha sağlıklı olurlar ve sosyal becerilerini geliştirme konusunda daha fazla fırsata sahip olurlardı.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'B')" id="q26-B"><span class="option-letter">B</span> Çocukların telefon kullanımı azaldıkça dışarıda daha fazla zaman geçirdikleri ve bu sayede sosyal becerilerini daha hızlı geliştirdikleri gözlemlenmektedir.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'C')" id="q26-C"><span class="option-letter">C</span> Eğer çocuklar dışarıda oynamaya daha fazla zaman harcamış olsaydı, sağlık sorunlarıyla karşılaşma olasılıkları çok daha düşük olurdu.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'D')" id="q26-D"><span class="option-letter">D</span> Çocukların telefonlarında zaman geçirmeleri kaçınılmazdır; bu nedenle ebeveynlerin onların dışarıda oynama alışkanlıklarını korumasına yardımcı olması büyük önem taşımaktadır.</button>
+  <button class="option-btn" onclick="selectAnswer(26,'E')" id="q26-E"><span class="option-letter">E</span> Çocuklar telefon yerine dışarıda vakit geçirmeyi seçseydi, hem fiziksel hem de sosyal açıdan çok daha fazla gelişme kaydedebilirlerdi.</button>
+  </div>
+<div class="explanation-box" id="expl-26">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">Second Conditional: 'If they spent less time...they would probably be healthier' — hypothetical present/future. A correctly uses 'ayırsaydı...olurlardı' — conditional mood for a present hypothetical. B describes an observed pattern (present fact) — not conditional. C uses Past Perfect conditional ('harcamış olsaydı...olurdu') = Third Conditional (unreal past) — too strong. D says phone use is unavoidable — adds a claim not in original. E uses Past conditional 'seçseydi...kaydedebilirlerdi' — also Third Conditional, wrong tense.</div>
+</div>
+</div>
+
+<!-- SECTION 5: TUR→ENG -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 5 — Türkçe→İng Çeviri</div><div class="section-info">TUR→ENG</div></div>
+  <div class="section-pill">2 Soru</div>
+</div>
+<div class="section-instruction">For questions 27–28, choose the English translation that best reflects the meaning of the Turkish sentence.</div>
+
+<!-- Q27 answer: B -->
+<div class="question-card" id="qcard-27">
+  <div class="q-header">
+    <div class="q-number">27</div>
+    <div class="q-text">Pek çok insan, hem paradan tasarruf etmek hem de çevreye duyarlı davranmak için araba yerine toplu taşımayı tercih etmektedir.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(27)" id="flag-27" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(27,'A')" id="q27-A"><span class="option-letter">A</span> Many people prefer public transport to driving because it is generally safer and more reliable than using a private car.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'B')" id="q27-B"><span class="option-letter">B</span> Many people choose public transport instead of driving in order to save money and to act in a more environmentally responsible way.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'C')" id="q27-C"><span class="option-letter">C</span> Although public transport is often crowded and slow, many people still use it as an affordable alternative to owning a car.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'D')" id="q27-D"><span class="option-letter">D</span> Most people agree that public transport is better for the environment than private cars, even though it is not always convenient.</button>
+  <button class="option-btn" onclick="selectAnswer(27,'E')" id="q27-E"><span class="option-letter">E</span> The number of people using public transport has increased significantly in recent years as fuel prices continue to rise.</button>
+  </div>
+<div class="explanation-box" id="expl-27">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">B correctly preserves both reasons: (1) 'paradan tasarruf etmek' = 'to save money', (2) 'çevreye duyarlı davranmak' = 'to act in a more environmentally responsible way', and (3) 'araba yerine toplu taşımayı tercih etmektedir' = 'choose public transport instead of driving'. A says public transport is safer and more reliable — not in original. C adds 'often crowded and slow' — not in original. D says 'most people agree' and adds a caveat about convenience — not in original. E says usage has increased due to fuel prices — a completely different claim.</div>
+</div>
+</div>
+<!-- Q28 answer: B -->
+<div class="question-card" id="qcard-28">
+  <div class="q-header">
+    <div class="q-number">28</div>
+    <div class="q-text">Evden çalışmak bazı çalışanlara işe gidip gelme stresi olmadan daha rahat bir ortamda çalışma imkânı sunsa da bazıları için yalnızlık ve motivasyon eksikliği ciddi sorunlara yol açabilmektedir.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(28)" id="flag-28" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(28,'A')" id="q28-A"><span class="option-letter">A</span> Working from home can cause serious problems such as loneliness and lack of motivation, which is why most employees prefer to work in a traditional office environment.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'B')" id="q28-B"><span class="option-letter">B</span> Although working from home offers some employees the chance to work in a more relaxed environment without the stress of commuting, it can lead to serious problems such as loneliness and lack of motivation for others.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'C')" id="q28-C"><span class="option-letter">C</span> Many employees enjoy working from home because it removes the need to commute, and research shows that most remote workers are more productive than office-based employees.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'D')" id="q28-D"><span class="option-letter">D</span> Working from home has both advantages and disadvantages, and it is up to each individual to decide which working arrangement suits their personal and professional needs best.</button>
+  <button class="option-btn" onclick="selectAnswer(28,'E')" id="q28-E"><span class="option-letter">E</span> The main disadvantage of working from home is that employees often feel isolated and struggle to stay motivated without the social environment of a traditional office.</button>
+  </div>
+<div class="explanation-box" id="expl-28">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">B correctly preserves all elements: (1) 'sunsa da' = 'although...offers', (2) 'işe gidip gelme stresi olmadan daha rahat çalışma' = 'work in a more relaxed environment without the stress of commuting', (3) 'bazıları için yalnızlık ve motivasyon eksikliği ciddi sorunlara yol açabilmektedir' = 'can lead to serious problems such as loneliness and lack of motivation for others'. A says most employees prefer traditional offices — not in original. C says most remote workers are more productive — not in original. D is vague and general — omits the specific concessive structure. E only mentions the disadvantages, omitting the advantage half.</div>
+</div>
+</div>
+
+<!-- SECTION 6: REPHRASING -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 6 — Yakın Anlamlı</div><div class="section-info">REPHRASING</div></div>
+  <div class="section-pill">5 Soru</div>
+</div>
+<div class="section-instruction">For questions 29–33, find the sentence closest in meaning to the given sentence.</div>
+
+<!-- Q29 answer: E -->
+<div class="question-card" id="qcard-29">
+  <div class="q-header">
+    <div class="q-number">29</div>
+    <div class="q-text">It wasn't until she tried yoga for the first time that she realised how much it could help with stress.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(29)" id="flag-29" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(29,'A')" id="q29-A"><span class="option-letter">A</span> She had already known that yoga was useful for stress before she decided to try it for the first time.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'B')" id="q29-B"><span class="option-letter">B</span> She tried yoga many times before she finally understood how effective it was for dealing with stress.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'C')" id="q29-C"><span class="option-letter">C</span> Although she had heard that yoga helps with stress, she was disappointed when she finally tried it.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'D')" id="q29-D"><span class="option-letter">D</span> She tried yoga to help with stress and immediately decided it was something she would do every day.</button>
+  <button class="option-btn" onclick="selectAnswer(29,'E')" id="q29-E"><span class="option-letter">E</span> She only realised how helpful yoga could be for stress after she tried it for the first time.</button>
+  </div>
+<div class="explanation-box" id="expl-29">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">'It wasn't until X that Y' = Y happened only after X. B: 'she only realised how helpful yoga could be after she tried it for the first time' — preserves the sequence and the restriction ('only after'). A says she already knew before trying — reverses the sequence. C says she tried 'many times' before understanding — adds information not in original. D says she was disappointed — contradicts the positive realisation. E says she decided to do it every day — adds a new outcome not in original.</div>
+</div>
+</div>
+<!-- Q30 answer: A -->
+<div class="question-card" id="qcard-30">
+  <div class="q-header">
+    <div class="q-number">30</div>
+    <div class="q-text">Scarcely any of the students had read the article before the class discussion began.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(30)" id="flag-30" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(30,'A')" id="q30-A"><span class="option-letter">A</span> Very few students had read the article before the class discussion started.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'B')" id="q30-B"><span class="option-letter">B</span> The class discussion was cancelled because none of the students had read the article.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'C')" id="q30-C"><span class="option-letter">C</span> All of the students had read the article by the time the class discussion started.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'D')" id="q30-D"><span class="option-letter">D</span> Most students read the article during the class discussion rather than before it.</button>
+  <button class="option-btn" onclick="selectAnswer(30,'E')" id="q30-E"><span class="option-letter">E</span> The teacher was pleased because the majority of students had read the article before the discussion.</button>
+  </div>
+<div class="explanation-box" id="expl-30">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">'Scarcely any' = almost none, very few. C: 'very few students had read the article before the discussion' — preserves the near-zero quantity and the timing. A says 'all' had read it — the opposite. B says 'none' had read it and the class was cancelled — 'scarcely any' ≠ 'none', and the cancellation is not in original. D says most read it during, not before — different time. E says the teacher was pleased and most had read it — directly contradicts 'scarcely any'.</div>
+</div>
+</div>
+<!-- Q31 answer: E -->
+<div class="question-card" id="qcard-31">
+  <div class="q-header">
+    <div class="q-number">31</div>
+    <div class="q-text">The new shopping centre is so large that it takes about half an hour to walk from one end to the other.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(31)" id="flag-31" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(31,'A')" id="q31-A"><span class="option-letter">A</span> Walking from one end of the new shopping centre to the other is impossible without stopping to rest.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'B')" id="q31-B"><span class="option-letter">B</span> The new shopping centre is much larger than people expected, but it is still possible to walk across it in under an hour.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'C')" id="q31-C"><span class="option-letter">C</span> It is not recommended to walk across the new shopping centre as it takes too long and can be tiring.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'D')" id="q31-D"><span class="option-letter">D</span> The new shopping centre has been criticised for being too large, since most visitors need at least an hour to visit all the shops.</button>
+  <button class="option-btn" onclick="selectAnswer(31,'E')" id="q31-E"><span class="option-letter">E</span> The new shopping centre covers such a large area that walking across it takes approximately thirty minutes.</button>
+  </div>
+<div class="explanation-box" id="expl-31">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">'So large that it takes half an hour to walk across' = B: 'covers such a large area that walking across takes approximately thirty minutes'. Both express the same cause-and-effect relationship (large size → long walking time) using the so/such...that structure. A says it is 'impossible' to walk across — too extreme, original says it takes 30 minutes. C says it was larger than expected — adds a comparison not in original. D advises against walking — adds a recommendation not in original. E says 'at least an hour' — contradicts '30 minutes' and adds criticism.</div>
+</div>
+</div>
+<!-- Q32 answer: A -->
+<div class="question-card" id="qcard-32">
+  <div class="q-header">
+    <div class="q-number">32</div>
+    <div class="q-text">Although the community garden started with only ten volunteers, it has grown significantly and now involves over a hundred people.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(32)" id="flag-32" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(32,'A')" id="q32-A"><span class="option-letter">A</span> The community garden began with a small group of ten volunteers and has since expanded considerably, with more than a hundred participants today.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'B')" id="q32-B"><span class="option-letter">B</span> The community garden struggled to grow because it only had ten volunteers, but it eventually attracted more participants.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'C')" id="q32-C"><span class="option-letter">C</span> Over a hundred volunteers have joined the community garden since it was first established ten years ago.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'D')" id="q32-D"><span class="option-letter">D</span> The community garden lost most of its volunteers but managed to recruit a hundred new members within a short period.</button>
+  <button class="option-btn" onclick="selectAnswer(32,'E')" id="q32-E"><span class="option-letter">E</span> With more than a hundred volunteers, the community garden is now one of the largest in the country, though it began with far fewer people.</button>
+  </div>
+<div class="explanation-box" id="expl-32">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">A correctly preserves: (1) 'started with only ten volunteers' = 'began with a small group of ten volunteers', (2) 'has grown significantly' = 'has expanded considerably', (3) 'now involves over a hundred people' = 'more than a hundred participants today'. B says the garden 'struggled to grow' — adds a negative not in original. C says 'ten years ago' — adds a time not in original. D says volunteers were lost then replaced — adds events not in original. E says 'one of the largest in the country' — adds a comparison not in original.</div>
+</div>
+</div>
+<!-- Q33 answer: E -->
+<div class="question-card" id="qcard-33">
+  <div class="q-header">
+    <div class="q-number">33</div>
+    <div class="q-text">No sooner had the new café opened than it became the most popular meeting place in the neighbourhood.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(33)" id="flag-33" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(33,'A')" id="q33-A"><span class="option-letter">A</span> The new café became the most popular meeting place in the neighbourhood before it had even officially opened.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'B')" id="q33-B"><span class="option-letter">B</span> The new café was already very popular in the neighbourhood before its official opening day.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'C')" id="q33-C"><span class="option-letter">C</span> Despite being new, the café eventually became the most popular meeting place in the neighbourhood.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'D')" id="q33-D"><span class="option-letter">D</span> The neighbourhood already had a popular meeting place before the new café opened.</button>
+  <button class="option-btn" onclick="selectAnswer(33,'E')" id="q33-E"><span class="option-letter">E</span> The new café quickly became the most popular meeting place in the neighbourhood as soon as it opened.</button>
+  </div>
+<div class="explanation-box" id="expl-33">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">'No sooner had X happened than Y' = Y happened almost immediately after X. B: 'quickly became the most popular meeting place as soon as it opened' — preserves the immediacy. A says it became popular BEFORE opening — reverses the sequence. C says it was popular before the opening day — same problem as A. D says 'eventually' became popular — contradicts the immediate popularity ('no sooner...than'). E introduces a different existing meeting place — changes the subject.</div>
+</div>
+</div>
+
+<!-- SECTION 7: SENTENCE COMPLETION -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 7 — Cümle Tamamlama</div><div class="section-info">SENTENCE COMPLETION</div></div>
+  <div class="section-pill">5 Soru</div>
+</div>
+<div class="section-instruction">For questions 34–38, choose the option that best completes the sentence.</div>
+
+<!-- Q34 answer: C -->
+<div class="question-card" id="qcard-34">
+  <div class="q-header">
+    <div class="q-number">34</div>
+    <div class="q-text">Although learning a new language can be difficult at first, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(34)" id="flag-34" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(34,'A')" id="q34-A"><span class="option-letter">A</span> it becomes harder with each passing year and most adults eventually give up</button>
+  <button class="option-btn" onclick="selectAnswer(34,'B')" id="q34-B"><span class="option-letter">B</span> most people find it impossible to reach a high level without living abroad</button>
+  <button class="option-btn" onclick="selectAnswer(34,'C')" id="q34-C"><span class="option-letter">C</span> many learners find that their progress speeds up once they stop worrying about making mistakes</button>
+  <button class="option-btn" onclick="selectAnswer(34,'D')" id="q34-D"><span class="option-letter">D</span> the only effective method is to attend formal language classes with a qualified teacher</button>
+  <button class="option-btn" onclick="selectAnswer(34,'E')" id="q34-E"><span class="option-letter">E</span> it requires so much time that very few people manage to learn more than a few basic phrases</button>
+  </div>
+<div class="explanation-box" id="expl-34">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">'Although...difficult at first' sets up a concession — the blank must show a positive development that follows. C provides the logical contrast: progress speeds up once learners relax about mistakes — a positive outcome that balances the initial difficulty. A says it becomes 'harder' — continues the negative, making 'although' illogical. B says it's 'impossible' for most — too negative. D says only formal classes work — doesn't contrast with 'difficult at first'. E says very few manage basic phrases — negative, contradicts the concessive 'although'.</div>
+</div>
+</div>
+<!-- Q35 answer: D -->
+<div class="question-card" id="qcard-35">
+  <div class="q-header">
+    <div class="q-number">35</div>
+    <div class="q-text"><b>- - - -</b>; as a result, many city authorities are investing in cycle lanes and pedestrian zones to encourage greener ways of getting around.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(35)" id="flag-35" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(35,'A')" id="q35-A"><span class="option-letter">A</span> Traffic in most cities is actually decreasing as people switch to private cars</button>
+  <button class="option-btn" onclick="selectAnswer(35,'B')" id="q35-B"><span class="option-letter">B</span> Most people prefer to drive because public transport is considered unreliable</button>
+  <button class="option-btn" onclick="selectAnswer(35,'C')" id="q35-C"><span class="option-letter">C</span> City authorities have decided to ban all new road construction in urban areas</button>
+  <button class="option-btn" onclick="selectAnswer(35,'D')" id="q35-D"><span class="option-letter">D</span> Air pollution caused by road traffic has become a serious problem in many cities</button>
+  <button class="option-btn" onclick="selectAnswer(35,'E')" id="q35-E"><span class="option-letter">E</span> The number of cyclists in European cities has fallen sharply in recent years</button>
+  </div>
+<div class="explanation-box" id="expl-35">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-why">'As a result, investing in cycle lanes and pedestrian zones to encourage greener transport' — this is a logical consequence of a problem with current transport. B establishes the cause: air pollution from road traffic — which directly explains why authorities invest in cycling and walking infrastructure. A says traffic is decreasing — would remove the need for new investment. C says people prefer driving because public transport is unreliable — doesn't explain why authorities would invest in cycling. D says cycling has fallen — would not lead to more cycling investment. E says authorities banned new roads — doesn't explain why cycle lanes specifically follow.</div>
+</div>
+</div>
+<!-- Q36 answer: C -->
+<div class="question-card" id="qcard-36">
+  <div class="q-header">
+    <div class="q-number">36</div>
+    <div class="q-text">Volunteering regularly not only helps the community, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(36)" id="flag-36" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(36,'A')" id="q36-A"><span class="option-letter">A</span> but it can also be harmful to volunteers who do not manage their time carefully</button>
+  <button class="option-btn" onclick="selectAnswer(36,'B')" id="q36-B"><span class="option-letter">B</span> however it takes up a lot of time that could be spent on paid employment</button>
+  <button class="option-btn" onclick="selectAnswer(36,'C')" id="q36-C"><span class="option-letter">C</span> but it also gives volunteers the chance to gain new skills and meet new people</button>
+  <button class="option-btn" onclick="selectAnswer(36,'D')" id="q36-D"><span class="option-letter">D</span> but most volunteers say they receive nothing in return for their efforts</button>
+  <button class="option-btn" onclick="selectAnswer(36,'E')" id="q36-E"><span class="option-letter">E</span> so most organisations prefer to hire paid staff instead of relying on volunteers</button>
+  </div>
+<div class="explanation-box" id="expl-36">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">'Not only helps the community, but also...' — a correlative conjunction requiring a parallel positive addition. C provides exactly this: 'but it also gives volunteers the chance to gain skills and meet people' — a second benefit running parallel to helping the community. A says 'harmful' — negative, contradicts the positive setup. B uses 'however' — breaks the 'not only...but also' structure. D says volunteers receive nothing — negative, contradicts the benefits framing. E introduces paid staff — unrelated to the volunteer benefits structure.</div>
+</div>
+</div>
+<!-- Q37 answer: D -->
+<div class="question-card" id="qcard-37">
+  <div class="q-header">
+    <div class="q-number">37</div>
+    <div class="q-text">Many older people who live alone say that community activities, such as local clubs and group classes, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(37)" id="flag-37" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(37,'A')" id="q37-A"><span class="option-letter">A</span> make them feel more isolated and remind them of how much their lives have changed</button>
+  <button class="option-btn" onclick="selectAnswer(37,'B')" id="q37-B"><span class="option-letter">B</span> are too expensive for most people living on a pension to attend regularly</button>
+  <button class="option-btn" onclick="selectAnswer(37,'C')" id="q37-C"><span class="option-letter">C</span> are helpful in theory but require too much energy for older people to participate in consistently</button>
+  <button class="option-btn" onclick="selectAnswer(37,'D')" id="q37-D"><span class="option-letter">D</span> help them stay connected to others and give them something to look forward to each week</button>
+  <button class="option-btn" onclick="selectAnswer(37,'E')" id="q37-E"><span class="option-letter">E</span> are becoming less common as local councils cut funding for social programmes</button>
+  </div>
+<div class="explanation-box" id="expl-37">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-why">The sentence is about older people living alone — the blank must logically complete what they say about community activities. D: 'help them stay connected and give them something to look forward to' — naturally completes the idea of why lonely older people value community activities. A says activities make them feel MORE isolated — the opposite of why people attend. B says too expensive — introduces a barrier not suggested by the setup. C says too much energy — also a barrier. E says activities are becoming less common — changes the subject from personal benefit to policy.</div>
+</div>
+</div>
+<!-- Q38 answer: B -->
+<div class="question-card" id="qcard-38">
+  <div class="q-header">
+    <div class="q-number">38</div>
+    <div class="q-text">Sleep experts say that going to bed at a consistent time every night is one of the most effective ways to improve sleep quality, <b>- - - -</b>.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(38)" id="flag-38" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(38,'A')" id="q38-A"><span class="option-letter">A</span> although most people find it impossible to follow this advice on weekdays</button>
+  <button class="option-btn" onclick="selectAnswer(38,'B')" id="q38-B"><span class="option-letter">B</span> because the body's internal clock works best when it follows a regular routine</button>
+  <button class="option-btn" onclick="selectAnswer(38,'C')" id="q38-C"><span class="option-letter">C</span> but very few people who follow this advice actually report any improvement</button>
+  <button class="option-btn" onclick="selectAnswer(38,'D')" id="q38-D"><span class="option-letter">D</span> and experts also recommend that people sleep for at least ten hours every night</button>
+  <button class="option-btn" onclick="selectAnswer(38,'E')" id="q38-E"><span class="option-letter">E</span> so the use of sleeping pills should be avoided wherever possible</button>
+  </div>
+<div class="explanation-box" id="expl-38">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The sentence says consistent bedtimes improve sleep quality — the blank should explain WHY. B provides the mechanism: 'because the body's internal clock works best with a regular routine' — a clear, logical explanation. A says most people find it impossible — doesn't explain why it works. C says very few people report improvement — contradicts 'most effective'. D says 10 hours every night — adds an unrelated and inaccurate claim (recommended sleep varies). E says avoid sleeping pills — a separate recommendation unrelated to the consistent timing point.</div>
+</div>
+</div>
+
+<!-- SECTION 8: READING COMPREHENSION -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 8 — Okuduğunu Anlama</div><div class="section-info">READING COMPREHENSION</div></div>
+  <div class="section-pill">6 Soru</div>
+</div>
+<div class="section-instruction">Answer questions 39–41 based on the first passage, and questions 42–44 based on the second passage.</div>
+
+<div class="passage-box">
+  <strong>Passage 1: The Importance of Sleep for Young People</strong><br><br>
+Most teenagers and young adults do not get enough sleep. Research shows that young people between the ages of thirteen and eighteen need between eight and ten hours of sleep each night, but many regularly sleep for only six or seven hours. This lack of sleep can have a serious effect on their daily lives.<br><br>
+When young people do not sleep enough, it becomes harder for them to concentrate in class and remember what they have learned. Their mood can also suffer — students who are tired are more likely to feel anxious or irritable. Some studies have even found a link between poor sleep and lower exam results.<br><br>
+One of the main reasons why teenagers sleep less than they should is the use of electronic devices at night. Looking at screens before bed can delay the release of a hormone called melatonin, which helps the body prepare for sleep. As a result, young people often feel wide awake at midnight, even when they need to be up early the next morning.<br><br>
+Experts suggest several ways to improve sleep habits. Going to bed and waking up at the same time every day — even at weekends — helps the body develop a natural sleep rhythm. Avoiding screens for at least one hour before bed and keeping the bedroom dark and quiet can also make a real difference. Small changes like these, if practised consistently, can lead to significant improvements in both sleep quality and overall wellbeing.
+</div>
+<!-- Q39 answer: A -->
+<div class="question-card" id="qcard-39">
+  <div class="q-header">
+    <div class="q-number">39</div>
+    <div class="q-text">According to the passage, what is one of the main reasons why many teenagers do not get enough sleep?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(39)" id="flag-39" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(39,'A')" id="q39-A"><span class="option-letter">A</span> They use electronic devices before bed, which delays the release of melatonin.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'B')" id="q39-B"><span class="option-letter">B</span> They often eat large meals late at night, which prevents them from sleeping.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'C')" id="q39-C"><span class="option-letter">C</span> They have too much homework to complete each evening.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'D')" id="q39-D"><span class="option-letter">D</span> They are required to start school too early in the morning.</button>
+  <button class="option-btn" onclick="selectAnswer(39,'E')" id="q39-E"><span class="option-letter">E</span> They spend too much time socialising with friends in the evenings.</button>
+  </div>
+<div class="explanation-box" id="expl-39">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">The passage states: 'One of the main reasons why teenagers sleep less than they should is the use of electronic devices at night. Looking at screens before bed can delay the release of a hormone called melatonin.' C directly matches this. A about homework — not mentioned. B about eating late — not mentioned. D about school starting early — mentioned indirectly ('need to be up early') but not as a cause of poor sleep. E about socialising — not mentioned.</div>
+</div>
+</div>
+<!-- Q40 answer: D -->
+<div class="question-card" id="qcard-40">
+  <div class="q-header">
+    <div class="q-number">40</div>
+    <div class="q-text">The passage suggests that when young people do not sleep enough, they are likely to experience which of the following?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(40)" id="flag-40" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(40,'A')" id="q40-A"><span class="option-letter">A</span> They develop an interest in using their phones more frequently.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'B')" id="q40-B"><span class="option-letter">B</span> They become more motivated to study in order to make up for lost time.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'C')" id="q40-C"><span class="option-letter">C</span> They choose to spend more time outdoors to compensate for poor sleep.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'D')" id="q40-D"><span class="option-letter">D</span> They find it harder to concentrate and may feel more anxious or irritable.</button>
+  <button class="option-btn" onclick="selectAnswer(40,'E')" id="q40-E"><span class="option-letter">E</span> They struggle to follow advice from their parents about healthy habits.</button>
+  </div>
+<div class="explanation-box" id="expl-40">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-why">The passage states: 'it becomes harder for them to concentrate in class...students who are tired are more likely to feel anxious or irritable.' B captures both effects: difficulty concentrating and negative mood. A about using phones more — not stated. C about becoming more motivated — the passage says motivation decreases, not increases. D about ignoring parental advice — not mentioned. E about spending more time outdoors — not mentioned.</div>
+</div>
+</div>
+<!-- Q41 answer: D -->
+<div class="question-card" id="qcard-41">
+  <div class="q-header">
+    <div class="q-number">41</div>
+    <div class="q-text">Which of the following sleep tips is NOT mentioned in the passage?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(41)" id="flag-41" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(41,'A')" id="q41-A"><span class="option-letter">A</span> Going to bed and waking up at the same time every day.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'B')" id="q41-B"><span class="option-letter">B</span> Avoiding screens for at least one hour before bed.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'C')" id="q41-C"><span class="option-letter">C</span> Keeping the bedroom dark and quiet.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'D')" id="q41-D"><span class="option-letter">D</span> Drinking a warm drink before going to sleep.</button>
+  <button class="option-btn" onclick="selectAnswer(41,'E')" id="q41-E"><span class="option-letter">E</span> Following a consistent routine even at weekends.</button>
+  </div>
+<div class="explanation-box" id="expl-41">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>D</strong></div>
+  <div class="expl-why">The passage mentions: (1) 'Going to bed and waking up at the same time every day' = A ✓, (2) 'Avoiding screens for at least one hour before bed' = B ✓, (3) 'keeping the bedroom dark and quiet' = C ✓, (4) 'even at weekends' = E ✓. Drinking a warm drink (D) is never mentioned in the passage. This is the only option not supported by the text.</div>
+</div>
+</div>
+<div class="passage-box">
+  <strong>Passage 2: Community Gardens</strong><br><br>
+A community garden is a shared outdoor space where local people grow fruit, vegetables, and flowers together. These gardens have become increasingly popular in cities around the world, and many local governments now support their development by providing land and basic equipment.<br><br>
+Community gardens offer a wide range of benefits. First, they give people who live in flats or houses without gardens the chance to grow their own food. This can help reduce food costs for families and encourage healthier eating habits. Second, spending time outdoors and doing physical work in a garden is good for both mental and physical health. Many people say that gardening helps them feel calmer and more connected to nature.<br><br>
+Perhaps the most important benefit is the sense of community that these gardens create. People from different backgrounds work side by side, share knowledge, and often form lasting friendships. In some cities, community gardens have helped to improve relations between neighbours who previously had little contact with each other.<br><br>
+Despite these advantages, community gardens do face some challenges. Finding suitable land in busy city centres can be difficult and expensive. Keeping the garden active also requires a group of committed volunteers who are willing to give their time regularly. When enthusiasm fades or people move away, gardens can quickly fall into disuse. Successful community gardens tend to be those with a strong organising committee and clear rules about responsibilities.
+</div>
+<!-- Q42 answer: B -->
+<div class="question-card" id="qcard-42">
+  <div class="q-header">
+    <div class="q-number">42</div>
+    <div class="q-text">According to the passage, what is one benefit of community gardens for people who live in flats?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(42)" id="flag-42" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(42,'A')" id="q42-A"><span class="option-letter">A</span> They give people a place to meet professionals who can help them find work.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'B')" id="q42-B"><span class="option-letter">B</span> They allow people to grow their own food even without a private garden.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'C')" id="q42-C"><span class="option-letter">C</span> They provide a safe space for children to play away from busy roads.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'D')" id="q42-D"><span class="option-letter">D</span> They offer free meals to families who cannot afford to buy food.</button>
+  <button class="option-btn" onclick="selectAnswer(42,'E')" id="q42-E"><span class="option-letter">E</span> They reduce the need for local authorities to maintain public parks.</button>
+  </div>
+<div class="explanation-box" id="expl-42">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The passage states: 'they give people who live in flats or houses without gardens the chance to grow their own food.' B directly reflects this. A about finding work — not mentioned. C about children playing — not mentioned. D about free meals — the passage mentions growing food and reducing costs, not providing free meals. E about reducing park maintenance — not mentioned.</div>
+</div>
+</div>
+<!-- Q43 answer: C -->
+<div class="question-card" id="qcard-43">
+  <div class="q-header">
+    <div class="q-number">43</div>
+    <div class="q-text">The passage says that community gardens help improve relations between neighbours. Which of the following best explains why?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(43)" id="flag-43" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(43,'A')" id="q43-A"><span class="option-letter">A</span> Because they provide a formal setting in which neighbours can resolve disagreements.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'B')" id="q43-B"><span class="option-letter">B</span> Because they are organised by local government officials who encourage community cooperation.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'C')" id="q43-C"><span class="option-letter">C</span> Because people from different backgrounds work together and often form lasting friendships.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'D')" id="q43-D"><span class="option-letter">D</span> Because they require neighbours to sign a contract committing to regular participation.</button>
+  <button class="option-btn" onclick="selectAnswer(43,'E')" id="q43-E"><span class="option-letter">E</span> Because they bring together people who share exactly the same interests and values.</button>
+  </div>
+<div class="explanation-box" id="expl-43">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The passage states: 'People from different backgrounds work side by side, share knowledge, and often form lasting friendships.' C directly captures this explanation. A says they resolve disagreements — the passage says they improve relations, not that they are a formal dispute resolution setting. B says government officials organise them — not stated. D says a contract is required — not mentioned. E says people share 'exactly the same interests and values' — the passage says 'different backgrounds', implying they are diverse.</div>
+</div>
+</div>
+<!-- Q44 answer: E -->
+<div class="question-card" id="qcard-44">
+  <div class="q-header">
+    <div class="q-number">44</div>
+    <div class="q-text">What does the passage identify as a challenge that can cause community gardens to stop functioning?</div>
+    <button class="q-flag-btn" onclick="toggleFlag(44)" id="flag-44" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(44,'A')" id="q44-A"><span class="option-letter">A</span> Disagreements between volunteers about which plants to grow.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'B')" id="q44-B"><span class="option-letter">B</span> High costs of seeds and gardening tools, which make running a garden expensive.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'C')" id="q44-C"><span class="option-letter">C</span> Complaints from nearby residents who do not like the appearance of the garden.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'D')" id="q44-D"><span class="option-letter">D</span> Competition from local supermarkets that offer cheap fruit and vegetables.</button>
+  <button class="option-btn" onclick="selectAnswer(44,'E')" id="q44-E"><span class="option-letter">E</span> A lack of committed volunteers who are willing to give their time regularly.</button>
+  </div>
+<div class="explanation-box" id="expl-44">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">The passage states: 'Keeping the garden active also requires a group of committed volunteers who are willing to give their time regularly. When enthusiasm fades or people move away, gardens can quickly fall into disuse.' B directly captures this challenge. A about disagreements over plants — not mentioned. C about high costs of seeds/tools — the passage mentions land costs but not equipment costs as a reason for gardens failing. D about neighbour complaints — not mentioned. E about supermarket competition — not mentioned.</div>
+</div>
+</div>
+
+<!-- SECTION 9: DIALOGUE -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 9 — Diyalog Tamamlama</div><div class="section-info">DIALOGUE</div></div>
+  <div class="section-pill">3 Soru</div>
+</div>
+<div class="section-instruction">For questions 45–47, select the most appropriate response for the blank.</div>
+
+<!-- Q45 answer: A -->
+<div class="question-card" id="qcard-45">
+  <div class="q-header">
+    <div class="q-number">45</div>
+    <div class="q-text"><strong>Friend A:</strong> I've been thinking about joining a community garden near my flat. Have you ever tried something like that?<br><strong>Friend B:</strong> Yes, I joined one last summer! It was one of the best decisions I've made.<br><strong>Friend A:</strong> <b>- - - -</b><br><strong>Friend B:</strong> Definitely. You meet so many interesting people, and it's really relaxing to spend time outdoors.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(45)" id="flag-45" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(45,'A')" id="q45-A"><span class="option-letter">A</span> That sounds great. Is it mostly about the gardening, or is the social side important too?</button>
+  <button class="option-btn" onclick="selectAnswer(45,'B')" id="q45-B"><span class="option-letter">B</span> Oh, I didn't know you were interested in gardening. When did you first start?</button>
+  <button class="option-btn" onclick="selectAnswer(45,'C')" id="q45-C"><span class="option-letter">C</span> Really? I thought those kinds of projects were only for retired people.</button>
+  <button class="option-btn" onclick="selectAnswer(45,'D')" id="q45-D"><span class="option-letter">D</span> I'm not sure it's worth it if you have to pay a lot to join.</button>
+  <button class="option-btn" onclick="selectAnswer(45,'E')" id="q45-E"><span class="option-letter">E</span> I'd rather just buy vegetables from the market — it's much less effort.</button>
+  </div>
+<div class="explanation-box" id="expl-45">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">Friend B responds: 'You meet so many interesting people, and it's relaxing to spend time outdoors' — this covers both the social aspect and the outdoor/wellbeing aspect. A asks 'is it mostly about the gardening, or is the social side important too?' — which directly leads to Friend B's answer about meeting people AND relaxing outdoors. B asks when Friend B started — Friend B's answer about meeting people doesn't follow. C says it's for retired people — Friend B's positive reply about meeting people doesn't address this assumption. D asks about cost — Friend B's answer about people and outdoors doesn't address cost. E expresses a preference for the market — Friend B wouldn't enthusiastically explain social benefits in response.</div>
+</div>
+</div>
+<!-- Q46 answer: E -->
+<div class="question-card" id="qcard-46">
+  <div class="q-header">
+    <div class="q-number">46</div>
+    <div class="q-text"><strong>Customer:</strong> I ordered this jacket online three weeks ago, but it still hasn't arrived.<br><strong>Customer Service:</strong> I'm very sorry to hear that. Let me look into this for you right away.<br><strong>Customer:</strong> <b>- - - -</b><br><strong>Customer Service:</strong> Of course. I'll arrange a full refund for you today and send a confirmation email within the hour.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(46)" id="flag-46" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(46,'A')" id="q46-A"><span class="option-letter">A</span> That's fine. I'm sure it will arrive eventually — I don't mind waiting a bit longer.</button>
+  <button class="option-btn" onclick="selectAnswer(46,'B')" id="q46-B"><span class="option-letter">B</span> Actually, I've already found the same jacket in a local shop, so please cancel my account.</button>
+  <button class="option-btn" onclick="selectAnswer(46,'C')" id="q46-C"><span class="option-letter">C</span> I just wanted to let you know — you don't need to do anything about it.</button>
+  <button class="option-btn" onclick="selectAnswer(46,'D')" id="q46-D"><span class="option-letter">D</span> Could you tell me which delivery company you use? I'd like to contact them directly.</button>
+  <button class="option-btn" onclick="selectAnswer(46,'E')" id="q46-E"><span class="option-letter">E</span> Thank you. At this point, I would prefer a refund rather than waiting for the item.</button>
+  </div>
+<div class="explanation-box" id="expl-46">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">The customer service agent says: 'I'll arrange a full refund...and send a confirmation email' — this directly responds to a request for a refund. B: 'I would prefer a refund rather than waiting' — the natural, professional request that prompts the agent's offer of a refund. A says they don't mind waiting — the agent would not then offer a refund. C says they found it elsewhere and wants to cancel account — too extreme, agent's response about a refund doesn't fully match. D says no action needed — agent would not then arrange a refund. E asks about the delivery company — the agent's response about arranging a refund doesn't follow from this.</div>
+</div>
+</div>
+<!-- Q47 answer: E -->
+<div class="question-card" id="qcard-47">
+  <div class="q-header">
+    <div class="q-number">47</div>
+    <div class="q-text"><strong>Student:</strong> I'm really nervous about the presentation tomorrow. I've never spoken in front of more than five people before.<br><strong>Teacher:</strong> <b>- - - -</b><br><strong>Student:</strong> That's actually quite helpful. I'll try to focus on what I'm saying rather than worrying about the audience.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(47)" id="flag-47" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(47,'A')" id="q47-A"><span class="option-letter">A</span> Don't worry — you've prepared well, and everyone in the class is rooting for you.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'B')" id="q47-B"><span class="option-letter">B</span> Everyone feels nervous before a presentation. The important thing is to speak loudly and clearly so the audience can hear you.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'C')" id="q47-C"><span class="option-letter">C</span> Have you considered asking a friend to present with you? It might be less stressful to share the task.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'D')" id="q47-D"><span class="option-letter">D</span> I think you'll be fine. The class already knows your topic, so they won't be judging you too harshly.</button>
+  <button class="option-btn" onclick="selectAnswer(47,'E')" id="q47-E"><span class="option-letter">E</span> I understand how you feel. One useful tip is to pick a few friendly faces in the audience and speak to them directly, rather than trying to address everyone at once.</button>
+  </div>
+<div class="explanation-box" id="expl-47">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>E</strong></div>
+  <div class="expl-why">The student then says: 'I'll try to focus on what I'm saying rather than worrying about the audience' — this reflects advice about NOT thinking about the audience as a whole. B suggests 'pick a few friendly faces and speak to them directly rather than addressing everyone' — this directly leads to the student's insight about focusing on the message, not the audience. A says 'everyone is rooting for you' — the student's response about 'focusing on what I'm saying' doesn't follow from reassurance about support. C says speak loudly — student's response about focus and audience doesn't follow from volume advice. D suggests presenting with a friend — student's response is about personal focus. E says the class won't judge harshly — student's response is about their own mental approach, not about audience judgement.</div>
+</div>
+</div>
+
+<!-- SECTION 10: SITUATION -->
+<div class="section-banner">
+  <div><div class="section-name">Bölüm 10 — Duruma Uygun</div><div class="section-info">SITUATION</div></div>
+  <div class="section-pill">3 Soru</div>
+</div>
+<div class="section-instruction">For questions 48–50, select the most appropriate sentence for the situation.</div>
+
+<!-- Q48 answer: A -->
+<div class="question-card" id="qcard-48">
+  <div class="q-header">
+    <div class="q-number">48</div>
+    <div class="q-text">You are staying in a hotel. You ordered room service an hour ago, but your food still has not arrived. You call reception to find out what has happened and to ask them to sort out the problem.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(48)" id="flag-48" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(48,'A')" id="q48-A"><span class="option-letter">A</span> Hello. I'm calling because I ordered room service an hour ago and my food still hasn't arrived. Could you please find out what's happened and make sure it's sent as soon as possible?</button>
+  <button class="option-btn" onclick="selectAnswer(48,'B')" id="q48-B"><span class="option-letter">B</span> Hello. I just wanted to let you know that I ordered room service, but I'm not in a hurry, so please don't worry about it.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'C')" id="q48-C"><span class="option-letter">C</span> Hello. I ordered food an hour ago and I'm very angry. I demand an immediate apology and a full refund for my entire stay.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'D')" id="q48-D"><span class="option-letter">D</span> Hello. Could you tell me what time the restaurant closes? I'm thinking about going downstairs to eat instead.</button>
+  <button class="option-btn" onclick="selectAnswer(48,'E')" id="q48-E"><span class="option-letter">E</span> Hello. I've been waiting an hour for my food. I've decided I don't want it anymore, so please just cancel my order.</button>
+  </div>
+<div class="explanation-box" id="expl-48">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>A</strong></div>
+  <div class="expl-why">The situation requires: (1) informing reception of the problem (food not arrived), (2) asking them to find out what happened, (3) asking them to solve it. A does all three professionally and politely: states the problem, asks what happened, asks for quick delivery. B says not in a hurry — contradicts the need to 'sort out the problem'. C is overly aggressive for a first contact — 'full refund for entire stay' is disproportionate. D asks about restaurant hours — a different issue, doesn't address the outstanding order. E cancels the order — a different outcome, not about sorting out the problem.</div>
+</div>
+</div>
+<!-- Q49 answer: B -->
+<div class="question-card" id="qcard-49">
+  <div class="q-header">
+    <div class="q-number">49</div>
+    <div class="q-text">A friend has asked to borrow your bicycle for the afternoon, and you are happy to lend it to them. However, you want to ask them to return it before 6 PM because you need it to cycle to an evening class.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(49)" id="flag-49" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(49,'A')" id="q49-A"><span class="option-letter">A</span> I'm afraid I can't lend you my bicycle today — I need it for the whole afternoon.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'B')" id="q49-B"><span class="option-letter">B</span> Of course! You're welcome to borrow it, but please make sure you bring it back before six o'clock, as I need it for an evening class.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'C')" id="q49-C"><span class="option-letter">C</span> Sure, you can borrow it. Just bring it back whenever — there's no rush at all.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'D')" id="q49-D"><span class="option-letter">D</span> I suppose you can borrow it, but I'm a bit worried it might get damaged, so please be very careful.</button>
+  <button class="option-btn" onclick="selectAnswer(49,'E')" id="q49-E"><span class="option-letter">E</span> You can take it, but I need it back by five o'clock because I have an appointment at five-thirty.</button>
+  </div>
+<div class="explanation-box" id="expl-49">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>B</strong></div>
+  <div class="expl-why">The situation requires: (1) agreeing to lend the bicycle, (2) politely asking for it back before 6 PM, (3) giving the reason. B does all three naturally: 'You're welcome to borrow it' (agreement) + 'please bring it back before six o'clock' (condition) + 'I need it for an evening class' (reason). A refuses to lend — contradicts 'you are happy to lend it'. C agrees but says no rush — ignores the 6 PM requirement. D agrees but expresses worry about damage — not the situation described. E asks for 5 PM instead of 6 PM and gives a different appointment — changes the specific details.</div>
+</div>
+</div>
+<!-- Q50 answer: C -->
+<div class="question-card" id="qcard-50">
+  <div class="q-header">
+    <div class="q-number">50</div>
+    <div class="q-text">You are at a job interview. The interviewer asks why you left your previous job. You left because you wanted new challenges and opportunities to develop professionally, not because of any problems with the employer.</div>
+    <button class="q-flag-btn" onclick="toggleFlag(50)" id="flag-50" title="İşaretle">🚩</button>
+  </div>
+  <div class="options-list">
+  <button class="option-btn" onclick="selectAnswer(50,'A')" id="q50-A"><span class="option-letter">A</span> Honestly, there were some serious disagreements with my manager, and I felt I had no choice but to leave.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'B')" id="q50-B"><span class="option-letter">B</span> I left because the job was too stressful and I needed a break before starting something new.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'C')" id="q50-C"><span class="option-letter">C</span> I decided to leave because I was looking for new challenges and opportunities to grow professionally, and I felt I had developed as far as I could in that role.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'D')" id="q50-D"><span class="option-letter">D</span> I was asked to leave because the company was going through some difficult changes.</button>
+  <button class="option-btn" onclick="selectAnswer(50,'E')" id="q50-E"><span class="option-letter">E</span> I left because the pay was too low and I was offered a significantly higher salary elsewhere.</button>
+  </div>
+<div class="explanation-box" id="expl-50">
+  <div class="expl-title">Açıklama</div>
+  <div class="expl-answer">✅ Doğru Cevap: <strong>C</strong></div>
+  <div class="expl-why">The situation states: you left for new challenges and professional development, NOT because of problems. C captures this exactly: 'looking for new challenges and opportunities to grow professionally, and I felt I had developed as far as I could in that role' — honest, positive, professional. A mentions disagreements with a manager — contradicts 'not because of any problems'. B says the job was too stressful — introduces a problem not in the situation. D says 'I was asked to leave' — implies dismissal, not a choice. E says pay was too low — introduces a financial grievance not in the situation.</div>
+</div>
+</div>
+
+
+<!-- SUBMIT -->
+<div class="warn-msg" id="warnMsg">⚠️ Bazı sorular henüz cevaplanmadı. Tüm soruları cevaplayın ya da tekrar "Teslim Et"e basın.</div>
+<div class="submit-zone">
+  <button class="btn-submit" onclick="submitExam()" id="submitBtn">Sınavı Teslim Et →</button>
+</div>
+
+<!-- RESULTS -->
+<div class="results-panel" id="resultsPanel">
+  <div class="result-score" id="finalScore">—</div>
+  <div class="result-sub" id="finalSub">—</div>
+  <div class="result-grid">
+    <div class="result-cell"><div class="label">Doğru</div><div class="value green" id="resCorrect">—</div></div>
+    <div class="result-cell"><div class="label">Yanlış</div><div class="value red" id="resWrong">—</div></div>
+    <div class="result-cell"><div class="label">Boş</div><div class="value" id="resBlank">—</div></div>
+    <div class="result-cell"><div class="label">Başarı</div><div class="value" id="resNet">—</div></div>
+  </div>
+  <table class="breakdown-table" id="breakdownTable">
+    <thead><tr><th>Bölüm</th><th>Doğru</th><th>Yanlış</th><th>Boş</th></tr></thead>
+    <tbody id="breakdownBody"></tbody>
+  </table>
+  <div class="saving-msg" id="savingMsg" style="display:none;"></div>
+</div>
+
+</div><!-- /exam-body -->
+</div><!-- /exam-layout -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxvPQj78xcKfCz8zyuXgXBXtNY-qkBXq5_A9GHyuPRv75o5eFOHQTcN0VSM_qionqv3Cg/exec";
+
+const STUDENT_DATA = {
+  "HZ A": { teacher:"Ödül Bıkmaz", students:["Ali Kaan Kılıççöte","Ant Yarkın Canbay","Arya Ayvazoğlu","Batuhan Eren Özeren","Batuhan Batur","Beren Naz Atabaş","Burak Kısacık","Ceren Tokatlı","Çınar Ekşi","Defne Nas Sevinç","Derin Yaz Uçar","Ecrin Ada Öztroprak","Elif Berra Korucu","Elif Naz Kantemir","Enes Bernas Kavak","Irmak Üstün","Kıvanç Topaç","Kuzey Tekin","Kuzey Volkan Muşlu","Mehmet Mirza Koçak","Meryem Azra Eser","Oleksandra Yazenok","Selin Gümüş","Turan Efe Orman"] },
+  "HZ B": { teacher:"Ali Ahmadzadeh", students:["Alya Çörekçioğlu","Ayşe Kutanaoğlu","Bade Artıstak","Bedirhan Arda Alma","Beren Karslı","Bora Yelboğa","Çınar Akkaya","Damla Yurga","Duru Mina Öksüz","Duru Mumcu","Eda Nur Ordu","Ege İbrahim Bacacı","Göktuğ Hakan Kaynakoğlu","Kaan Özveren","Koray Akıncı","Serdar Güçmen","Tuna Aslan","Yunus Tanık","Yusuf Taha Öztürk","Yekta Aras Kangl"] },
+  "HZ C": { teacher:"Yıldırım Kocakaya", students:["Ayşe Beliz Morgül","Azra Özkan","Dinç Demir","Doğa Özçelik","Ecem İlhan","Frida Lorin Alabaş","Furkan Özgürdal","Gamze Oral","Irmak Dora Yılmaz","Kadir Dağhan Aksoy","Mehmet Emir Gürsoy","Metin Mert Varol","Mehmet Aras Ünal","Nurten Tosun","Orçun Murat","Sude Naz Yücel","Verdal Işık","Zeynep Hacıbebekoğlu","Zeynep Su Basmacı","Zeynep Su Yüksel","Tanem Acar","Alperen Aydın"] },
+  "HZ D": { teacher:"Emrecan Boz", students:["Ada Balkır","Asrın Deniz Akman","Ecrin Ela Yavuz","Elif Beren Can","Eylül Kale","Eymen Tercan","Ezmira Çallı","Hazal Helin Fidan","İdil Güven","İpek Eken","İris Atasü","Kaan Kavak","Karan Şatana","Kemal Onurlu","Kerem Ata Kökşen","Kuzey Sezer","Mehmet Barış Akkaş","Mehmet Mirza Aktaş","Mehmet Yiğit Ercan","Ozan Aytuğ İğde","Ömür Aktürk","Sahra Nil Üstev","Talha Gül","Yağmur Gökmen"] },
+  "HZ E": { teacher:"Katherine Martin", students:["Ahmet Sarp Keleş","Alya Temel","Ayşe Duru Aras","Ayşe Sinem Kılıç","Batu Çelikadam","Beren Bağdatlı","Bora Ünlü","Çağla Şarman","Demir Heperler","Duru Gülsever","Ece Barak","Efe Veli Çelik","Elif Beril Yıldız","Eylül Özkan","Mehmet Artun Duru","Meriç Ata Ceyhan","Mila Ceyhan","Ömer Salih Önen","Sabri Berke Aytemiz","Poyraz Durmuş","Sarp Deniz Selçuk","Sarp Gürbüz","Tuğsem Erzurum","Ümmiye Arslan"] },
+  "HZ F": { teacher:"Yeşim Başer", students:["Ada Gürmeriç","Alp Aden Ortakaya","Ayşe Nira Keser","Ayten Ercan","Batuhan Kök","Beren Çağlı","Berra Divarcı","Burak Onur Ayhan","Deniz Eray","Devran Paksoy","Doğa Baysal","Duru Turanoğuz","Efe Çınar Önay","Efe Kaplan","Ege Bozkurt","Ege Ünver","Eva Naz Türkoğlu","Güney Ali Özgürsoy","Hanzade Ada Akın","Hasan Adar Filimci","Haydar Yusuf Fidan","İdil Petek","Kuzey Atlas Sunay","Naz Ecemiş"] },
+  "Grade 8": { teacher:"İzver Saçkan", students:["Ahmet Can Çelik","Alp Tarakçıoğlu","Arman Kaltalı","Bennu Uçar","Çınar Doğu","Defne Mine Özünlü","Elif Arya Karaca","Enes Sözen","Erdem Tolga Şengezer","Harun Çağan Top","Hüseyin Ervahan Gülen","Kaan Tekin","Tahir Can Zengin","Ufuk Işık Akkurt"] }
+};
+
+// Answers encoded for security
+const _EK = "ZAZhEQF0BnR3AGUXchV9EX0WYQJzAwcDdGEXdGMBZHAQYQd0AwAAdGQXdGgEZH0RYgJ0AAcAd2EQd2MGZ3AWYgdxAAADd2QWd2gHZ30WYwJxAQcHdmEVdmMAZnAQYwd0AQABdmQQdmgHZn0SZAJ0BgcGcWEWcWMGYXAWZAdxBgAHcWQRcWgEYX0RZQJz";
+function _da(e){
+  const k="UDSP2026BESTEPE";
+  const b=atob(e);
+  let d='';
+  for(let i=0;i<b.length;i++) d+=String.fromCharCode(b.charCodeAt(i)^k.charCodeAt(i%k.length));
+  const r={};
+  const m=d.matchAll(/(\d+)([A-E])/g);
+  for(const x of m) r[parseInt(x[1])]=x[2];
+  return r;
+}
+const ANSWERS = _da(_EK);
+
+const SECTIONS = [
+  {name:'Kelime Bilgisi',qs:[1,2,3,4,5,6,7]},
+  {name:'Dil Bilgisi',qs:[8,9,10,11,12,13,14]},
+  {name:'Boşluk Doldurma',qs:[15,16,17,18,19,20,21,22,23,24]},
+  {name:'İng→Türkçe',qs:[25,26]},
+  {name:'Türkçe→İng',qs:[27,28]},
+  {name:'Yakın Anlamlı',qs:[29,30,31,32,33]},
+  {name:'Cümle Tamamlama',qs:[34,35,36,37,38]},
+  {name:'Okuduğunu Anlama',qs:[39,40,41,42,43,44]},
+  {name:'Diyalog Tamamlama',qs:[45,46,47]},
+  {name:'Duruma Uygun',qs:[48,49,50]}
+];
+
+let userAnswers={},submitted=false,timerInterval,examStarted=false,totalSeconds=110*60,warnShown=false;
+let currentStudent='',currentTeacher='',currentClass='',currentStorageKey='',startTime;
+
+function onClassChange(){
+  const cls=document.getElementById('classSelect').value;
+  if(!cls)return;
+  const data=STUDENT_DATA[cls];
+  document.getElementById('teacherDisplay').value=data.teacher;
+  const dl=document.getElementById('studentList');
+  dl.innerHTML=data.students.map(s=>`<option value="${s}">`).join('');
+  document.getElementById('studentName').value='';
+  document.getElementById('studentName').placeholder='Adınızı seçin veya yazın...';
+}
+
+function startExam(){
+  document.querySelector('.btn-start').disabled=true;
+  const cls=document.getElementById('classSelect').value;
+  const name=document.getElementById('studentName').value.trim();
+  const err=document.getElementById('loginErr');
+  if(!cls){err.textContent='⚠️ Lütfen sınıfınızı seçin.';err.style.display='block';return;}
+  if(!name){err.textContent='⚠️ Lütfen adınızı ve soyadınızı girin.';err.style.display='block';return;}
+  const classData=STUDENT_DATA[cls];
+  const normalize=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
+  const isValid=classData.students.some(s=>normalize(s)===normalize(name));
+  if(!isValid){err.textContent='⚠️ Bu isim '+cls+' listesinde bulunamadı. Tam adınızı kontrol edin.';err.style.display='block';return;}
+
+  // Always check Google Sheet first (this is the source of truth)
+  const storageKey='udsp_Gun9_'+normalize(name)+'_'+cls;
+  const hasLocalBlock = !!localStorage.getItem(storageKey);
+
+  err.textContent='🔍 Kontrol ediliyor, lütfen bekleyin...';
+  err.style.display='block';
+  err.style.color='#6b7a99';
+  err.style.background='#f5f6fa';
+  err.style.padding='12px';
+  err.style.borderRadius='8px';
+  err.style.border='1px solid #dde1ed';
+
+  fetch(SHEET_URL+'?action=check&name='+encodeURIComponent(name)+'&exam='+encodeURIComponent('Gün 9'))
+  .then(r=>r.json())
+  .then(json=>{
+    if(json.reentry===true){
+      // Teacher granted re-entry permission — clear local block and proceed
+      localStorage.removeItem(storageKey);
+      _beginExam(name, classData, cls, storageKey, err);
+    } else if(json.found===true || hasLocalBlock){
+      err.innerHTML='⛔ Bu sınavı daha önce tamamladınız. Tekrar giriş yapamazsınız.<br><small style="display:block;margin-top:6px;font-weight:400;">Öğretmeniniz size yeniden giriş izni verdiyse, lütfen sayfayı <strong>Ctrl + Shift + R</strong> (Mac: <strong>Cmd + Shift + R</strong>) tuşlarıyla yenileyip tekrar deneyin.</small>';
+      err.style.color='#c0392b';
+      err.style.background='#fdf0ef';
+      err.style.border='1px solid #c0392b';
+    } else {
+      _beginExam(name, classData, cls, storageKey, err);
+    }
+  })
+  .catch(()=>{
+    // Network error — fall back to localStorage check only
+    if(hasLocalBlock){
+      err.innerHTML='⛔ Bu sınavı daha önce tamamladınız. Tekrar giriş yapamazsınız.<br><small style="display:block;margin-top:6px;font-weight:400;">Öğretmeniniz size yeniden giriş izni verdiyse, lütfen sayfayı <strong>Ctrl + Shift + R</strong> (Mac: <strong>Cmd + Shift + R</strong>) tuşlarıyla yenileyip tekrar deneyin.</small>';
+      err.style.color='#c0392b';
+      err.style.background='#fdf0ef';
+      err.style.border='1px solid #c0392b';
+    } else {
+      _beginExam(name, classData, cls, storageKey, err);
+    }
+  });
+}
+
+function _beginExam(name, classData, cls, storageKey, err){
+  if(examStarted) return; examStarted=true;
+  err.style.display='none';
+  currentStudent=name;currentTeacher=classData.teacher;currentClass=cls;
+  currentStorageKey=storageKey;
+  startTime=new Date();
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('examHeaderEl').style.display='block';
+  document.getElementById('examLayout').style.display='flex';
+  buildNavGrid();
+  startTimer();window.scrollTo(0,0);
+}
+
+let warned15=false, warned5=false;
+
+function showTimeWarning(msg){
+  const warn=document.getElementById('tabWarning');
+  const overlay=document.getElementById('tabOverlay');
+  warn.textContent=msg;
+  warn.classList.add('show');
+  overlay.classList.add('show');
+  setTimeout(()=>{warn.classList.remove('show');overlay.classList.remove('show');}, 7000);
+}
+
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    totalSeconds--;
+    if(totalSeconds<=0){
+      clearInterval(timerInterval);
+      document.getElementById('tabWarning').textContent='⏰ Süre doldu! Cevaplarınız otomatik olarak teslim ediliyor...';
+      document.getElementById('tabWarning').classList.add('show');
+      document.getElementById('tabOverlay').classList.add('show');
+      setTimeout(()=>doSubmit(), 2000);
+      return;
+    }
+    const h=Math.floor(totalSeconds/3600),m=Math.floor((totalSeconds%3600)/60),s=totalSeconds%60;
+    const tv=document.getElementById('timer');
+    tv.textContent=`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(totalSeconds<=600)tv.className='timer-value danger';
+    else if(totalSeconds<=1800)tv.className='timer-value warning';
+
+    // Time warnings
+    if(totalSeconds===900 && !warned15){
+      warned15=true;
+      showTimeWarning('⏰ 15 dakikanız kaldı! Lütfen kalan sorularınızı tamamlayın.');
+    }
+    if(totalSeconds===300 && !warned5){
+      warned5=true;
+      showTimeWarning('⏰ Sadece 5 dakikanız kaldı! Sınav otomatik olarak teslim edilecek.');
+    }
+  },1000);
+}
+
+function selectAnswer(q,opt){
+  if(submitted)return;
+  userAnswers[q]=opt;
+  document.querySelectorAll(`[id^="q${q}-"]`).forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`q${q}-${opt}`).classList.add('selected');
+  const a=Object.keys(userAnswers).length;
+  document.getElementById('answeredCount').textContent=a;
+  document.getElementById('remainingCount').textContent=50-a;
+  document.getElementById('progressBar').style.width=(a/50*100)+'%';
+}
+
+function submitExam(){
+  if(Object.keys(userAnswers).length<50&&!warnShown){
+    document.getElementById('warnMsg').classList.add('show');warnShown=true;return;
+  }
+  doSubmit();
+}
+
+function doSubmit(){
+  if(submitted) return;   // double-guard
+  submitted=true;clearInterval(timerInterval);
+  document.getElementById('submitBtn').disabled=true;
+  document.getElementById('warnMsg').classList.remove('show');
+  let correct=0,wrong=0,blank=0;const sectionScores={};
+  for(let q=1;q<=50;q++){
+    const ua=userAnswers[q],ca=ANSWERS[q];
+    if(!ua)blank++;else if(ua===ca)correct++;else wrong++;
+    ['A','B','C','D','E'].forEach(l=>{
+      const btn=document.getElementById(`q${q}-${l}`);if(!btn)return;
+      btn.disabled=true;
+      if(l===ca)btn.classList.add(ua===ca?'correct':'revealed-correct');
+      else if(l===ua&&ua!==ca)btn.classList.add('wrong');
+    });
+    const expl=document.getElementById(`expl-${q}`);if(expl)expl.classList.add('show');
+  }
+  const pct=Math.round(correct/50*100);
+  document.getElementById('finalScore').textContent=pct+'%';
+  document.getElementById('finalSub').textContent=`${currentStudent} — ${correct} Doğru / 50 Soru`;
+  document.getElementById('resCorrect').textContent=correct;
+  document.getElementById('resWrong').textContent=wrong;
+  document.getElementById('resBlank').textContent=blank;
+  document.getElementById('resNet').textContent=correct;
+  const tbody=document.getElementById('breakdownBody');tbody.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    let sc=0,sw=0,sb=0;
+    sec.qs.forEach(q=>{const ua=userAnswers[q];if(!ua)sb++;else if(ua===ANSWERS[q])sc++;else sw++;});
+    sectionScores[sec.name]=`${sc}/${sec.qs.length}`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${sec.name}</td><td style="color:var(--correct);font-weight:600">${sc}</td><td style="color:var(--wrong);font-weight:600">${sw}</td><td>${sb}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('resultsPanel').classList.add('show');
+  document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  const diffSec=Math.round((new Date()-startTime)/1000);
+  // Save to localStorage to prevent re-entry
+  const normalize_l = s => s.toLowerCase().replace(/\s+/g,' ').trim();
+  if(currentStorageKey) localStorage.setItem(currentStorageKey, '1');
+
+  sendToSheet({studentName:currentStudent,teacherName:currentTeacher,className:currentClass,examDay:'Gün 9',score:pct,correct,wrong,blank,sectionScores:JSON.stringify(sectionScores),timeTaken:`${Math.floor(diffSec/60)}dk ${diffSec%60}sn`});
+}
+
+function sendToSheet(data){
+  const msg=document.getElementById('savingMsg');msg.style.display='block';
+  msg.textContent='📡 Sonuçlar kaydediliyor...';msg.className='saving-msg';
+  fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(()=>{msg.textContent='✅ Sonuçlarınız başarıyla kaydedildi!';msg.className='saving-msg success';})
+  .catch(()=>{msg.textContent='⚠️ Kayıt sırasında sorun oluştu.';msg.className='saving-msg error';});
+}
+
+
+// ── QUESTION NAVIGATOR ──
+const NAV_SECTIONS = [
+  {name:'Kelime',qs:[1,2,3,4,5,6,7]},
+  {name:'Dil Bilgisi',qs:[8,9,10,11,12,13,14]},
+  {name:'Boşluk',qs:[15,16,17,18,19,20,21,22,23,24]},
+  {name:'Çeviri',qs:[25,26,27,28]},
+  {name:'Yakın',qs:[29,30,31,32,33]},
+  {name:'Cümle',qs:[34,35,36,37,38]},
+  {name:'Okuma',qs:[39,40,41,42,43,44]},
+  {name:'Diyalog',qs:[45,46,47]},
+  {name:'Durum',qs:[48,49,50]}
+];
+
+let flagged = new Set();
+
+function buildNavGrid(){
+  const grid = document.getElementById('navGrid');
+  grid.innerHTML = '';
+  let firstSection = true;
+  NAV_SECTIONS.forEach(sec => {
+    if(!firstSection){
+      const sep = document.createElement('div');
+      sep.className = 'nav-section-sep';
+      grid.appendChild(sep);
+    }
+    firstSection = false;
+    sec.qs.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-btn';
+      btn.id = `nav-${q}`;
+      btn.textContent = q;
+      btn.title = `Soru ${q}`;
+      btn.onclick = () => scrollToQ(q);
+      btn.oncontextmenu = (e) => { e.preventDefault(); toggleFlag(q); };
+      // Long press for mobile
+      let pressTimer;
+      btn.addEventListener('touchstart', () => { pressTimer = setTimeout(()=>toggleFlag(q), 500); });
+      btn.addEventListener('touchend', () => clearTimeout(pressTimer));
+      grid.appendChild(btn);
+    });
+  });
+
+  // Inject a flag button into each question card's header
+  for(let q=1;q<=50;q++){
+    const card = document.getElementById(`qcard-${q}`);
+    if(!card) continue;
+    const header = card.querySelector('.q-header');
+    if(!header || header.querySelector('.q-flag-btn')) continue;
+    const flagBtn = document.createElement('button');
+    flagBtn.className = 'q-flag-btn';
+    flagBtn.id = `qflag-${q}`;
+    flagBtn.innerHTML = '🚩';
+    flagBtn.title = 'Bu soruyu işaretle (sonra geri dönmek için)';
+    flagBtn.onclick = (e) => { e.stopPropagation(); toggleFlag(q); };
+    header.appendChild(flagBtn);
+  }
+
+  updateNav();
+}
+
+function scrollToQ(q){
+  const el = document.getElementById(`qcard-${q}`);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function toggleFlag(q){
+  if(submitted) return;
+  if(flagged.has(q)) flagged.delete(q);
+  else flagged.add(q);
+  updateNav();
+}
+
+function updateNav(){
+  const answered = Object.keys(userAnswers).length;
+  document.getElementById('ns-answered').textContent = answered;
+  document.getElementById('ns-flagged').textContent = flagged.size;
+  document.getElementById('ns-empty').textContent = 50 - answered;
+  document.getElementById('answeredCount').textContent = answered;
+  document.getElementById('remainingCount').textContent = 50 - answered;
+  document.getElementById('progressBar').style.width = (answered/50*100)+'%';
+
+  for(let q=1;q<=50;q++){
+    const btn = document.getElementById(`nav-${q}`);
+    if(btn){
+      btn.className = 'nav-btn';
+      if(flagged.has(q)) btn.classList.add('nav-flagged');
+      else if(userAnswers[q]) btn.classList.add('nav-answered');
+    }
+    const flagBtn = document.getElementById(`qflag-${q}`);
+    if(flagBtn){
+      flagBtn.classList.toggle('flagged', flagged.has(q));
+    }
+  }
+}
+
+// ── TAB/WINDOW VISIBILITY ──
+let tabViolations = 0;
+const MAX_VIOLATIONS = 3;
+
+document.addEventListener('visibilitychange', () => {
+  if(submitted || !startTime) return;
+  if(document.hidden){
+    tabViolations++;
+    const remaining = MAX_VIOLATIONS - tabViolations;
+    const warn = document.getElementById('tabWarning');
+    if(tabViolations >= MAX_VIOLATIONS){
+      warn.textContent = '⚠️ Sınav otomatik teslim edildi! (Sekme değiştirildi)';
+      warn.classList.add('show');
+      setTimeout(()=>doSubmit(), 1500);
+    } else {
+      warn.textContent = `⚠️ Uyarı ${tabViolations}/${MAX_VIOLATIONS}: Sekme değiştirmeyin! ${remaining} hakkınız kaldı.`;
+      warn.classList.add('show');
+      document.getElementById('tabOverlay').classList.add('show');
+      setTimeout(()=>{warn.classList.remove('show');document.getElementById('tabOverlay').classList.remove('show');}, 7000);
+    }
+  }
+});
+
+window.addEventListener('blur', () => {
+  if(submitted || !startTime) return;
+  // Only count if exam is active
+});
+
+// ── OVERRIDE selectAnswer TO UPDATE NAV ──
+const _origSelect = selectAnswer;
+// Patch selectAnswer to also update nav
+function selectAnswer(q, opt){
+  if(submitted) return;
+  userAnswers[q] = opt;
+  document.querySelectorAll(`[id^="q${q}-"]`).forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`q${q}-${opt}`).classList.add('selected');
+  updateNav();
+}
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>400);
+});
+</script>
+</body>
+</html>
